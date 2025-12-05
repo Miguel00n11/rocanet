@@ -620,6 +620,82 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 <?php include("pie.php"); ?>
 
 <script>
+
+
+// === ACTUALIZAR CILINDROS SEGÚN LA EDAD DE MUESTREO ===
+function actualizarCilindros() {
+    // Obtener la edad del muestreo
+    let edad = document.querySelector("input[name='edad']").value;
+
+    // Obtener todos los campos de edad_item y tolerancia
+    let edades = document.querySelectorAll("input[name^='edad_item']");
+    let tolerancias = document.querySelectorAll("input[name^='tolerancia']");
+
+    if (edades.length < 4) return;
+
+    switch (edad) {
+        case "1":
+            edades[0].value = edades[1].value = edades[2].value = edades[3].value = 1;
+            tolerancias[0].value = tolerancias[1].value = tolerancias[2].value = tolerancias[3].value = 0.5;
+            break;
+
+        case "3":
+            edades[0].value = edades[1].value = edades[2].value = edades[3].value = 3;
+            tolerancias[0].value = tolerancias[1].value = tolerancias[2].value = tolerancias[3].value = 2;
+            break;
+
+        case "5":
+            edades[0].value = 1;
+            edades[1].value = 3;
+            edades[2].value = edades[3].value = 5;
+
+            tolerancias[0].value = 0.5;
+            tolerancias[1].value = 2;
+            tolerancias[2].value = tolerancias[3].value = 2;
+            break;
+
+        case "7":
+            edades[0].value = 3;
+            edades[1].value = 5;
+            edades[2].value = edades[3].value = 7;
+
+            tolerancias[0].value = 2;
+            tolerancias[1].value = 2;
+            tolerancias[2].value = tolerancias[3].value = 6;
+            break;
+
+        case "14":
+            edades[0].value = 5;
+            edades[1].value = 7;
+            edades[2].value = edades[3].value = 14;
+
+            tolerancias[0].value = 2;
+            tolerancias[1].value = 6;
+            tolerancias[2].value = tolerancias[3].value = 12;
+            break;
+
+        case "28":
+            edades[0].value = 7;
+            edades[1].value = 14;
+            edades[2].value = edades[3].value = 28;
+
+            tolerancias[0].value = 6;
+            tolerancias[1].value = 12;
+            tolerancias[2].value = tolerancias[3].value = 20;
+            break;
+    }
+
+    // REFRESCAR LOS f'c CALCULADOS SI EXISTEN
+    document.querySelectorAll(".fc_res").forEach(span => {
+        let itemID = span.id.replace("fc_res_", "");
+        calcularFC(itemID);
+    });
+}
+
+// Ejecutar cuando cambie la edad del muestreo
+document.querySelector("input[name='edad']").addEventListener("input", actualizarCilindros);
+
+
 // Cálculo en tiempo real de porcentaje f'c respecto al f'c de diseño
 function calcularFC(id) {
 
@@ -661,6 +737,7 @@ document.addEventListener("input", function(e) {
     if (e.target.classList.contains("diametro1") ||
         e.target.classList.contains("diametro2") ||
         e.target.classList.contains("carga") ||
+        e.target.name === "edad" ||
         e.target.name === "fc") {
 
         let id = e.target.dataset.id;
@@ -675,6 +752,7 @@ document.addEventListener("input", function(e) {
                 calcularFC(itemID);
             });
         }
+		
     }
 });
 
@@ -685,6 +763,11 @@ window.addEventListener("DOMContentLoaded", function() {
         calcularFC(itemID);
     });
 });
+
+// --- Sincronizar edad del muestreo con edad de los especímenes ---
+document.querySelector("input[name='edad']").addEventListener("input", actualizarCilindros);
+
+
 </script>
 
 
