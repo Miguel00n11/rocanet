@@ -621,13 +621,39 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 <script>
 
+function actualizarFechasEnsaye() {
+
+    const fechaMuestreo = document.querySelector("input[name='fecha']").value;
+    if (!fechaMuestreo) return;
+
+    // Crear fecha en zona local sin conversión UTC
+    let partes = fechaMuestreo.split("-");
+    let fechaBase = new Date(partes[0], partes[1] - 1, partes[2]);
+
+    document.querySelectorAll("input[name^='edad_item']").forEach(input => {
+
+        let idItem = input.name.match(/\[(.*?)\]/)[1];
+        let edad = parseInt(input.value) || 0;
+
+        let nuevaFecha = new Date(fechaBase);
+        nuevaFecha.setDate(nuevaFecha.getDate() + edad);
+
+        let yyyy = nuevaFecha.getFullYear();
+        let mm = String(nuevaFecha.getMonth() + 1).padStart(2, '0');
+        let dd = String(nuevaFecha.getDate()).padStart(2, '0');
+
+        let fechaFormateada = `${yyyy}-${mm}-${dd}`;
+
+        let campoFecha = document.querySelector(`input[name='fecha_ensaye[${idItem}]']`);
+        if (campoFecha) campoFecha.value = fechaFormateada;
+    });
+}
+
 
 // === ACTUALIZAR CILINDROS SEGÚN LA EDAD DE MUESTREO ===
 function actualizarCilindros() {
-    // Obtener la edad del muestreo
     let edad = document.querySelector("input[name='edad']").value;
 
-    // Obtener todos los campos de edad_item y tolerancia
     let edades = document.querySelectorAll("input[name^='edad_item']");
     let tolerancias = document.querySelectorAll("input[name^='tolerancia']");
 
@@ -648,7 +674,6 @@ function actualizarCilindros() {
             edades[0].value = 1;
             edades[1].value = 3;
             edades[2].value = edades[3].value = 5;
-
             tolerancias[0].value = 0.5;
             tolerancias[1].value = 2;
             tolerancias[2].value = tolerancias[3].value = 2;
@@ -658,7 +683,6 @@ function actualizarCilindros() {
             edades[0].value = 3;
             edades[1].value = 5;
             edades[2].value = edades[3].value = 7;
-
             tolerancias[0].value = 2;
             tolerancias[1].value = 2;
             tolerancias[2].value = tolerancias[3].value = 6;
@@ -668,7 +692,6 @@ function actualizarCilindros() {
             edades[0].value = 5;
             edades[1].value = 7;
             edades[2].value = edades[3].value = 14;
-
             tolerancias[0].value = 2;
             tolerancias[1].value = 6;
             tolerancias[2].value = tolerancias[3].value = 12;
@@ -678,19 +701,22 @@ function actualizarCilindros() {
             edades[0].value = 7;
             edades[1].value = 14;
             edades[2].value = edades[3].value = 28;
-
             tolerancias[0].value = 6;
             tolerancias[1].value = 12;
             tolerancias[2].value = tolerancias[3].value = 20;
             break;
     }
 
-    // REFRESCAR LOS f'c CALCULADOS SI EXISTEN
+    // Recalcular f'c
     document.querySelectorAll(".fc_res").forEach(span => {
         let itemID = span.id.replace("fc_res_", "");
         calcularFC(itemID);
     });
+
+    // 👈 Nueva línea: actualizar fechas automáticamente
+    actualizarFechasEnsaye();
 }
+
 
 // Ejecutar cuando cambie la edad del muestreo
 document.querySelector("input[name='edad']").addEventListener("input", actualizarCilindros);
@@ -764,8 +790,20 @@ window.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// --- Sincronizar edad del muestreo con edad de los especímenes ---
+// Ejecutar cuando cambie la edad del muestreo
 document.querySelector("input[name='edad']").addEventListener("input", actualizarCilindros);
+// Cuando cambia la fecha de muestreo, recalcular fechas de ensaye
+document.querySelector("input[name='fecha']").addEventListener("change", actualizarFechasEnsaye);
+
+// Cuando cambia cada edad individual
+document.addEventListener("input", function(e){
+    if (e.target.name && e.target.name.startsWith("edad_item[")) {
+        actualizarFechasEnsaye();   // ✔ corregido
+    }
+});
+
+// Actualizar fechas al cargar la página
+window.addEventListener("DOMContentLoaded", actualizarFechasEnsaye);  // ✔ corregido
 
 
 </script>
