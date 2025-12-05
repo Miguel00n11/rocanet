@@ -61,11 +61,14 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		$edad          = $data['edad'];
 		$revenimientop          = $data['revenimientop'];
 		$revenimientor          = $data['revenimientor'];
-		$hora_muestreo          = $data['hora_muestreo'];
+		$tma          = $data['agregado'];
 		$concretera          = $data['concretera'];
 		$temperatura          = $data['temperatura'];
 		$remision          = $data['remision'];
 		$volumen          = $data['volumen'];
+		$hora_muestreo          = $data['hora_muestreo'];
+		$hora_desmoldeo          = $data['hora_desmoldeo'];
+
 		$muestreo          = $data['muestreo'];
 		$recibio          = $data['recibio'];
 		$observacion          = $data['observacion'];
@@ -83,11 +86,13 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		$edad = $_POST['edad'];
 		$revenimientop = $_POST['revenimientop'];
 		$revenimientor = $_POST['revenimientor'];
-		$hora_muestreo = $_POST['hora_muestreo'];
+		$tma = $_POST['agregado'];
 		$concretera = $_POST['concretera'];
 		$temperatura = $_POST['temperatura'];
 		$remision = $_POST['remision'];
 		$volumen = $_POST['volumen'];
+		$hora_muestreo = $_POST['hora_muestreo'];
+		$hora_desmoldeo = $_POST['hora_desmoldeo'];
 		$muestreo = $_POST['muestreo'];
 		$recibio = $_POST['recibio'];
 		$observacion = $_POST['observacion'];
@@ -101,19 +106,21 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		edad = '$edad',
 		revenimientop = '$revenimientop',
 		revenimientor = '$revenimientor',
-		hora_muestreo = '$hora_muestreo',
+		agregado = '$tma',
 		concretera = '$concretera',
 		temperatura = '$temperatura',
 		remision = '$remision',
 		volumen = '$volumen',
+		hora_muestreo = '$hora_muestreo',
+		hora_desmoldeo = '$hora_desmoldeo',
 		muestreo = '$muestreo',
 		recibio = '$recibio',
 		observacion = '$observacion'
 	WHERE expediente = '$exp' AND reporte = '$rep'";
 
 		if ($conexion->query($sqlUpdate)) {
-		// 	echo "<script>alert('Datos de muestreo actualizados correctamente'); 
-		// window.location.href='captura_cilindros.php?expediente=$exp&reporte=$rep';</script>";
+			// 	echo "<script>alert('Datos de muestreo actualizados correctamente'); 
+			// window.location.href='captura_cilindros.php?expediente=$exp&reporte=$rep';</script>";
 		} else {
 			echo "Error: " . $conexion->error;
 		}
@@ -174,11 +181,11 @@ WHERE item = '$idItem' AND id_reporte_concreto = '$id_reporte_concreto'
 
 		$conexion->query($sqlUpdateItem);
 	}
-   echo "<script>
+	echo "<script>
         alert('Ensaye actualizado correctamente');
         window.close();
     </script>";
-    exit;
+	exit;
 	// echo "<script>alert('Ensaye actualizado correctamente');location.reload();</script>";
 }
 
@@ -265,7 +272,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 						<div class="mb-3">
 							<label class="form-label">Cliente <span class="text-danger"></label>
 							<input type="text" class="form-control"
-								value="<?= $cliente ?>"readonly
+								value="<?= $cliente ?>" readonly
 								placeholder="Nombre del cliente">
 						</div>
 					</div>
@@ -273,7 +280,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 						<div class="mb-3">
 							<label class="form-label">Id cliente <span class="text-danger"></label>
 							<input type="number" class="form-control"
-								value="<?= $id_cliente ?>"readonly
+								value="<?= $id_cliente ?>" readonly
 								placeholder="Id cliente">
 							<!-- <div class="input-group">
 								<label class="input-group-text" for="datepicker-component"><i class="fa fa-calendar"></i></label>
@@ -284,7 +291,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 						<div class="mb-3">
 							<label class="form-label">Obra <span class="text-danger"></label>
 							<input type="text" class="form-control"
-								value="<?= $obra ?>"readonly
+								value="<?= $obra ?>" readonly
 								placeholder="Nombre de la obra">
 						</div>
 					</div>
@@ -292,7 +299,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 						<div class="mb-3">
 							<label class="form-label">Expediente <span class="text-danger"></label>
 							<input type="number" class="form-control"
-								value="<?= $expediente ?>"readonly
+								value="<?= $expediente ?>" readonly
 								placeholder="Numero de expediente">
 						</div>
 					</div>
@@ -301,7 +308,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 						<div class="mb-3">
 							<label class="form-label">Localización <span class="text-danger"></label>
 							<input type="text" class="form-control"
-								value="<?= $localizacion ?>"readonly
+								value="<?= $localizacion ?>" readonly
 								placeholder="Localización">
 						</div>
 					</div>
@@ -310,7 +317,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 						<div class="mb-3">
 							<label class="form-label">Reporte <span class="text-danger"></label>
 							<input type="number" class="form-control"
-								value="<?= $reporte ?>"readonly
+								value="<?= $reporte ?>" readonly
 								placeholder="Numero de reporte">
 						</div>
 					</div>
@@ -366,36 +373,37 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 						</div>
 					</div>
 
-					<div class="row">
+					<!-- <div class="row"> -->
 
-						<div class="col-xl-3">
-							<label class="form-label">f'c *</label>
-							<input type="number" class="form-control" name="fc" value="<?= $fc ?>">
-						</div>
-
-						<div class="col-xl-3">
-							<label class="form-label">Edad *</label>
-							<input type="number" class="form-control" name="edad" value="<?= $edad ?>">
-						</div>
-
-						<div class="col-xl-3">
-							<label class="form-label">Rev. Proy. *</label>
-							<input type="number" class="form-control" name="revenimientop" value="<?= $revenimientop ?>">
-						</div>
-
-						<div class="col-xl-3">
-							<label class="form-label">Rev. Real *</label>
-							<input type="number" class="form-control" name="revenimientor" value="<?= $revenimientor ?>">
-						</div>
-
+					<div class="col-xl-3">
+						<label class="form-label">f'c *</label>
+						<input type="number" class="form-control" name="fc" value="<?= $fc ?>">
 					</div>
 
-					<div class="col-xl-2">
-						<label class="form-label">Hora de muestreo *</label>
-						<input type="time" class="form-control" name="hora_muestreo" value="<?= $hora_muestreo ?>">
+					<div class="col-xl-3">
+						<label class="form-label">Edad *</label>
+						<input type="number" class="form-control" name="edad" value="<?= $edad ?>">
 					</div>
 
+					<div class="col-xl-3">
+						<label class="form-label">Rev. Proy. *</label>
+						<input type="number" class="form-control" name="revenimientop" value="<?= $revenimientop ?>">
+					</div>
+
+					<div class="col-xl-3">
+						<label class="form-label">Rev. Real *</label>
+						<input type="number" class="form-control" name="revenimientor" value="<?= $revenimientor ?>">
+					</div>
+
+					<!-- </div> -->
+
+
+
 					<div class="col-xl-2">
+						<label class="form-label">T.M.A. [mm] *</label>
+						<input type="text" class="form-control" name="agregado" value="<?= $tma ?>">
+					</div>
+					<div class="col-xl-4">
 						<label class="form-label">Concretera *</label>
 						<input type="text" class="form-control" name="concretera" value="<?= $concretera ?>">
 					</div>
@@ -413,6 +421,15 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					<div class="col-xl-2">
 						<label class="form-label">Volumen *</label>
 						<input type="text" class="form-control" name="volumen" value="<?= $volumen ?>">
+					</div>
+
+					<div class="col-xl-6">
+						<label class="form-label">Hora de muestreo *</label>
+						<input type="time" class="form-control" name="hora_muestreo" value="<?= $hora_muestreo ?>">
+					</div>
+					<div class="col-xl-6">
+						<label class="form-label">Hora de desmoldeo *</label>
+						<input type="time" class="form-control" name="hora_desmoldeo" value="<?= $hora_desmoldeo ?>">
 					</div>
 
 					<div class="col-xl-6">
@@ -602,13 +619,6 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 			Guardar cambios
 		</button>
 
-		<a href='captura_cilindros.php' class='btn btn-outline-theme btn-sm w-180px'>
-			Aceptar
-		</a>
-
-		<a href='captura_cilindros.php' class='btn btn-outline-theme btn-sm w-180px'>
-			Cancelar
-		</a>
 </form> <!-- AQUÍ SE CIERRA EL FORMULARIO -->
 
 </div>
@@ -620,195 +630,187 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 <?php include("pie.php"); ?>
 
 <script>
+	function actualizarFechasEnsaye() {
 
-function actualizarFechasEnsaye() {
+		const fechaMuestreo = document.querySelector("input[name='fecha']").value;
+		if (!fechaMuestreo) return;
 
-    const fechaMuestreo = document.querySelector("input[name='fecha']").value;
-    if (!fechaMuestreo) return;
+		// Crear fecha en zona local sin conversión UTC
+		let partes = fechaMuestreo.split("-");
+		let fechaBase = new Date(partes[0], partes[1] - 1, partes[2]);
 
-    // Crear fecha en zona local sin conversión UTC
-    let partes = fechaMuestreo.split("-");
-    let fechaBase = new Date(partes[0], partes[1] - 1, partes[2]);
+		document.querySelectorAll("input[name^='edad_item']").forEach(input => {
 
-    document.querySelectorAll("input[name^='edad_item']").forEach(input => {
+			let idItem = input.name.match(/\[(.*?)\]/)[1];
+			let edad = parseInt(input.value) || 0;
 
-        let idItem = input.name.match(/\[(.*?)\]/)[1];
-        let edad = parseInt(input.value) || 0;
+			let nuevaFecha = new Date(fechaBase);
+			nuevaFecha.setDate(nuevaFecha.getDate() + edad);
 
-        let nuevaFecha = new Date(fechaBase);
-        nuevaFecha.setDate(nuevaFecha.getDate() + edad);
+			let yyyy = nuevaFecha.getFullYear();
+			let mm = String(nuevaFecha.getMonth() + 1).padStart(2, '0');
+			let dd = String(nuevaFecha.getDate()).padStart(2, '0');
 
-        let yyyy = nuevaFecha.getFullYear();
-        let mm = String(nuevaFecha.getMonth() + 1).padStart(2, '0');
-        let dd = String(nuevaFecha.getDate()).padStart(2, '0');
+			let fechaFormateada = `${yyyy}-${mm}-${dd}`;
 
-        let fechaFormateada = `${yyyy}-${mm}-${dd}`;
-
-        let campoFecha = document.querySelector(`input[name='fecha_ensaye[${idItem}]']`);
-        if (campoFecha) campoFecha.value = fechaFormateada;
-    });
-}
-
-
-// === ACTUALIZAR CILINDROS SEGÚN LA EDAD DE MUESTREO ===
-function actualizarCilindros() {
-    let edad = document.querySelector("input[name='edad']").value;
-
-    let edades = document.querySelectorAll("input[name^='edad_item']");
-    let tolerancias = document.querySelectorAll("input[name^='tolerancia']");
-
-    if (edades.length < 4) return;
-
-    switch (edad) {
-        case "1":
-            edades[0].value = edades[1].value = edades[2].value = edades[3].value = 1;
-            tolerancias[0].value = tolerancias[1].value = tolerancias[2].value = tolerancias[3].value = 0.5;
-            break;
-
-        case "3":
-            edades[0].value = edades[1].value = edades[2].value = edades[3].value = 3;
-            tolerancias[0].value = tolerancias[1].value = tolerancias[2].value = tolerancias[3].value = 2;
-            break;
-
-        case "5":
-            edades[0].value = 1;
-            edades[1].value = 3;
-            edades[2].value = edades[3].value = 5;
-            tolerancias[0].value = 0.5;
-            tolerancias[1].value = 2;
-            tolerancias[2].value = tolerancias[3].value = 2;
-            break;
-
-        case "7":
-            edades[0].value = 3;
-            edades[1].value = 5;
-            edades[2].value = edades[3].value = 7;
-            tolerancias[0].value = 2;
-            tolerancias[1].value = 2;
-            tolerancias[2].value = tolerancias[3].value = 6;
-            break;
-
-        case "14":
-            edades[0].value = 5;
-            edades[1].value = 7;
-            edades[2].value = edades[3].value = 14;
-            tolerancias[0].value = 2;
-            tolerancias[1].value = 6;
-            tolerancias[2].value = tolerancias[3].value = 12;
-            break;
-
-        case "28":
-            edades[0].value = 7;
-            edades[1].value = 14;
-            edades[2].value = edades[3].value = 28;
-            tolerancias[0].value = 6;
-            tolerancias[1].value = 12;
-            tolerancias[2].value = tolerancias[3].value = 20;
-            break;
-    }
-
-    // Recalcular f'c
-    document.querySelectorAll(".fc_res").forEach(span => {
-        let itemID = span.id.replace("fc_res_", "");
-        calcularFC(itemID);
-    });
-
-    // 👈 Nueva línea: actualizar fechas automáticamente
-    actualizarFechasEnsaye();
-}
+			let campoFecha = document.querySelector(`input[name='fecha_ensaye[${idItem}]']`);
+			if (campoFecha) campoFecha.value = fechaFormateada;
+		});
+	}
 
 
-// Ejecutar cuando cambie la edad del muestreo
-document.querySelector("input[name='edad']").addEventListener("input", actualizarCilindros);
+	// === ACTUALIZAR CILINDROS SEGÚN LA EDAD DE MUESTREO ===
+	function actualizarCilindros() {
+		let edad = document.querySelector("input[name='edad']").value;
+
+		let edades = document.querySelectorAll("input[name^='edad_item']");
+		let tolerancias = document.querySelectorAll("input[name^='tolerancia']");
+
+		if (edades.length < 4) return;
+
+		switch (edad) {
+			case "1":
+				edades[0].value = edades[1].value = edades[2].value = edades[3].value = 1;
+				tolerancias[0].value = tolerancias[1].value = tolerancias[2].value = tolerancias[3].value = 0.5;
+				break;
+
+			case "3":
+				edades[0].value = edades[1].value = edades[2].value = edades[3].value = 3;
+				tolerancias[0].value = tolerancias[1].value = tolerancias[2].value = tolerancias[3].value = 2;
+				break;
+
+			case "5":
+				edades[0].value = 1;
+				edades[1].value = 3;
+				edades[2].value = edades[3].value = 5;
+				tolerancias[0].value = 0.5;
+				tolerancias[1].value = 2;
+				tolerancias[2].value = tolerancias[3].value = 2;
+				break;
+
+			case "7":
+				edades[0].value = 3;
+				edades[1].value = 5;
+				edades[2].value = edades[3].value = 7;
+				tolerancias[0].value = 2;
+				tolerancias[1].value = 2;
+				tolerancias[2].value = tolerancias[3].value = 6;
+				break;
+
+			case "14":
+				edades[0].value = 5;
+				edades[1].value = 7;
+				edades[2].value = edades[3].value = 14;
+				tolerancias[0].value = 2;
+				tolerancias[1].value = 6;
+				tolerancias[2].value = tolerancias[3].value = 12;
+				break;
+
+			case "28":
+				edades[0].value = 7;
+				edades[1].value = 14;
+				edades[2].value = edades[3].value = 28;
+				tolerancias[0].value = 6;
+				tolerancias[1].value = 12;
+				tolerancias[2].value = tolerancias[3].value = 20;
+				break;
+		}
+
+		// Recalcular f'c
+		document.querySelectorAll(".fc_res").forEach(span => {
+			let itemID = span.id.replace("fc_res_", "");
+			calcularFC(itemID);
+		});
+
+		// 👈 Nueva línea: actualizar fechas automáticamente
+		actualizarFechasEnsaye();
+	}
 
 
-// Cálculo en tiempo real de porcentaje f'c respecto al f'c de diseño
-function calcularFC(id) {
-
-    // Obtener f'c establecido en datos de muestreo
-    let fc_establecido = parseFloat(document.querySelector("input[name='fc']").value) || 0;
-
-    let d1 = parseFloat(document.querySelector("input[name='diametro1[" + id + "]']").value) || 0;
-    let d2 = parseFloat(document.querySelector("input[name='diametro2[" + id + "]']").value) || 0;
-    let carga = parseFloat(document.querySelector("input[name='carga[" + id + "]']").value) || 0;
-
-    if (d1 <= 0 || d2 <= 0 || carga <= 0 || fc_establecido <= 0) {
-        document.getElementById("fc_res_" + id).innerText = "—";
-        return;
-    }
-
-    // diámetro promedio
-    let d_prom = (d1 + d2) / 2;
-
-    // cm → m
-    let d_m = d_prom ;
-
-    // Área
-    let area = Math.PI * Math.pow(d_m / 2, 2);
-
-    // resistencia real en MPa
-    let fc_real = carga / area;
-
-    // MPa → kg/cm²
-    fc_real = fc_real;
-
-    // PORCENTAJE respecto al f'c establecido
-    let porcentaje = (fc_real / fc_establecido) * 100;
-
-    document.getElementById("fc_res_" + id).innerText = porcentaje.toFixed(1) + "%";
-}
-
-// Detectar cambios en Ø1, Ø2, carga o f'c establecido
-document.addEventListener("input", function(e) {
-    if (e.target.classList.contains("diametro1") ||
-        e.target.classList.contains("diametro2") ||
-        e.target.classList.contains("carga") ||
-        e.target.name === "edad" ||
-        e.target.name === "fc") {
-
-        let id = e.target.dataset.id;
-        if (id) {
-            calcularFC(id);
-        }
-
-        // Si cambia el f’c de diseño, recalcular todos
-        if (e.target.name === "fc") {
-            document.querySelectorAll(".fc_res").forEach(span => {
-                let itemID = span.id.replace("fc_res_", "");
-                calcularFC(itemID);
-            });
-        }
-		
-    }
-});
-
-// --- Calcular todos los f'c al cargar la página ---
-window.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll(".fc_res").forEach(span => {
-        let itemID = span.id.replace("fc_res_", "");
-        calcularFC(itemID);
-    });
-});
-
-// Ejecutar cuando cambie la edad del muestreo
-document.querySelector("input[name='edad']").addEventListener("input", actualizarCilindros);
-// Cuando cambia la fecha de muestreo, recalcular fechas de ensaye
-document.querySelector("input[name='fecha']").addEventListener("change", actualizarFechasEnsaye);
-
-// Cuando cambia cada edad individual
-document.addEventListener("input", function(e){
-    if (e.target.name && e.target.name.startsWith("edad_item[")) {
-        actualizarFechasEnsaye();   // ✔ corregido
-    }
-});
-
-// Actualizar fechas al cargar la página
-window.addEventListener("DOMContentLoaded", actualizarFechasEnsaye);  // ✔ corregido
+	// Ejecutar cuando cambie la edad del muestreo
+	document.querySelector("input[name='edad']").addEventListener("input", actualizarCilindros);
 
 
+	// Cálculo en tiempo real de porcentaje f'c respecto al f'c de diseño
+	function calcularFC(id) {
+
+		// Obtener f'c establecido en datos de muestreo
+		let fc_establecido = parseFloat(document.querySelector("input[name='fc']").value) || 0;
+
+		let d1 = parseFloat(document.querySelector("input[name='diametro1[" + id + "]']").value) || 0;
+		let d2 = parseFloat(document.querySelector("input[name='diametro2[" + id + "]']").value) || 0;
+		let carga = parseFloat(document.querySelector("input[name='carga[" + id + "]']").value) || 0;
+
+		if (d1 <= 0 || d2 <= 0 || carga <= 0 || fc_establecido <= 0) {
+			document.getElementById("fc_res_" + id).innerText = "—";
+			return;
+		}
+
+		// diámetro promedio
+		let d_prom = (d1 + d2) / 2;
+
+		// cm → m
+		let d_m = d_prom;
+
+		// Área
+		let area = Math.PI * Math.pow(d_m / 2, 2);
+
+		// resistencia real en MPa
+		let fc_real = carga / area;
+
+		// MPa → kg/cm²
+		fc_real = fc_real;
+
+		// PORCENTAJE respecto al f'c establecido
+		let porcentaje = (fc_real / fc_establecido) * 100;
+
+		document.getElementById("fc_res_" + id).innerText = porcentaje.toFixed(1) + "%";
+	}
+
+	// Detectar cambios en Ø1, Ø2, carga o f'c establecido
+	document.addEventListener("input", function(e) {
+		if (e.target.classList.contains("diametro1") ||
+			e.target.classList.contains("diametro2") ||
+			e.target.classList.contains("carga") ||
+			e.target.name === "edad" ||
+			e.target.name === "fc") {
+
+			let id = e.target.dataset.id;
+			if (id) {
+				calcularFC(id);
+			}
+
+			// Si cambia el f’c de diseño, recalcular todos
+			if (e.target.name === "fc") {
+				document.querySelectorAll(".fc_res").forEach(span => {
+					let itemID = span.id.replace("fc_res_", "");
+					calcularFC(itemID);
+				});
+			}
+
+		}
+	});
+
+	// --- Calcular todos los f'c al cargar la página ---
+	window.addEventListener("DOMContentLoaded", function() {
+		document.querySelectorAll(".fc_res").forEach(span => {
+			let itemID = span.id.replace("fc_res_", "");
+			calcularFC(itemID);
+		});
+	});
+
+	// Ejecutar cuando cambie la edad del muestreo
+	document.querySelector("input[name='edad']").addEventListener("input", actualizarCilindros);
+	// Cuando cambia la fecha de muestreo, recalcular fechas de ensaye
+	document.querySelector("input[name='fecha']").addEventListener("change", actualizarFechasEnsaye);
+
+	// Cuando cambia cada edad individual
+	document.addEventListener("input", function(e) {
+		if (e.target.name && e.target.name.startsWith("edad_item[")) {
+			actualizarFechasEnsaye(); // ✔ corregido
+		}
+	});
+
+	// Actualizar fechas al cargar la página
+	window.addEventListener("DOMContentLoaded", actualizarFechasEnsaye); // ✔ corregido
 </script>
-
-
-
-
-
