@@ -1,0 +1,32 @@
+&lt;!-- required js --&gt;
+&lt;script src="/assets/plugins/chart.js/dist/chart.umd.js"/&gt;&lt;/script&gt;
+
+&lt;!-- html --&gt;
+&lt;div class="h-250px"&gt;
+  &lt;canvas id="pieChart" class="w-100 h-100"&gt;&lt;/canvas&gt;
+&lt;/div&gt;
+
+&lt;!-- script --&gt;
+&lt;script&gt;
+  var ctx5 = document.getElementById('pieChart');
+  var pieChart = new Chart(ctx5, {
+    type: 'pie',
+    data: {
+      labels: ['Total Visitor', 'New Visitor', 'Returning Visitor'],
+      datasets: [{
+        data: [300, 50, 100],
+        backgroundColor: ['rgba('+ app.color.themeRgb +', .25)', 'rgba('+ app.color.themeRgb +', .5)', 'rgba('+ app.color.whiteRgb +', .25)'],
+        hoverBackgroundColor: ['rgba('+ app.color.themeRgb +', .5)', 'rgba('+ app.color.themeRgb +', .75)', 'rgba('+ app.color.whiteRgb +', .5)'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true
+        }
+      }
+    }
+  });
+&lt;/script&gt;

@@ -1,0 +1,33 @@
+&lt;link href="assets/plugins/lity/dist/lity.min.css" rel="stylesheet" /&gt;
+&lt;script src="assets/plugins/lity/dist/lity.min.js"&gt;&lt;/script&gt;
+
+&lt;div class="card"&gt;
+  &lt;img src="assets/img/widget/cover-1.jpg" alt="" class="object-fit-cover h-250px" /&gt;
+  &lt;div class="card-img-overlay d-flex flex-column bg-black bg-opacity-50"&gt;
+    &lt;div class="flex-fill"&gt;
+      &lt;div class="d-flex align-items-center"&gt;
+        &lt;h6 class="m-0"&gt;Youtube&lt;/h6&gt;
+        &lt;div class="dropdown ms-auto"&gt;
+          &lt;a href="#" class="text-white text-opacity-75" data-bs-toggle="dropdown"&gt;&lt;i class="fa fa-ellipsis-h fa-lg"&gt;&lt;/i&gt;&lt;/a&gt;
+          &lt;div class="dropdown-menu dropdown-menu-end"&gt;
+            &lt;a href="//www.youtube.com/watch?v=_AS5nu4u1ss" class="dropdown-item"&gt;View&lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;a href="//www.youtube.com/watch?v=_AS5nu4u1ss" data-lity class="text-white text-decoration-none d-flex align-items-center"&gt;
+        &lt;div class="bg-white bg-opacity-15 text-white w-40px h-40px d-flex align-items-center justify-content-center"&gt;
+          &lt;iconify-icon icon="material-symbols-light:play-arrow-outline" class="fs-36px"&gt;&lt;/iconify-icon&gt;
+        &lt;/div&gt;
+        &lt;div class="ms-3 flex-1"&gt;
+          &lt;div class="fw-semibold"&gt;Tesla’s Revolutionary Electric Future&lt;/div&gt;
+          &lt;div class="small text-white text-opacity-50"&gt;
+            &lt;i class="far fa-eye"&gt;&lt;/i&gt; 1.58m views 
+            &lt;i class="far fa-clock ms-3"&gt;&lt;/i&gt; 39min ago
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;

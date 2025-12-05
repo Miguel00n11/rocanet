@@ -1,0 +1,27 @@
+&lt;div class="card"&gt;
+  &lt;div class="card-header"&gt;TODAY, NOV 4&lt;/div&gt;
+  &lt;div class="card-body p-0 widget-reminder"&gt;
+    &lt;div class="widget-reminder-item"&gt;
+      &lt;div class="widget-reminder-time"&gt;09:00&lt;br&gt;12:00&lt;/div&gt;
+      &lt;div class="widget-reminder-divider bg-success"&gt;&lt;/div&gt;
+      &lt;div class="widget-reminder-content"&gt;
+        &lt;div class="fw-semibold text-white"&gt;Meeting with HR&lt;/div&gt;
+        &lt;div&gt; - Conference Room&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="widget-reminder-item"&gt;
+      &lt;div class="widget-reminder-time"&gt;20:00&lt;br&gt;23:00&lt;/div&gt;
+      &lt;div class="widget-reminder-divider bg-primary"&gt;&lt;/div&gt;
+      &lt;div class="widget-reminder-content"&gt;
+        &lt;div class="fw-semibold text-white"&gt;Dinner with Richard&lt;/div&gt;
+        &lt;div&gt; - Tom's Too Restaurant&lt;/div&gt;
+        &lt;div class="d-flex align-items-center mt-2"&gt;
+          &lt;div class="flex-fill d-flex align-items-center"&gt;
+            &lt;img src="assets/img/user/user-3.jpg" alt="" width="16" class="me-2" /&gt; Richard Leong
+          &lt;/div&gt;
+          &lt;a href="#" class="ms-auto"&gt;Contact&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;

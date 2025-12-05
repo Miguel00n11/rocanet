@@ -1,0 +1,8 @@
+&lt;div class="card-header with-btn"&gt;
+  CARD HEADER HERE
+  &lt;div class="card-header-btn"&gt;
+    &lt;a href="#" data-toggle="card-collapse" class="btn"&gt;&lt;iconify-icon icon="material-symbols-light:stat-minus-1"&gt;&lt;/iconify-icon&gt;&lt;/a&gt;
+    &lt;a href="#" data-toggle="card-expand" class="btn"&gt;&lt;iconify-icon icon="material-symbols-light:fullscreen"&gt;&lt;/iconify-icon&gt;&lt;/a&gt;
+    &lt;a href="#" data-toggle="card-remove" class="btn"&gt;&lt;iconify-icon icon="material-symbols-light:close-rounded"&gt;&lt;/iconify-icon&gt;&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;

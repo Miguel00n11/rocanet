@@ -1,0 +1,8 @@
+&lt;span class="badge bg-primary bg-opacity-10 text-primary border border-primary"&gt;Primary&lt;/span&gt;
+&lt;span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary"&gt;Secondary&lt;/span&gt;
+&lt;span class="badge bg-success bg-opacity-10 text-success border border-success"&gt;Success&lt;/span&gt;
+&lt;span class="badge bg-danger bg-opacity-10 text-danger border border-danger"&gt;Danger&lt;/span&gt;
+&lt;span class="badge bg-warning bg-opacity-10 text-warning border border-warning"&gt;Warning&lt;/span&gt;
+&lt;span class="badge bg-info bg-opacity-10 text-info border border-info"&gt;Info&lt;/span&gt;
+&lt;span class="badge bg-light bg-opacity-10 text-light border border-light"&gt;Light&lt;/span&gt;
+&lt;span class="badge bg-dark bg-opacity-10 text-dark border border-dark"&gt;Dark&lt;/span&gt;

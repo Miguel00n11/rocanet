@@ -1,0 +1,38 @@
+&lt;div class="card"&gt;
+  &lt;div class="card-header with-btn"&gt;
+    DISCUSSION GROUP
+    &lt;div class="card-header-btn"&gt;
+      &lt;a href="#" data-toggle="card-collapse" class="btn"&gt;&lt;iconify-icon icon="material-symbols-light:stat-minus-1"&gt;&lt;/iconify-icon&gt;&lt;/a&gt;
+      &lt;a href="#" data-toggle="card-expand" class="btn"&gt;&lt;iconify-icon icon="material-symbols-light:fullscreen"&gt;&lt;/iconify-icon&gt;&lt;/a&gt;
+      &lt;a href="#" data-toggle="card-remove" class="btn"&gt;&lt;iconify-icon icon="material-symbols-light:close-rounded"&gt;&lt;/iconify-icon&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="card-body h-200px" data-scrollbar="true"&gt;
+    &lt;div class="widget-chat"&gt;
+      &lt;div class="widget-chat-date"&gt;Today 14:21&lt;/div&gt;
+      &lt;div class="widget-chat-item"&gt;
+        &lt;div class="widget-chat-media"&gt;&lt;img src="assets/img/user/user-2.jpg" alt="" /&gt;&lt;/div&gt;
+        &lt;div class="widget-chat-content"&gt;
+          &lt;div class="widget-chat-name"&gt;Roberto Lambert&lt;/div&gt;
+          &lt;div class="widget-chat-message last"&gt;
+            How's crusty old iOS 6 treating you?
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="widget-chat-item reply"&gt;
+        &lt;div class="widget-chat-content"&gt;
+          &lt;div class="widget-chat-message last"&gt;
+            Sucks
+          &lt;/div&gt;
+          &lt;div class="widget-chat-status"&gt;Read 16:30&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="card-body"&gt;
+    &lt;div class="input-group"&gt;
+      &lt;input type="text" class="form-control ps-3" placeholder="Write something..." /&gt;
+      &lt;button class="btn btn-theme w-70px" type="button"&gt;SEND&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;

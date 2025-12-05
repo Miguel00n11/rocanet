@@ -1,0 +1,28 @@
+&lt;div class="card"&gt;
+  &lt;div class="card-header with-btn"&gt;
+    GOOGLE MAP
+    &lt;div class="card-header-btn"&gt;
+      &lt;a href="#" data-toggle="card-collapse" class="btn"&gt;&lt;iconify-icon icon="material-symbols-light:stat-minus-1"&gt;&lt;/iconify-icon&gt;&lt;/a&gt;
+      &lt;a href="#" data-toggle="card-expand" class="btn"&gt;&lt;iconify-icon icon="material-symbols-light:fullscreen"&gt;&lt;/iconify-icon&gt;&lt;/a&gt;
+      &lt;a href="#" data-toggle="card-remove" class="btn"&gt;&lt;iconify-icon icon="material-symbols-light:close-rounded"&gt;&lt;/iconify-icon&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;div class="ratio ratio-21x9"&gt;
+      &lt;iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d960.5886473867613!2d-122.41743634015282!3d37.776451983493104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809c6c8f4459%3A0xb10ed6d9b5050fa5!2sTwitter+HQ!5e0!3m2!1sen!2s!4v1495935122933" allowfullscreen&gt;&lt;/iframe&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="card-body d-flex align-items-center"&gt;
+    &lt;div class="w-30px h-30px d-flex text-white text-opacity-50 fs-20px bg-white bg-opacity-15 align-items-center justify-content-center"&gt;
+      &lt;iconify-icon icon="material-symbols-light:map-outline-sharp"&gt;&lt;/iconify-icon&gt;
+    &lt;/div&gt;
+    &lt;div class="flex-fill px-3"&gt;
+      &lt;div class="fw-semibold text-white"&gt;via Road I-88E&lt;/div&gt;
+      &lt;div class="small lh-sm"&gt;Fastest route, the usual traffic&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="text-nowrap py-1"&gt;
+      &lt;div class="text-success fw-semibold"&gt;3h 54min&lt;/div&gt;
+      &lt;div class="small lh-sm"&gt;393km&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;

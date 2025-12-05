@@ -1,0 +1,34 @@
+&lt;!-- required js --&gt;
+&lt;script src="/assets/plugins/apexcharts/dist/apexcharts.min.js"/&gt;&lt;/script&gt;
+
+&lt;!-- html --&gt;
+&lt;div id="apexPieChart"&gt;&lt;/div&gt;
+
+&lt;!-- script --&gt;
+&lt;script&gt;
+  var apexPieChartOptions = {
+    chart: {
+      height: 250,
+      type: 'pie',
+    },
+    dataLabels: {
+      dropShadow: {
+        enabled: false,
+        top: 1,
+        left: 1,
+        blur: 1,
+        opacity: 1
+      }
+    },
+    stroke: { show: false },
+    colors: [ 'rgba('+ app.color.whiteRgb +', .5)',  'rgba('+ app.color.themeRgb +', .25)',  'rgba('+app.color.themeRgb +', .5)', 'rgba('+ app.color.themeRgb + ', .15)',  'rgba('+app.color.whiteRgb +', .25)'],
+    labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+    series: [44, 55, 13, 43, 22],
+    title: { text: 'HeatMap Chart (Single color)' }
+  };
+  var apexPieChart = new ApexCharts(
+    document.querySelector('#apexPieChart'),
+    apexPieChartOptions
+  );
+  apexPieChart.render();
+&lt;/script&gt;
