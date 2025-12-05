@@ -263,17 +263,17 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 				<div class="row">
 					<div class="col-xl-6">
 						<div class="mb-3">
-							<label class="form-label">Cliente <span class="text-danger">*</span></label>
+							<label class="form-label">Cliente <span class="text-danger"></label>
 							<input type="text" class="form-control"
-								value="<?= $cliente ?>"
+								value="<?= $cliente ?>"readonly
 								placeholder="Nombre del cliente">
 						</div>
 					</div>
 					<div class="col-xl-6">
 						<div class="mb-3">
-							<label class="form-label">Id cliente <span class="text-danger">*</span></label>
+							<label class="form-label">Id cliente <span class="text-danger"></label>
 							<input type="number" class="form-control"
-								value="<?= $id_cliente ?>"
+								value="<?= $id_cliente ?>"readonly
 								placeholder="Id cliente">
 							<!-- <div class="input-group">
 								<label class="input-group-text" for="datepicker-component"><i class="fa fa-calendar"></i></label>
@@ -282,35 +282,35 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					</div>
 					<div class="col-xl-6">
 						<div class="mb-3">
-							<label class="form-label">Obra <span class="text-danger">*</span></label>
+							<label class="form-label">Obra <span class="text-danger"></label>
 							<input type="text" class="form-control"
-								value="<?= $obra ?>"
+								value="<?= $obra ?>"readonly
 								placeholder="Nombre de la obra">
 						</div>
 					</div>
 					<div class="col-xl-6">
 						<div class="mb-3">
-							<label class="form-label">Expediente <span class="text-danger">*</span></label>
+							<label class="form-label">Expediente <span class="text-danger"></label>
 							<input type="number" class="form-control"
-								value="<?= $expediente ?>"
+								value="<?= $expediente ?>"readonly
 								placeholder="Numero de expediente">
 						</div>
 					</div>
 
 					<div class="col-xl-6">
 						<div class="mb-3">
-							<label class="form-label">Localización <span class="text-danger">*</span></label>
+							<label class="form-label">Localización <span class="text-danger"></label>
 							<input type="text" class="form-control"
-								value="<?= $localizacion ?>"
+								value="<?= $localizacion ?>"readonly
 								placeholder="Localización">
 						</div>
 					</div>
 
 					<div class="col-xl-6">
 						<div class="mb-3">
-							<label class="form-label">Reporte <span class="text-danger">*</span></label>
+							<label class="form-label">Reporte <span class="text-danger"></label>
 							<input type="number" class="form-control"
-								value="<?= $reporte ?>"
+								value="<?= $reporte ?>"readonly
 								placeholder="Numero de reporte">
 						</div>
 					</div>
