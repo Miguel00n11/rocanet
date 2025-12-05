@@ -3,7 +3,7 @@ include("cabeza.php");
 include("conexion.php");
 include("conexion_forta.php");
 
-// Verificar si vienen datos por GET (editar)..
+// Verificar si vienen datos por GET (editar)
 $cliente = "";
 $id_cliente = "";
 $obra = "";
@@ -18,71 +18,6 @@ $edad = "";
 $id_reporte_concreto = $_POST['id_reporte_concreto']
 	?? $_GET['id_reporte_concreto']
 	?? null;
-
-
-
-// ---------- ACTUALIZAR ENSAYE DE ESPECÍMENES ----------
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
-
-	$id_reporte_concreto = $_POST['id_reporte_concreto'];
-
-	foreach ($_POST['item'] as $idItem) {
-
-		$fecha_ensaye      = $_POST['fecha_ensaye'][$idItem];
-		$edad_item         = $_POST['edad_item'][$idItem];
-		$tolerancia        = $_POST['tolerancia'][$idItem];
-		$diametro1         = $_POST['diametro1'][$idItem];
-		$diametro2         = $_POST['diametro2'][$idItem];
-		$altura1           = $_POST['altura1'][$idItem];
-		$altura2           = $_POST['altura2'][$idItem];
-		$condicion         = $_POST['condicion_especimen'][$idItem];
-		$flexometro        = $_POST['flexometro'][$idItem];
-		$escuadra          = $_POST['escuadra'][$idItem];
-		$compas            = $_POST['compas'][$idItem];
-		$prensa            = $_POST['prensa'][$idItem];
-		$hora_ensaye       = $_POST['hora_ensaye'][$idItem];
-		$carga             = $_POST['carga'][$idItem];
-		$tiempo_ensaye     = $_POST['tiempo_ensaye'][$idItem];
-		// $velocidad         = $_POST['velocidad'][$idItem];
-		// $cumple_velocidad  = $_POST['cumple_velocidad'][$idItem];
-		$falla             = $_POST['falla'][$idItem];
-		$observaciones     = $_POST['observaciones'][$idItem];
-		$persona_ensayo    = $_POST['persona_ensayo'][$idItem];
-		$persona_capturo   = $_POST['persona_capturo'][$idItem];
-
-		$sqlUpdateItem = "UPDATE item SET
-    fecha_ensaye = '$fecha_ensaye',
-    edad_item = '$edad_item',
-    tolerancia = '$tolerancia',
-    diametro1 = '$diametro1',
-    diametro2 = '$diametro2',
-    altura1 = '$altura1',
-    altura2 = '$altura2',
-    condicion_especimen = '$condicion',
-    flexometro = '$flexometro',
-    escuadra = '$escuadra',
-    compas = '$compas',
-    prensa = '$prensa',
-    hora_ensaye = '$hora_ensaye',
-    carga = '$carga',
-    tiempo_ensaye = '$tiempo_ensaye',
-    falla = '$falla',
-    observaciones = '$observaciones',
-    persona_ensayo = '$persona_ensayo',
-    persona_capturo = '$persona_capturo'
-WHERE item = '$idItem' AND id_reporte_concreto = '$id_reporte_concreto'
-";
-
-
-		$conexion->query($sqlUpdateItem);
-	}
-   echo "<script>
-        alert('Ensaye actualizado correctamente');
-        window.close();
-    </script>";
-    exit;
-	// echo "<script>alert('Ensaye actualizado correctamente');location.reload();</script>";
-}
 
 
 if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
@@ -177,13 +112,78 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 	WHERE expediente = '$exp' AND reporte = '$rep'";
 
 		if ($conexion->query($sqlUpdate)) {
-			echo "<script>alert('Datos de muestreo actualizados correctamente'); 
-		window.location.href='captura_cilindros.php?expediente=$exp&reporte=$rep';</script>";
+		// 	echo "<script>alert('Datos de muestreo actualizados correctamente'); 
+		// window.location.href='captura_cilindros.php?expediente=$exp&reporte=$rep';</script>";
 		} else {
 			echo "Error: " . $conexion->error;
 		}
 	}
 }
+// ---------- ACTUALIZAR ENSAYE DE ESPECÍMENES ----------
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
+
+	$id_reporte_concreto = $_POST['id_reporte_concreto'];
+
+	foreach ($_POST['item'] as $idItem) {
+
+		$fecha_ensaye      = $_POST['fecha_ensaye'][$idItem];
+		$edad_item         = $_POST['edad_item'][$idItem];
+		$tolerancia        = $_POST['tolerancia'][$idItem];
+		$diametro1         = $_POST['diametro1'][$idItem];
+		$diametro2         = $_POST['diametro2'][$idItem];
+		$altura1           = $_POST['altura1'][$idItem];
+		$altura2           = $_POST['altura2'][$idItem];
+		$condicion         = $_POST['condicion_especimen'][$idItem];
+		$flexometro        = $_POST['flexometro'][$idItem];
+		$escuadra          = $_POST['escuadra'][$idItem];
+		$compas            = $_POST['compas'][$idItem];
+		$prensa            = $_POST['prensa'][$idItem];
+		$hora_ensaye       = $_POST['hora_ensaye'][$idItem];
+		$carga             = $_POST['carga'][$idItem];
+		$tiempo_ensaye     = $_POST['tiempo_ensaye'][$idItem];
+		// $velocidad         = $_POST['velocidad'][$idItem];
+		// $cumple_velocidad  = $_POST['cumple_velocidad'][$idItem];
+		$falla             = $_POST['falla'][$idItem];
+		$observaciones     = $_POST['observaciones'][$idItem];
+		$persona_ensayo    = $_POST['persona_ensayo'][$idItem];
+		$persona_capturo   = $_POST['persona_capturo'][$idItem];
+
+		$sqlUpdateItem = "UPDATE item SET
+    fecha_ensaye = '$fecha_ensaye',
+    edad_item = '$edad_item',
+    tolerancia = '$tolerancia',
+    diametro1 = '$diametro1',
+    diametro2 = '$diametro2',
+    altura1 = '$altura1',
+    altura2 = '$altura2',
+    condicion_especimen = '$condicion',
+    flexometro = '$flexometro',
+    escuadra = '$escuadra',
+    compas = '$compas',
+    prensa = '$prensa',
+    hora_ensaye = '$hora_ensaye',
+    carga = '$carga',
+    tiempo_ensaye = '$tiempo_ensaye',
+    falla = '$falla',
+    observaciones = '$observaciones',
+    persona_ensayo = '$persona_ensayo',
+    persona_capturo = '$persona_capturo'
+WHERE item = '$idItem' AND id_reporte_concreto = '$id_reporte_concreto'
+";
+
+
+		$conexion->query($sqlUpdateItem);
+	}
+   echo "<script>
+        alert('Ensaye actualizado correctamente');
+        window.close();
+    </script>";
+    exit;
+	// echo "<script>alert('Ensaye actualizado correctamente');location.reload();</script>";
+}
+
+
+
 if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 	$exp = $_GET['expediente'];
@@ -686,5 +686,8 @@ window.addEventListener("DOMContentLoaded", function() {
     });
 });
 </script>
+
+
+
 
 
