@@ -3,7 +3,7 @@ include("cabeza.php");
 include("conexion.php");
 include("conexion_forta.php");
 
-// Verificar si vienen datos por GET (editar)
+// Verificar si vienen datos por GET (editar)..
 $cliente = "";
 $id_cliente = "";
 $obra = "";
