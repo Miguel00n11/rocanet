@@ -475,25 +475,25 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 				</div>
 			</div>
 			<div class="card-body">
-				<p>
-					<?php
-					// 2️⃣ Hacer la consulta
-					$sql = "SELECT * FROM item 
+
+				<?php
+				// 2️⃣ Hacer la consulta
+				$sql = "SELECT * FROM item 
 					WHERE id_reporte_concreto = '$id_reporte_concreto'  
 					ORDER BY item ASC";
-					$resultado = $conexion->query($sql);
-					// $id_reporte_concreto = $_GET['id_reporte_concreto'];
+				$resultado = $conexion->query($sql);
+				// $id_reporte_concreto = $_GET['id_reporte_concreto'];
 
 
-					// 3️⃣ Verificar resultados
-					if ($resultado->num_rows > 0) {
-						// Convertir el resultado a un arreglo asociativo
-						$clientes = $resultado->fetch_all(MYSQLI_ASSOC);
+				// 3️⃣ Verificar resultados
+				if ($resultado->num_rows > 0) {
+					// Convertir el resultado a un arreglo asociativo
+					$clientes = $resultado->fetch_all(MYSQLI_ASSOC);
 
 
-						echo '<div class="table-responsive">';
-						echo '<table class="table table-bordered table-striped table-hover">';
-						echo '<thead class="table-dark">
+					echo '<div class="table-responsive">';
+					echo '<table class="table table-bordered table-striped table-hover">';
+					echo '<thead class="table-dark">
 <tr>
     <th>Item</th>
     <th>Fecha ensaye</th>
@@ -519,13 +519,13 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
     <th>f´c</th>
 </tr>
 </thead>';
-						echo '<tbody>';
+					echo '<tbody>';
 
-						foreach ($clientes as $fila) {
+					foreach ($clientes as $fila) {
 
-							$id = $fila['item'];
+						$id = $fila['item'];
 
-							echo "<tr>
+						echo "<tr>
 
     <td>
         <input type='hidden' name='item[]' value='$id'>
@@ -608,10 +608,10 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 <td>
 <select class='form-select' name='persona_ensayo[$id]' data-live-search='true'>
     <option value='{$fila['persona_ensayo']}' selected>{$fila['persona_ensayo']}</option>";
-							foreach ($personalLista as $p) {
-								echo "<option value='{$p['Nombre']}'>{$p['Nombre']}</option>";
-							}
-							echo "
+						foreach ($personalLista as $p) {
+							echo "<option value='{$p['Nombre']}'>{$p['Nombre']}</option>";
+						}
+						echo "
 							</select>
 </td>
 
@@ -619,10 +619,10 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 <td>
 <select class='form-select' name='persona_capturo[$id]' data-live-search='true'>
     <option value='{$fila['persona_capturo']}' selected>{$fila['persona_capturo']}</option>";
-							foreach ($personalLista as $p) {
-								echo "<option value='{$p['Nombre']}'>{$p['Nombre']}</option>";
-							}
-							echo "</select>
+						foreach ($personalLista as $p) {
+							echo "<option value='{$p['Nombre']}'>{$p['Nombre']}</option>";
+						}
+						echo "</select>
 </td>
 
 
@@ -635,18 +635,18 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 
     </tr>";
-						}
-
-						echo "</tbody></table></div>";
-					} else {
-						echo "No se encontraron clientes.";
 					}
 
-					// 5️⃣ Cerrar conexión
-					$conexion->close();
-					?>
+					echo "</tbody></table></div>";
+				} else {
+					echo "No se encontraron clientes.";
+				}
 
-				</p>
+				// 5️⃣ Cerrar conexión
+				$conexion->close();
+				?>
+
+
 			</div>
 		</div>
 
