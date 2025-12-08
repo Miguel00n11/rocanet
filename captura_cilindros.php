@@ -548,7 +548,25 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
     <td><input type='text' step='0.01' class='form-control' name='altura2[$id]' value='{$fila['altura2']}'></td>
 
-    <td><input type='text' class='form-control' name='condicion_especimen[$id]' value='{$fila['condicion_especimen']}'></td>
+<td>
+    <div class='col-xl-12'>
+        <div class='small text-white text-opacity-50 mb-2'>
+        </div>
+
+        <select class='form-select' name='condicion_especimen[$id]'>
+            <option value='{$fila['condicion_especimen']}' selected>
+                {$fila['condicion_especimen']}
+            </option>
+            <option value='BUENO'>BUENO</option>
+            <option value='DEFECTUOSO'>DEFECTUOSO</option>
+            <option value='FISURADO'>FISURADO</option>
+            <option value='MAL ELABORADO'>MAL ELABORADO</option>
+        </select>
+    </div>
+</td>
+
+
+	
 
     <td><input type='text' class='form-control' name='flexometro[$id]' value='{$fila['flexometro']}'></td>
 
@@ -613,6 +631,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 				</p>
 			</div>
 		</div>
+
 
 
 		<button type="submit" class="btn btn-outline-theme btn-sm w-180px">
