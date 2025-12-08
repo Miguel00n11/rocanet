@@ -519,12 +519,12 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
             <tr>
                 <th>Item</th>
                 <th>Fecha ensaye</th>
-                <th>Edad</th>
-                <th>Tolerancia</th>
-                <th>Ø1</th>
-                <th>Ø2</th>
-                <th>Altura 1</th>
-                <th>Altura 2</th>
+                <th>Edad [d]</th>
+                <th>Tolerancia [h]</th>
+                <th>Diametro 1 [cm]</th>
+                <th>Diametro 2 [cm]</th>
+                <th>Altura 1 [cm]</th>
+                <th>Altura 2 [cm]</th>
                 <th>Condición</th>
                 <th>Flexómetro</th>
                 <th>Escuadra</th>
@@ -532,12 +532,11 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
                 <th>Prensa</th>
                 <th>Hora ensaye</th>
                 <th>Carga</th>
-                <th>Tiempo</th>
+                <th>Tiempo [s]</th>
                 <th>Falla</th>
                 <th>Observaciones</th>
                 <th>Ensayó</th>
                 <th>Capturó</th>
-                <th>f´c</th>
             </tr>
             </thead>';
 
