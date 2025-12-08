@@ -1,4 +1,29 @@
+<style>
+	/* Evita que las columnas se encojan demasiado */
+	.wide-table th,
+	.wide-table td {
+		white-space: nowrap;
+		min-width: 120px;
+		/* Ajusta según lo necesario */
+	}
+
+	/* Columna de item (más pequeña) */
+	.wide-table th:first-child,
+	.wide-table td:first-child {
+		min-width: 60px;
+		text-align: center;
+	}
+
+	/* Columna de f´c (más pequeña) */
+	.wide-table th:last-child,
+	.wide-table td:last-child {
+		min-width: 80px;
+		text-align: center;
+	}
+</style>
+
 <?php
+
 include("cabeza.php");
 include("conexion.php");
 include("conexion_forta.php");
@@ -466,189 +491,154 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 
 		<div class="card">
-			<div class="card-header with-btn">ENSAYE A LA COMPRESIÓN DE ESPECÍMENES CILÍNDRICOS DE CONCRETO
+			<div class="card-header with-btn">
+				ENSAYE A LA COMPRESIÓN DE ESPECÍMENES CILÍNDRICOS DE CONCRETO
 				<div class="card-header-btn">
 					<a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
 					<a href="#" data-toggle="card-expand" class="btn"><iconify-icon icon="material-symbols-light:fullscreen"></iconify-icon></a>
 					<a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a>
-
 				</div>
 			</div>
+
 			<div class="card-body">
 
 				<?php
-				// 2️⃣ Hacer la consulta
 				$sql = "SELECT * FROM item 
-					WHERE id_reporte_concreto = '$id_reporte_concreto'  
-					ORDER BY item ASC";
+                WHERE id_reporte_concreto = '$id_reporte_concreto'
+                ORDER BY item ASC";
 				$resultado = $conexion->query($sql);
-				// $id_reporte_concreto = $_GET['id_reporte_concreto'];
 
-
-				// 3️⃣ Verificar resultados
 				if ($resultado->num_rows > 0) {
-					// Convertir el resultado a un arreglo asociativo
+
 					$clientes = $resultado->fetch_all(MYSQLI_ASSOC);
 
-
 					echo '<div class="table-responsive">';
-					echo '<table class="table table-bordered table-striped table-hover">';
-					echo '<thead class="table-dark">
-<tr>
-    <th>Item</th>
-    <th>Fecha ensaye</th>
-    <th>Edad</th>
-    <th>Tolerancia</th>
-    <th>Ø1</th>
-    <th>Ø2</th>
-    <th>Altura 1</th>
-    <th>Altura 2</th>
-    <th>Condición</th>
-    <th>Flexómetro</th>
-    <th>Escuadra</th>
-    <th>Compás</th>
-    <th>Prensa</th>
-    <th>Hora ensaye</th>
-    <th>Carga</th>
-    <th>Tiempo</th>
+					echo '<table class="table table-bordered table-striped table-hover wide-table">';
+					echo '
+            <thead class="table-dark">
+            <tr>
+                <th>Item</th>
+                <th>Fecha ensaye</th>
+                <th>Edad</th>
+                <th>Tolerancia</th>
+                <th>Ø1</th>
+                <th>Ø2</th>
+                <th>Altura 1</th>
+                <th>Altura 2</th>
+                <th>Condición</th>
+                <th>Flexómetro</th>
+                <th>Escuadra</th>
+                <th>Compás</th>
+                <th>Prensa</th>
+                <th>Hora ensaye</th>
+                <th>Carga</th>
+                <th>Tiempo</th>
+                <th>Falla</th>
+                <th>Observaciones</th>
+                <th>Ensayó</th>
+                <th>Capturó</th>
+                <th>f´c</th>
+            </tr>
+            </thead>';
 
-    <th>Falla</th>
-    <th>Observaciones</th>
-    <th>Ensayó</th>
-    <th>Capturó</th>
-    <th>f´c</th>
-</tr>
-</thead>';
 					echo '<tbody>';
 
 					foreach ($clientes as $fila) {
-
 						$id = $fila['item'];
 
 						echo "<tr>
 
-    <td>
-        <input type='hidden' name='item[]' value='$id'>
-        $id
-    </td>
+                <td>
+                    <input type='hidden' name='item[]' value='$id'>
+                    $id
+                </td>
 
-    <td><input type='date' class='form-control' name='fecha_ensaye[$id]' value='{$fila['fecha_ensaye']}'></td>
+                <td><input type='date' class='form-control' name='fecha_ensaye[$id]' value='{$fila['fecha_ensaye']}'></td>
 
-    <td><input type='text' class='form-control' name='edad_item[$id]' value='{$fila['edad_item']}'></td>
+                <td><input type='text' class='form-control' name='edad_item[$id]' value='{$fila['edad_item']}'></td>
 
-    <td><input type='text' class='form-control' name='tolerancia[$id]' value='{$fila['tolerancia']}'></td>
+                <td><input type='text' class='form-control' name='tolerancia[$id]' value='{$fila['tolerancia']}'></td>
 
-    <td><input type='text' step='0.01' class='form-control diametro1' data-id='$id' name='diametro1[$id]' value='{$fila['diametro1']}'></td>
+                <td><input type='text' class='form-control diametro1' data-id='$id' name='diametro1[$id]' value='{$fila['diametro1']}'></td>
 
+                <td><input type='text' class='form-control diametro2' data-id='$id' name='diametro2[$id]' value='{$fila['diametro2']}'></td>
 
-    <td><input type='text' step='0.01' class='form-control diametro2' data-id='$id' name='diametro2[$id]' value='{$fila['diametro2']}'></td>
+                <td><input type='text' class='form-control' name='altura1[$id]' value='{$fila['altura1']}'></td>
 
+                <td><input type='text' class='form-control' name='altura2[$id]' value='{$fila['altura2']}'></td>
 
-    <td><input type='text' step='0.01' class='form-control' name='altura1[$id]' value='{$fila['altura1']}'></td>
+                <td>
+                    <select class='form-select' name='condicion_especimen[$id]'>
+                        <option selected>{$fila['condicion_especimen']}</option>
+                        <option>---</option>
+                        <option>Bien</option>
+                        <option>Mal</option>
+                    </select>
+                </td>
 
-    <td><input type='text' step='0.01' class='form-control' name='altura2[$id]' value='{$fila['altura2']}'></td>
+                <td><input type='text' class='form-control' name='flexometro[$id]' value='{$fila['flexometro']}'></td>
 
-<td>
-    <div class='col-xl-12'>
-        <div class='small text-white text-opacity-50 mb-2'>
-        </div>
+                <td><input type='text' class='form-control' name='escuadra[$id]' value='{$fila['escuadra']}'></td>
 
-        <select class='form-select' name='condicion_especimen[$id]'>
-            <option value='{$fila['condicion_especimen']}' selected>
-                {$fila['condicion_especimen']}
-            </option>
-            <option value='---'>---</option>
-            <option value='Bien'>Bien</option>
-            <option value='Mal'>Mal</option>
-        </select>
-    </div>
-</td>
+                <td><input type='text' class='form-control' name='compas[$id]' value='{$fila['compas']}'></td>
 
+                <td><input type='text' class='form-control' name='prensa[$id]' value='{$fila['prensa']}'></td>
 
-	
+                <td><input type='time' class='form-control' name='hora_ensaye[$id]' value='{$fila['hora_ensaye']}'></td>
 
-    <td><input type='text' class='form-control' name='flexometro[$id]' value='{$fila['flexometro']}'></td>
+                <td><input type='text' class='form-control carga' data-id='$id' name='carga[$id]' value='{$fila['carga']}'></td>
 
-    <td><input type='text' class='form-control' name='escuadra[$id]' value='{$fila['escuadra']}'></td>
+                <td><input type='text' class='form-control' name='tiempo_ensaye[$id]' value='{$fila['tiempo_ensaye']}'></td>
 
-    <td><input type='text' class='form-control' name='compas[$id]' value='{$fila['compas']}'></td>
+                <td>
+                    <select class='form-select' name='falla[$id]'>
+                        <option selected>{$fila['falla']}</option>
+                        <option>---</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </td>
 
-    <td><input type='text' class='form-control' name='prensa[$id]' value='{$fila['prensa']}'></td>
+                <td><input type='text' class='form-control' name='observaciones[$id]' value='{$fila['observaciones']}'></td>
 
-    <td><input type='time' class='form-control' name='hora_ensaye[$id]' value='{$fila['hora_ensaye']}'></td>
+                <td>
+                    <select class='form-select' name='persona_ensayo[$id]'>
+                        <option selected>{$fila['persona_ensayo']}</option>";
 
-
-    <td><input type='text' class='form-control carga' data-id='$id' name='carga[$id]' value='{$fila['carga']}'></td>
-
-
-    <td><input type='text' class='form-control' name='tiempo_ensaye[$id]' value='{$fila['tiempo_ensaye']}'></td>
-
-<td>
-    <div class='col-xl-12'>
-        <div class='small text-white text-opacity-50 mb-2'>
-        </div>
-
-        <select class='form-select' name='falla[$id]'>
-            <option value='{$fila['falla']}' selected>
-                {$fila['falla']}
-            </option>
-            <option value='---'>---</option>
-            <option value='1'>1</option>
-            <option value='2'>2</option>
-            <option value='3'>3</option>
-            <option value='4'>4</option>
-        </select>
-    </div>
-</td>
-
-
-
-    <td><input type='text' class='form-control' name='observaciones[$id]' value='{$fila['observaciones']}'></td>
-
-<td>
-<select class='form-select' name='persona_ensayo[$id]' data-live-search='true'>
-    <option value='{$fila['persona_ensayo']}' selected>{$fila['persona_ensayo']}</option>";
 						foreach ($personalLista as $p) {
 							echo "<option value='{$p['Nombre']}'>{$p['Nombre']}</option>";
 						}
-						echo "
-							</select>
-</td>
 
-
-<td>
-<select class='form-select' name='persona_capturo[$id]' data-live-search='true'>
-    <option value='{$fila['persona_capturo']}' selected>{$fila['persona_capturo']}</option>";
-						foreach ($personalLista as $p) {
-							echo "<option value='{$p['Nombre']}'>{$p['Nombre']}</option>";
-						}
 						echo "</select>
-</td>
+                </td>
 
+                <td>
+                    <select class='form-select' name='persona_capturo[$id]'>
+                        <option selected>{$fila['persona_capturo']}</option>";
 
-<td>
-    <span class='fc_res' id='fc_res_$id'>
-        {$fila['fc_res']}
-    </span>
-</td>
+						foreach ($personalLista as $p) {
+							echo "<option value='{$p['Nombre']}'>{$p['Nombre']}</option>";
+						}
 
+						echo "</select>
+                </td>
 
+                <td><span class='fc_res' id='fc_res_$id'>{$fila['fc_res']}</span></td>
 
-    </tr>";
+            </tr>";
 					}
 
 					echo "</tbody></table></div>";
 				} else {
-					echo "No se encontraron clientes.";
+					echo "No se encontraron registros.";
 				}
 
-				// 5️⃣ Cerrar conexión
-				$conexion->close();
 				?>
-
-
 			</div>
 		</div>
+
 
 
 
