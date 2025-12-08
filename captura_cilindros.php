@@ -434,7 +434,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 					<div class="col-xl-6">
 						<label class="form-label">Muestreó especímenes *</label>
-						<select class="form-control selectpicker" name="muestreo" data-live-search="true">
+						<select class="form-select" name="muestreo" data-live-search="true">
 							<option value="<?= $muestreo ?>" selected><?= $muestreo ?></option>
 							<?php foreach ($personalLista as $p): ?>
 								<option value="<?= $p['Nombre'] ?>"><?= $p['Nombre'] ?></option>
@@ -444,7 +444,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 					<div class="col-xl-6">
 						<label class="form-label">Recibió especímenes *</label>
-						<select class="form-control selectpicker" name="recibio" data-live-search="true">
+						<select class="form-select" name="recibio" data-live-search="true">
 							<option value="<?= $recibio ?>" selected><?= $recibio ?></option>
 							<?php foreach ($personalLista as $p): ?>
 								<option value="<?= $p['Nombre'] ?>"><?= $p['Nombre'] ?></option>
@@ -557,10 +557,9 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
             <option value='{$fila['condicion_especimen']}' selected>
                 {$fila['condicion_especimen']}
             </option>
-            <option value='BUENO'>BUENO</option>
-            <option value='DEFECTUOSO'>DEFECTUOSO</option>
-            <option value='FISURADO'>FISURADO</option>
-            <option value='MAL ELABORADO'>MAL ELABORADO</option>
+            <option value='---'>---</option>
+            <option value='Bien'>Bien</option>
+            <option value='Mal'>Mal</option>
         </select>
     </div>
 </td>
@@ -584,22 +583,41 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
     <td><input type='text' class='form-control' name='tiempo_ensaye[$id]' value='{$fila['tiempo_ensaye']}'></td>
 
-    <td><input type='text' class='form-control' name='falla[$id]' value='{$fila['falla']}'></td>
+<td>
+    <div class='col-xl-12'>
+        <div class='small text-white text-opacity-50 mb-2'>
+        </div>
+
+        <select class='form-select' name='falla[$id]'>
+            <option value='{$fila['falla']}' selected>
+                {$fila['falla']}
+            </option>
+            <option value='---'>---</option>
+            <option value='1'>1</option>
+            <option value='2'>2</option>
+            <option value='3'>3</option>
+            <option value='4'>4</option>
+        </select>
+    </div>
+</td>
+
+
 
     <td><input type='text' class='form-control' name='observaciones[$id]' value='{$fila['observaciones']}'></td>
 
 <td>
-<select class='form-control selectpicker' name='persona_ensayo[$id]' data-live-search='true'>
+<select class='form-select' name='persona_ensayo[$id]' data-live-search='true'>
     <option value='{$fila['persona_ensayo']}' selected>{$fila['persona_ensayo']}</option>";
 							foreach ($personalLista as $p) {
 								echo "<option value='{$p['Nombre']}'>{$p['Nombre']}</option>";
 							}
-							echo "</select>
+							echo "
+							</select>
 </td>
 
 
 <td>
-<select class='form-control selectpicker' name='persona_capturo[$id]' data-live-search='true'>
+<select class='form-select' name='persona_capturo[$id]' data-live-search='true'>
     <option value='{$fila['persona_capturo']}' selected>{$fila['persona_capturo']}</option>";
 							foreach ($personalLista as $p) {
 								echo "<option value='{$p['Nombre']}'>{$p['Nombre']}</option>";
