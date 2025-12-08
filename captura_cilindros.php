@@ -537,6 +537,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
                 <th>Observaciones</th>
                 <th>Ensayó</th>
                 <th>Capturó</th>
+                <th>f´c [kgf/cm²]</th>
             </tr>
             </thead>';
 
