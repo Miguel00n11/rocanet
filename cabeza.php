@@ -147,7 +147,7 @@
 						</a>
 					</div>
 					<div class="menu-item ">
-						<a href="cilindros.php" class="menu-link">
+						<a href="lista_reportes_cilindros_general.php" class="menu-link">
 							<span class="menu-icon">
 								<iconify-icon icon="ph:chart-bar-duotone"></iconify-icon>
 							</span>
@@ -169,17 +169,17 @@
 							<span class="menu-icon">
 								<iconify-icon icon="ph:sparkle-duotone"></iconify-icon>
 							</span>
-							<span class="menu-text">Captura</span>
+							<span class="menu-text">ITEMS</span>
 							<span class="menu-caret"><b class="caret"></b></span>
 						</a>
 						<div class="menu-submenu">
 							<div class="menu-item ">
-								<a href="cilindros.php" class="menu-link">
+								<a href="lista_reportes_cilindros_general.php" class="menu-link">
 									<span class="menu-text">Cilindros</span>
 								</a>
 							</div>
 							<div class="menu-item ">
-								<a href="ai_image_generator.html" class="menu-link">
+								<a href="lista_reportes_vigas_general.php" class="menu-link">
 									<span class="menu-text">Vigas</span>
 								</a>
 							</div>

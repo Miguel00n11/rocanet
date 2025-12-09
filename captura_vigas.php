@@ -32,7 +32,7 @@ include("conexion_forta.php");
 $cliente = "";
 $id_cliente = "";
 $obra = "";
-$expediente = "";
+$exp_registro = "";
 $localizacion = "";
 $reporte = "";
 $elemento = "";
@@ -45,9 +45,9 @@ $id_reporte_concreto = $_POST['id_reporte_concreto']
 	?? null;
 
 
-if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
+if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
-	$exp = $_GET['expediente'];
+	$exp = $_GET['exp_registro'];
 	$rep = $_GET['reporte'];
 	$id_reporte_concreto = $_GET['id_reporte_concreto'];
 
@@ -63,8 +63,8 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 	// ----
 
 	// Consulta del registro
-	$sql = "SELECT * FROM reporte_concreto 
-            WHERE expediente = '$exp' AND reporte = '$rep' 
+	$sql = "SELECT * FROM vista_vigas_completa 
+            WHERE exp_registro = '$exp' AND reporte = '$rep' 
             LIMIT 1";
 	$res = $conexion->query($sql);
 
@@ -75,28 +75,28 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		// $cliente       = $data['cliente'];
 		// $id_cliente    = $data['id_cliente'];
 		// $obra          = $data['obra'];
-		$expediente    = $data['expediente'];
+		$exp_registro    = $data['exp_registro'];
 		// $localizacion  = $data['ubicacion'];
-		$fecha       = $data['fecha'];
+		$fecha       = $data['fecha_viga'];
 		$fecha_recepcion       = $data['fecha_recepcion'];
 		$reporte       = $data['reporte'];
 		$elemento      = $data['elemento'];
-		$ubicacion     = $data['ubicacion'];
-		$fc            = $data['fc'];
+		$ubicacion     = $data['ubicacion_viga'];
+		$fc            = $data['fc_viga'];
 		$edad          = $data['edad'];
 		$revenimientop          = $data['revenimientop'];
 		$revenimientor          = $data['revenimientor'];
 		$tma          = $data['agregado'];
-		$concretera          = $data['concretera'];
-		$temperatura          = $data['temperatura'];
-		$remision          = $data['remision'];
+		$concretera          = $data['concretera_viga'];
+		$temperatura          = $data['temperatura_viga'];
+		$remision          = $data['remision_viga'];
 		$volumen          = $data['volumen'];
 		$hora_muestreo          = $data['hora_muestreo'];
 		$hora_desmoldeo          = $data['hora_desmoldeo'];
 
-		$muestreo          = $data['muestreo'];
-		$recibio          = $data['recibio'];
-		$observacion          = $data['observacion'];
+		$muestreo          = $data['personal_muestreo'];
+		$recibio          = $data['personal_recibio'];
+		$observacion          = $data['observacion_viga'];
 		// $revisado_autorizado          = $data['revisado_autorizado'];
 	}
 	// ---------- ACTUALIZAR DATOS DE MUESTREO ----------
@@ -122,7 +122,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		$recibio = $_POST['recibio'];
 		$observacion = $_POST['observacion'];
 
-		$sqlUpdate = "UPDATE reporte_concreto SET
+		$sqlUpdate = "UPDATE vista_vigas_completa SET
 		fecha = '$fecha',
 		fecha_recepcion = '$fecha_recepcion',
 		elemento = '$elemento',
@@ -141,11 +141,11 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		muestreo = '$muestreo',
 		recibio = '$recibio',
 		observacion = '$observacion'
-	WHERE expediente = '$exp' AND reporte = '$rep'";
+	WHERE exp_registro = '$exp' AND reporte = '$rep'";
 
 		if ($conexion->query($sqlUpdate)) {
 			// 	echo "<script>alert('Datos de muestreo actualizados correctamente'); 
-			// window.location.href='captura_cilindros.php?expediente=$exp&reporte=$rep';</script>";
+			// window.location.href='captura_cilindros.php?exp_registro=$exp&reporte=$rep';</script>";
 		} else {
 			echo "Error: " . $conexion->error;
 		}
@@ -216,9 +216,9 @@ WHERE item = '$idItem' AND id_reporte_concreto = '$id_reporte_concreto'
 
 
 
-if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
+if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
-	$exp = $_GET['expediente'];
+	$exp = $_GET['exp_registro'];
 	$rep = $_GET['reporte'];
 	$id_reporte_concreto = $_GET['id_reporte_concreto'];
 
@@ -236,13 +236,13 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		// $cliente       = $data['cliente'];
 		$id_cliente    = $data['cliente'];
 		$obra          = $data['obra'];
-		// $expediente    = $data['expediente'];
+		// $exp_registro    = $data['exp_registro'];
 		$localizacion  = $data['localizacion'];
 	}
 }
-if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
+if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
-	$exp = $_GET['expediente'];
+	$exp = $_GET['exp_registro'];
 	$rep = $_GET['reporte'];
 
 	// Consulta del registro
@@ -258,7 +258,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		$cliente       = $data['cliente'];
 		// $id_cliente    = $data['id_cliente'];
 		// $obra          = $data['obra'];
-		// $expediente    = $data['expediente'];
+		// $exp_registro    = $data['exp_registro'];
 		// $localizacion  = $data['localizacion'];
 	}
 }
@@ -268,6 +268,8 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 <!-- BEGIN #content -->
 <form method="POST">
+	
+<!-- echo "<script>alert('Datos de muestreo actualizados correctamente'); </script>"; -->
 
 	<input type="hidden" name="id_reporte_concreto" value="<?= $id_reporte_concreto ?>">
 
@@ -324,8 +326,8 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 						<div class="mb-3">
 							<label class="form-label">Expediente <span class="text-danger"></label>
 							<input type="number" class="form-control"
-								value="<?= $expediente ?>" readonly
-								placeholder="Numero de expediente">
+								value="<?= $exp_registro ?>" readonly
+								placeholder="Numero de exp_registro">
 						</div>
 					</div>
 
