@@ -40,8 +40,8 @@ $ubicacion = "";
 $fc = "";
 $edad = "";
 
-$id_reporte_concreto = $_POST['id_reporte_concreto']
-	?? $_GET['id_reporte_concreto']
+$id_viga = $_POST['id_viga']
+	?? $_GET['id_viga']
 	?? null;
 
 
@@ -49,7 +49,7 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 	$exp = $_GET['exp_registro'];
 	$rep = $_GET['reporte'];
-	$id_reporte_concreto = $_GET['id_reporte_concreto'];
+	$id_viga = $_GET['id_viga'];
 
 
 	// Obtener lista de personal
@@ -154,7 +154,7 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 // ---------- ACTUALIZAR ENSAYE DE ESPECÍMENES ----------
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 
-	$id_reporte_concreto = $_POST['id_reporte_concreto'];
+	$id_viga = $_POST['id_viga'];
 
 	foreach ($_POST['item'] as $idItem) {
 
@@ -200,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
     observaciones = '$observaciones',
     persona_ensayo = '$persona_ensayo',
     persona_capturo = '$persona_capturo'
-WHERE item = '$idItem' AND id_reporte_concreto = '$id_reporte_concreto'
+WHERE item = '$idItem' AND id_viga = '$id_viga'
 ";
 
 
@@ -220,7 +220,7 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 	$exp = $_GET['exp_registro'];
 	$rep = $_GET['reporte'];
-	$id_reporte_concreto = $_GET['id_reporte_concreto'];
+	$id_viga = $_GET['id_viga'];
 
 
 	// Consulta del registro
@@ -271,7 +271,7 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 	
 <!-- echo "<script>alert('Datos de muestreo actualizados correctamente'); </script>"; -->
 
-	<input type="hidden" name="id_reporte_concreto" value="<?= $id_reporte_concreto ?>">
+	<input type="hidden" name="id_viga" value="<?= $id_viga ?>">
 
 	<div id="content" class="app-content">
 		<ul class="breadcrumb">
@@ -494,7 +494,7 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 		<div class="card">
 			<div class="card-header with-btn">
-				ENSAYE A LA COMPRESIÓN DE ESPECÍMENES CILÍNDRICOS DE CONCRETO
+				ENSAYE A LA COMPRESIÓN DE ESPECÍMENES DE VIGAS DE CONCRETO
 				<div class="card-header-btn">
 					<a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
 					<a href="#" data-toggle="card-expand" class="btn"><iconify-icon icon="material-symbols-light:fullscreen"></iconify-icon></a>
@@ -505,9 +505,8 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 			<div class="card-body">
 
 				<?php
-				$sql = "SELECT * FROM item 
-                WHERE id_reporte_concreto = '$id_reporte_concreto'
-                ORDER BY item ASC";
+				$sql = "SELECT * FROM vista_vigas_completa 
+                WHERE id_viga = '$id_viga'";
 				$resultado = $conexion->query($sql);
 
 				if ($resultado->num_rows > 0) {

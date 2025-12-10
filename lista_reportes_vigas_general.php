@@ -112,7 +112,7 @@ include("conexion.php");
 							
 
 								<td class='text-center'>
-								<a href='captura_vigas.php?exp_registro={$fila['exp_registro']}&reporte={$fila['reporte']}&id_reporte_concreto={$fila['id_reporte_concreto']}'
+								<a href='captura_vigas.php?exp_registro={$fila['exp_registro']}&reporte={$fila['reporte']}&id_viga={$fila['id_viga']}'
   	 								class='btn btn-outline-theme btn-sm w-80px'
 									target='_blank'>
    									Editar
