@@ -546,7 +546,8 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					foreach ($clientes as $fila) {
 						$id = $fila['item'];
 
-						echo "<tr>
+						echo "
+			<tr>
 
                 <td>
                     <input type='hidden' name='item[]' value='$id'>

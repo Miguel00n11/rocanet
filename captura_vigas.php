@@ -268,8 +268,8 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 <!-- BEGIN #content -->
 <form method="POST">
-	
-<!-- echo "<script>alert('Datos de muestreo actualizados correctamente'); </script>"; -->
+
+	<!-- echo "<script>alert('Datos de muestreo actualizados correctamente'); </script>"; -->
 
 	<input type="hidden" name="id_viga" value="<?= $id_viga ?>">
 
@@ -544,94 +544,53 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 					echo '<tbody>';
 
-					foreach ($clientes as $fila) {
-						$id = $fila['item'];
+					for ($i = 1; $i <= 3; $i++) {
 
-						echo "<tr>
+						foreach ($clientes as $fila) {
 
-                <td>
-                    <input type='hidden' name='item[]' value='$id'>
-                    $id
-                </td>
+							// Item original
+							$id = $fila['item' . $i];
+							// $ensaye = date('Y-m-d', strtotime($fila['ensaye'] . " +$i days"));
+							// $ensaye = date('m-d-Y',  strtotime($fila['ensaye'.$i]));
+							// $ensaye = date('d/m/Y',  strtotime($fila['ensaye3']));
 
-                <td><input type='date' class='form-control' name='fecha_ensaye[$id]' value='{$fila['fecha_ensaye']}'></td>
+							// Tomamos la fecha original en formato dd/mm/yyyy
+							$fecha_raw = $fila['ensaye' . $i];
 
-                <td><input type='text' class='form-control' name='edad_item[$id]' value='{$fila['edad_item']}'></td>
+							// Convertimos a yyyy-mm-dd
+							$partes = explode('/', $fecha_raw);
+							$ensaye = $partes[2] . '-' . $partes[1] . '-' . $partes[0];
+							
+							$carga = $fila['carga' . $i];
 
-                <td><input type='text' class='form-control' name='tolerancia[$id]' value='{$fila['tolerancia']}'></td>
 
-                <td><input type='text' class='form-control diametro1' data-id='$id' name='diametro1[$id]' value='{$fila['diametro1']}'></td>
+							// Nuevo item con sufijo (item1, item2, item3)
 
-                <td><input type='text' class='form-control diametro2' data-id='$id' name='diametro2[$id]' value='{$fila['diametro2']}'></td>
+							// echo "<pre>";
+							// print_r($fila);
+							// echo "</pre>";
+							// exit;
 
-                <td><input type='text' class='form-control' name='altura1[$id]' value='{$fila['altura1']}'></td>
+							// echo "<script> alert('{$carga}'); </script>";
+							echo "
+        <tr>
 
-                <td><input type='text' class='form-control' name='altura2[$id]' value='{$fila['altura2']}'></td>
+            <td>
+                <input type='hidden' name='item[]' value='$id'>
+                $id
+            </td>
+			<td><input type='date' class='form-control' name='ensaye[]' value='$ensaye'></td>
 
-                <td>
-                    <select class='form-select' name='condicion_especimen[$id]'>
-                        <option selected>{$fila['condicion_especimen']}</option>
-                        <option>---</option>
-                        <option>Bien</option>
-                        <option>Mal</option>
-                    </select>
-                </td>
+            
 
-                <td><input type='text' class='form-control' name='flexometro[$id]' value='{$fila['flexometro']}'></td>
+                       
+			<td><input type='text' class='form-control carga' data-id='$id' name='carga[$carga]' value='{$fila['carga']}'></td>
 
-                <td><input type='text' class='form-control' name='escuadra[$id]' value='{$fila['escuadra']}'></td>
 
-                <td><input type='text' class='form-control' name='compas[$id]' value='{$fila['compas']}'></td>
-
-                <td><input type='text' class='form-control' name='prensa[$id]' value='{$fila['prensa']}'></td>
-
-                <td><input type='time' class='form-control' name='hora_ensaye[$id]' value='{$fila['hora_ensaye']}'></td>
-
-                <td><input type='text' class='form-control carga' data-id='$id' name='carga[$id]' value='{$fila['carga']}'></td>
-
-				<td><span class='fc_res' id='fc_res_$id'>{$fila['fc_res']}</span></td>
-
-                <td><input type='text' class='form-control' name='tiempo_ensaye[$id]' value='{$fila['tiempo_ensaye']}'></td>
-
-                <td>
-                    <select class='form-select' name='falla[$id]'>
-                        <option selected>{$fila['falla']}</option>
-                        <option>---</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                    </select>
-                </td>
-
-                <td><input type='text' class='form-control' name='observaciones[$id]' value='{$fila['observaciones']}'></td>
-
-                <td>
-                    <select class='form-select' name='persona_ensayo[$id]'>
-                        <option selected>{$fila['persona_ensayo']}</option>";
-
-						foreach ($personalLista as $p) {
-							echo "<option value='{$p['Nombre']}'>{$p['Nombre']}</option>";
+        </tr>";
 						}
-
-						echo "</select>
-                </td>
-
-                <td>
-                    <select class='form-select' name='persona_capturo[$id]'>
-                        <option selected>{$fila['persona_capturo']}</option>";
-
-						foreach ($personalLista as $p) {
-							echo "<option value='{$p['Nombre']}'>{$p['Nombre']}</option>";
-						}
-
-						echo "</select>
-                </td>
-
-               
-
-            </tr>";
 					}
+
 
 					echo "</tbody></table></div>";
 				} else {
