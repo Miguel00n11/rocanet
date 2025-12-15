@@ -176,72 +176,56 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 	}
 }
 // ---------- ACTUALIZAR ENSAYE DE ESPECÍMENES ----------
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 	$id_viga = $_POST['id_viga'];
 
-	foreach ($_POST['item'] as $idItem) {
+	for ($i = 1; $i <= 3; $i++) {
 
-		// $reporte      = $_POST['reporte'][$idItem];
-		// $ensaye1      = $_POST['ensaye1'][$idItem];
-		// $edad_item         = $_POST['edad_item'][$idItem];
-		// $tolerancia        = $_POST['tolerancia'][$idItem];
-		$diametro1         = $_POST['diametro1'][$idItem];
-		// $diametro2         = $_POST['diametro2'][$idItem];
-		// $altura1           = $_POST['altura1'][$idItem];
-		// $altura2           = $_POST['altura2'][$idItem];
-		// $condicion         = $_POST['condicion_especimen'][$idItem];
-		// $flexometro        = $_POST['flexometro'][$idItem];
-		// $escuadra          = $_POST['escuadra'][$idItem];
-		// $compas            = $_POST['compas'][$idItem];
-		// $prensa            = $_POST['pre nsa'][$idItem];
-		// $hora_ensaye       = $_POST['hora_ensaye'][$idItem];
-		// $carga             = $_POST['carga'][$idItem];
-		// $tiempo_ensaye     = $_POST['tiempo_ensaye'][$idItem];
-		// // $velocidad         = $_POST['velocidad'][$idItem];
-		// // $cumple_velocidad  = $_POST['cumple_velocidad'][$idItem];
-		// $falla             = $_POST['falla'][$idItem];
-		// $observaciones     = $_POST['observaciones'][$idItem];
-		// $persona_ensayo    = $_POST['persona_ensayo'][$idItem];
-		// $persona_capturo   = $_POST['persona_capturo'][$idItem];
-		
-		// $reporte=1;
-		// $diametro1=1;
-		echo "<script>alert('$idItem');location.reload();</script>";
-		$sqlUpdateItem = "UPDATE vigas SET
-    reporte = '$reporte'
-    -- ensaye1 = '$ensaye1',
-    -- edad_item = '$edad_item',
-    -- tolerancia = '$tolerancia',
-    diametro1 = '$diametro1',
-    -- diametro2 = '$diametro2',
-    -- altura1 = '$altura1',
-    -- altura2 = '$altura2',
-    -- condicion_especimen = '$condicion',
-    -- flexometro = '$flexometro',
-    -- escuadra = '$escuadra',
-    -- compas = '$compas',
-    -- prensa = '$prensa',
-    -- hora_ensaye = '$hora_ensaye',
-    -- carga = '$carga',
-    -- tiempo_ensaye = '$tiempo_ensaye',
-    -- falla = '$falla',
-    -- observaciones = '$observaciones',
-    -- persona_ensayo = '$persona_ensayo',
-    -- persona_capturo = '$persona_capturo'
-WHERE id = '$idItem'
-";
+		$ensaye     = $_POST["ensaye$i"] ?? null;
+		$edad       = $_POST["edad$i"] ?? null;
+		$diametro   = $_POST["diametro$i"] ?? null;
+		$diametroo  = $_POST["diametroo$i"] ?? null;
+		$altura     = $_POST["altura$i"] ?? null;
+		$alturaa    = $_POST["alturaa$i"] ?? null;
+		$L_vigas    = $_POST["L_vigas$i"] ?? null;
+		$carga      = $_POST["carga$i"] ?? null;
+		$a_vigas    = $_POST["a_vigas$i"] ?? null;
+		$fc         = $_POST["fc$i"] ?? null;
+		$tiempo     = $_POST["tiempo_ensaye$i"] ?? null;
+		$falla      = $_POST["falla$i"] ?? null;
+		$flexo      = $_POST["flexometro$i"] ?? null;
+		$prensa     = $_POST["prensa$i"] ?? null;
+		$disp       = $_POST["dispositivo_viga$i"] ?? null;
+		$laina      = $_POST["laina$i"] ?? null;
 
+		$sql = "
+        UPDATE vigas SET
+            ensaye$i = '$ensaye',
+            edad$i = '$edad',
+            diametro$i = '$diametro',
+            diametroo$i = '$diametroo',
+            altura$i = '$altura',
+            alturaa$i = '$alturaa',
+            L_vigas$i = '$L_vigas',
+            carga$i = '$carga',
+            a_vigas$i = '$a_vigas',
+            fc$i = '$fc',
+            tiempo_ensaye$i = '$tiempo',
+            falla$i = '$falla',
+            flexometro$i = '$flexo',
+            prensa$i = '$prensa',
+            dispositivo_viga$i = '$disp',
+            laina$i = '$laina'
+        WHERE id = '$id_viga'
+        ";
 
-		$conexion->query($sqlUpdateItem);
+		$conexion->query($sql);
 	}
-	echo "<script>
-        alert('Ensaye actualizado correctamente');
-        window.close();
-    </script>";
-	exit;
-	// echo "<script>alert('Ensaye actualizado correctamente');location.reload();</script>";
+
+	echo "<script>alert('Ensayes actualizados correctamente');</script>";
 }
+
 
 
 
@@ -580,84 +564,60 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 						foreach ($clientes as $fila) {
 
-							// Item original
-							$id = $fila['item' . $i];
-							// $ensaye = date('Y-m-d', strtotime($fila['ensaye'] . " +$i days"));
-							// $ensaye = date('m-d-Y',  strtotime($fila['ensaye'.$i]));
-							// $ensaye = date('d/m/Y',  strtotime($fila['ensaye3']));
+							$id        = $fila["item$i"];
+							$ensayeRaw = $fila["ensaye$i"]; // dd/mm/yyyy
+							$partes    = explode('/', $ensayeRaw);
+							$ensaye    = $partes[2] . '-' . $partes[1] . '-' . $partes[0];
 
-							// Tomamos la fecha original en formato dd/mm/yyyy
-							$fecha_raw = $fila['ensaye' . $i];
-							// Convertimos a yyyy-mm-dd
-							$partes = explode('/', $fecha_raw);
-							$ensaye = $partes[2] . '-' . $partes[1] . '-' . $partes[0];
-							$edad = $fila['edad' . $i];
-							$diametro = $fila['diametro' . $i];
-							$diametroo = $fila['diametroo' . $i];
-							$altura = $fila['altura' . $i];
-							$alturaa = $fila['alturaa' . $i];
-							$L_vigas = $fila['L_vigas' . $i];
-							$carga = $fila['carga' . $i];
-							$a_vigas = $fila['a_vigas' . $i];
-							$fc = $fila['fc' . $i];
-							// $fc = $fila['fc' . $i];
-							$tiempo_ensaye = $fila['tiempo_ensaye' . $i];
-							$tiempo_ensaye = $fila['tiempo_ensaye' . $i];
-							$tiempo_ensaye = $fila['tiempo_ensaye' . $i];
-							$tiempo_ensaye = $fila['tiempo_ensaye' . $i];
-							$falla = $fila['falla' . $i];
-							$flexometro = $fila['flexometro' . $i];
-							$prensa = $fila['prensa' . $i];
-							$dispositivo_viga = $fila['dispositivo_viga' . $i];
-							$laina = $fila['laina' . $i];
-
-
-
-
-
-
-							// Nuevo item con sufijo (item1, item2, item3)
-
-							// echo "<pre>";
-							// print_r($fila);
-							// echo "</pre>";
-							// exit;
-
-							// echo "<script> alert('{$carga}'); </script>";
+							$edad      = $fila["edad$i"];
+							$diametro  = $fila["diametro$i"];
+							$diametroo = $fila["diametroo$i"];
+							$altura    = $fila["altura$i"];
+							$alturaa   = $fila["alturaa$i"];
+							$L_vigas   = $fila["L_vigas$i"];
+							$carga     = $fila["carga$i"];
+							$a_vigas   = $fila["a_vigas$i"];
+							$resistencia        = $fila["resistencia$i"];
+							$fc        = $fila["fc$i"];
+							$tiempo    = $fila["tiempo_ensaye$i"];
+							$falla     = $fila["falla$i"];
+							$flexo     = $fila["flexometro$i"];
+							$prensa    = $fila["prensa$i"];
+							$disp      = $fila["dispositivo_viga$i"];
+							$laina     = $fila["laina$i"];
 							echo "
         <tr>
+    <td><?= $id ?></td>
 
-            <td>
-                <input type='hidden' name='item[]' value='$id'>
-                $id
-            </td>
-			<td><input type='date' class='form-control' name='ensaye[]' value='$ensaye'></td>
-			<td><input type='text' class='form-control' name='edad[]' value='$edad'></td>
-			<td><input type='text' class='form-control' name='diametro[]' value='$diametro'></td>
-			<td><input type='text' class='form-control' name='diametroo[]' value='$diametroo'></td>
-			<td><input type='text' class='form-control' name='altura[]' value='$altura'></td>
-			<td><input type='text' class='form-control' name='alturaa[]' value='$alturaa'></td>
-			<td><input type='text' class='form-control' name='L_vigas[]' value='$L_vigas'></td>
-			<td><input type='text' class='form-control' name='carga[]' value='$carga'></td>
-			<td><input type='text' class='form-control' name='a_vigas[]' value='$a_vigas'></td>
-			<td><input type='text' class='form-control' name='fc[]' value='$fc'></td>
-			<td><input type='text' class='form-control' name='fc[]' value='$fc'></td>
-			<td><input type='text' class='form-control' name='tiempo_ensaye[]' value='$tiempo_ensaye'></td>
-			<td><input type='text' class='form-control' name='tiempo_ensaye[]' value='$tiempo_ensaye'></td>
-			<td><input type='text' class='form-control' name='tiempo_ensaye[]' value='$tiempo_ensaye'></td>
-			<td><input type='text' class='form-control' name='tiempo_ensaye[]' value='$tiempo_ensaye'></td>
-			<td><input type='text' class='form-control' name='falla[]' value='$falla'></td>
-			<td><input type='text' class='form-control' name='flexometro[]' value='$flexometro'></td>
-			<td><input type='text' class='form-control' name='prensa[]' value='$prensa'></td>
-			<td><input type='text' class='form-control' name='dispositivo_viga[]' value='$dispositivo_viga'></td>
-			<td><input type='text' class='form-control' name='laina[]' value='$laina'></td>
-			
-			
+    <td><input type='date' class='form-control' name='ensaye<?= $i ?>' value='$ensaye'></td>
+    <td><input type='text' class='form-control' name='edad<?= $i ?>' value='$edad'></td>
 
+    <td><input type='text' class='form-control' name='diametro<?= $i ?>' value=' $diametro'></td>
+    <td><input type='text' class='form-control' name='diametroo<?= $i ?>' value='$diametroo'></td>
 
+    <td><input type='text' class='form-control' name='altura<?= $i ?>' value='$altura'></td>
+    <td><input type='text' class='form-control' name='alturaa<?= $i ?>' value='$alturaa'></td>
 
+    <td><input type='text' class='form-control' name='L_vigas<?= $i ?>' value='$L_vigas'></td>
+    <td><input type='text' class='form-control' name='carga<?= $i ?>' value='$carga'></td>
+    <td><input type='text' class='form-control' name='a_vigas<?= $i ?>' value='$a_vigas'></td>
 
-        </tr>";
+    <td><input type='text' class='form-control' name='fc<?= $i ?>' value='$resistencia'></td>
+    <td><input type='text' class='form-control' name='fc<?= $i ?>' value='$fc'></td>
+
+    <td><input type='text' class='form-control' name='tiempo_ensaye<?= $i ?>' value='$tiempo'></td>
+    <td><input type='text' class='form-control' value=''></td>
+    <td><input type='text' class='form-control' value=''></td>
+    <td><input type='text' class='form-control' value=''></td>
+
+    
+    <td><input type='text' class='form-control' name='falla<?= $i ?>' value=' $falla'></td>
+    <td><input type='text' class='form-control' name='flexometro<?= $i ?>' value='$flexo '></td>
+    <td><input type='text' class='form-control' name='prensa<?= $i ?>' value=' $prensa'></td>
+
+    <td><input type='text' class='form-control' name='dispositivo_viga<?= $i ?>' value=' $disp '></td>
+    <td><input type='text' class='form-control' name='laina<?= $i ?>' value=' $laina'></td>
+</tr>";
 						}
 					}
 
