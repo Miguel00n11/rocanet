@@ -96,7 +96,7 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 		$muestreo          = $data['personal_muestreo'];
 		$recibio          = $data['personal_recibio'];
-		$observacion          = $data['observacion_viga'];
+		$observacion          = $data['observaciones_viga'];
 		// $revisado_autorizado          = $data['revisado_autorizado'];
 	}
 	// ---------- ACTUALIZAR DATOS DE MUESTREO ----------
@@ -107,8 +107,8 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 		$fecha_recepcion = $_POST['fecha_recepcion'];
 		$elemento = $_POST['elemento'];
 		$ubicacion = $_POST['ubicacion'];
-		$fc = $_POST['fc'];
-		$edad = $_POST['edad'];
+		// $fc = $_POST['fc'];
+		// $edad = $_POST['edad'];
 		$revenimientop = $_POST['revenimientop'];
 		$revenimientor = $_POST['revenimientor'];
 		$tma = $_POST['agregado'];
@@ -116,19 +116,19 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 		$temperatura = $_POST['temperatura'];
 		$remision = $_POST['remision'];
 		$volumen = $_POST['volumen'];
-		$hora_muestreo = $_POST['hora_muestreo'];
+		// $hora_muestreo = $_POST['hora_muestreo'];
 		$hora_desmoldeo = $_POST['hora_desmoldeo'];
 		$muestreo = $_POST['muestreo'];
 		$recibio = $_POST['recibio'];
 		$observacion = $_POST['observacion'];
 
-		$sqlUpdate = "UPDATE vista_vigas_completa SET
+		$sqlUpdate = "UPDATE vigas SET
 		fecha = '$fecha',
 		fecha_recepcion = '$fecha_recepcion',
 		elemento = '$elemento',
 		ubicacion = '$ubicacion',
-		fc = '$fc',
-		edad = '$edad',
+		-- fc = '$fc',
+		-- edad = '$edad',
 		revenimientop = '$revenimientop',
 		revenimientor = '$revenimientor',
 		agregado = '$tma',
@@ -136,19 +136,43 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 		temperatura = '$temperatura',
 		remision = '$remision',
 		volumen = '$volumen',
-		hora_muestreo = '$hora_muestreo',
+		-- hora_muestreo = '$hora_muestreo',
 		hora_desmoldeo = '$hora_desmoldeo',
 		muestreo = '$muestreo',
 		recibio = '$recibio',
 		observacion = '$observacion'
-	WHERE exp_registro = '$exp' AND reporte = '$rep'";
+	WHERE id = '$id_viga'";
 
-		if ($conexion->query($sqlUpdate)) {
-			// 	echo "<script>alert('Datos de muestreo actualizados correctamente'); 
-			// window.location.href='captura_cilindros.php?exp_registro=$exp&reporte=$rep';</script>";
-		} else {
-			echo "Error: " . $conexion->error;
-		}
+
+		$sqlUpdate = "UPDATE registros_vigas_campo_actualizado SET
+		-- fecha = '$fecha',
+		-- fecha_recepcion = '$fecha_recepcion',
+		-- elemento = '$elemento',
+		-- ubicacion = '$ubicacion',
+		-- fc = '$fc',
+		-- edad = '$edad',
+		-- revenimientop = '$revenimientop',
+		-- revenimientor = '$revenimientor',
+		-- agregado = '$tma',
+		-- concretera = '$concretera',
+		-- temperatura = '$temperatura',
+		-- remision = '$remision',
+		-- volumen = '$volumen',
+		hora_muestreo = '$hora_muestreo',
+		-- hora_desmoldeo = '$hora_desmoldeo',
+		-- muestreo = '$muestreo',
+		-- recibio = '$recibio',
+		-- observacion = '$observacion'
+	WHERE id = '$id_viga'";
+
+
+
+		// if ($conexion->query($sqlUpdate)) {
+		// 	// 	echo "<script>alert('Datos de muestreo actualizados correctamente'); 
+		// 	// window.location.href='captura_cilindros.php?exp_registro=$exp&reporte=$rep';</script>";
+		// } else {
+		// 	echo "Error: " . $conexion->error;
+		// }
 	}
 }
 // ---------- ACTUALIZAR ENSAYE DE ESPECÍMENES ----------
@@ -158,49 +182,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 
 	foreach ($_POST['item'] as $idItem) {
 
-		$fecha_ensaye      = $_POST['fecha_ensaye'][$idItem];
-		$edad_item         = $_POST['edad_item'][$idItem];
-		$tolerancia        = $_POST['tolerancia'][$idItem];
+		// $reporte      = $_POST['reporte'][$idItem];
+		// $ensaye1      = $_POST['ensaye1'][$idItem];
+		// $edad_item         = $_POST['edad_item'][$idItem];
+		// $tolerancia        = $_POST['tolerancia'][$idItem];
 		$diametro1         = $_POST['diametro1'][$idItem];
-		$diametro2         = $_POST['diametro2'][$idItem];
-		$altura1           = $_POST['altura1'][$idItem];
-		$altura2           = $_POST['altura2'][$idItem];
-		$condicion         = $_POST['condicion_especimen'][$idItem];
-		$flexometro        = $_POST['flexometro'][$idItem];
-		$escuadra          = $_POST['escuadra'][$idItem];
-		$compas            = $_POST['compas'][$idItem];
-		$prensa            = $_POST['prensa'][$idItem];
-		$hora_ensaye       = $_POST['hora_ensaye'][$idItem];
-		$carga             = $_POST['carga'][$idItem];
-		$tiempo_ensaye     = $_POST['tiempo_ensaye'][$idItem];
-		// $velocidad         = $_POST['velocidad'][$idItem];
-		// $cumple_velocidad  = $_POST['cumple_velocidad'][$idItem];
-		$falla             = $_POST['falla'][$idItem];
-		$observaciones     = $_POST['observaciones'][$idItem];
-		$persona_ensayo    = $_POST['persona_ensayo'][$idItem];
-		$persona_capturo   = $_POST['persona_capturo'][$idItem];
-
-		$sqlUpdateItem = "UPDATE item SET
-    fecha_ensaye = '$fecha_ensaye',
-    edad_item = '$edad_item',
-    tolerancia = '$tolerancia',
+		// $diametro2         = $_POST['diametro2'][$idItem];
+		// $altura1           = $_POST['altura1'][$idItem];
+		// $altura2           = $_POST['altura2'][$idItem];
+		// $condicion         = $_POST['condicion_especimen'][$idItem];
+		// $flexometro        = $_POST['flexometro'][$idItem];
+		// $escuadra          = $_POST['escuadra'][$idItem];
+		// $compas            = $_POST['compas'][$idItem];
+		// $prensa            = $_POST['pre nsa'][$idItem];
+		// $hora_ensaye       = $_POST['hora_ensaye'][$idItem];
+		// $carga             = $_POST['carga'][$idItem];
+		// $tiempo_ensaye     = $_POST['tiempo_ensaye'][$idItem];
+		// // $velocidad         = $_POST['velocidad'][$idItem];
+		// // $cumple_velocidad  = $_POST['cumple_velocidad'][$idItem];
+		// $falla             = $_POST['falla'][$idItem];
+		// $observaciones     = $_POST['observaciones'][$idItem];
+		// $persona_ensayo    = $_POST['persona_ensayo'][$idItem];
+		// $persona_capturo   = $_POST['persona_capturo'][$idItem];
+		
+		// $reporte=1;
+		// $diametro1=1;
+		echo "<script>alert('$idItem');location.reload();</script>";
+		$sqlUpdateItem = "UPDATE vigas SET
+    reporte = '$reporte'
+    -- ensaye1 = '$ensaye1',
+    -- edad_item = '$edad_item',
+    -- tolerancia = '$tolerancia',
     diametro1 = '$diametro1',
-    diametro2 = '$diametro2',
-    altura1 = '$altura1',
-    altura2 = '$altura2',
-    condicion_especimen = '$condicion',
-    flexometro = '$flexometro',
-    escuadra = '$escuadra',
-    compas = '$compas',
-    prensa = '$prensa',
-    hora_ensaye = '$hora_ensaye',
-    carga = '$carga',
-    tiempo_ensaye = '$tiempo_ensaye',
-    falla = '$falla',
-    observaciones = '$observaciones',
-    persona_ensayo = '$persona_ensayo',
-    persona_capturo = '$persona_capturo'
-WHERE item = '$idItem' AND id_viga = '$id_viga'
+    -- diametro2 = '$diametro2',
+    -- altura1 = '$altura1',
+    -- altura2 = '$altura2',
+    -- condicion_especimen = '$condicion',
+    -- flexometro = '$flexometro',
+    -- escuadra = '$escuadra',
+    -- compas = '$compas',
+    -- prensa = '$prensa',
+    -- hora_ensaye = '$hora_ensaye',
+    -- carga = '$carga',
+    -- tiempo_ensaye = '$tiempo_ensaye',
+    -- falla = '$falla',
+    -- observaciones = '$observaciones',
+    -- persona_ensayo = '$persona_ensayo',
+    -- persona_capturo = '$persona_capturo'
+WHERE id = '$idItem'
 ";
 
 
@@ -521,24 +550,27 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
                 <th>Item</th>
                 <th>Fecha ensaye</th>
                 <th>Edad [d]</th>
-                <th>Tolerancia [h]</th>
-                <th>Diametro 1 [cm]</th>
-                <th>Diametro 2 [cm]</th>
+                <th>Lado 1 [cm]</th>
+                <th>Lado 2 [cm]</th>
                 <th>Altura 1 [cm]</th>
                 <th>Altura 2 [cm]</th>
-                <th>Condición</th>
-                <th>Flexómetro</th>
-                <th>Escuadra</th>
-                <th>Compás</th>
-                <th>Prensa</th>
-                <th>Hora ensaye</th>
+                <th>L [cm]</th>
                 <th>Carga</th>
-                <th>f´c [kgf/cm²]</th>
-                <th>Tiempo [s]</th>
+                <th>a [cm]</th>
+                <th>MR [kgf/cm²]</th>
+                <th>MR [%]</th>
+                <th>Tiempo de ensaye [s]</th>
+                <th>Tiempo de mínimo [s]</th>
+                <th>Velocidad de aplicación [kgf/s]</th>
+                <th>¿Cumple con la velocidad?</th>
+
                 <th>Falla</th>
-                <th>Observaciones</th>
-                <th>Ensayó</th>
-                <th>Capturó</th>
+                <th>Flexómetro</th>
+                <th>Prensa</th>
+
+                <th>Dispositivo de viga</th>
+                <th>Laina</th>
+              
             </tr>
             </thead>';
 
@@ -556,12 +588,32 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 							// Tomamos la fecha original en formato dd/mm/yyyy
 							$fecha_raw = $fila['ensaye' . $i];
-
 							// Convertimos a yyyy-mm-dd
 							$partes = explode('/', $fecha_raw);
 							$ensaye = $partes[2] . '-' . $partes[1] . '-' . $partes[0];
-							
+							$edad = $fila['edad' . $i];
+							$diametro = $fila['diametro' . $i];
+							$diametroo = $fila['diametroo' . $i];
+							$altura = $fila['altura' . $i];
+							$alturaa = $fila['alturaa' . $i];
+							$L_vigas = $fila['L_vigas' . $i];
 							$carga = $fila['carga' . $i];
+							$a_vigas = $fila['a_vigas' . $i];
+							$fc = $fila['fc' . $i];
+							// $fc = $fila['fc' . $i];
+							$tiempo_ensaye = $fila['tiempo_ensaye' . $i];
+							$tiempo_ensaye = $fila['tiempo_ensaye' . $i];
+							$tiempo_ensaye = $fila['tiempo_ensaye' . $i];
+							$tiempo_ensaye = $fila['tiempo_ensaye' . $i];
+							$falla = $fila['falla' . $i];
+							$flexometro = $fila['flexometro' . $i];
+							$prensa = $fila['prensa' . $i];
+							$dispositivo_viga = $fila['dispositivo_viga' . $i];
+							$laina = $fila['laina' . $i];
+
+
+
+
 
 
 							// Nuevo item con sufijo (item1, item2, item3)
@@ -580,11 +632,29 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
                 $id
             </td>
 			<td><input type='date' class='form-control' name='ensaye[]' value='$ensaye'></td>
+			<td><input type='text' class='form-control' name='edad[]' value='$edad'></td>
+			<td><input type='text' class='form-control' name='diametro[]' value='$diametro'></td>
+			<td><input type='text' class='form-control' name='diametroo[]' value='$diametroo'></td>
+			<td><input type='text' class='form-control' name='altura[]' value='$altura'></td>
+			<td><input type='text' class='form-control' name='alturaa[]' value='$alturaa'></td>
+			<td><input type='text' class='form-control' name='L_vigas[]' value='$L_vigas'></td>
+			<td><input type='text' class='form-control' name='carga[]' value='$carga'></td>
+			<td><input type='text' class='form-control' name='a_vigas[]' value='$a_vigas'></td>
+			<td><input type='text' class='form-control' name='fc[]' value='$fc'></td>
+			<td><input type='text' class='form-control' name='fc[]' value='$fc'></td>
+			<td><input type='text' class='form-control' name='tiempo_ensaye[]' value='$tiempo_ensaye'></td>
+			<td><input type='text' class='form-control' name='tiempo_ensaye[]' value='$tiempo_ensaye'></td>
+			<td><input type='text' class='form-control' name='tiempo_ensaye[]' value='$tiempo_ensaye'></td>
+			<td><input type='text' class='form-control' name='tiempo_ensaye[]' value='$tiempo_ensaye'></td>
+			<td><input type='text' class='form-control' name='falla[]' value='$falla'></td>
+			<td><input type='text' class='form-control' name='flexometro[]' value='$flexometro'></td>
+			<td><input type='text' class='form-control' name='prensa[]' value='$prensa'></td>
+			<td><input type='text' class='form-control' name='dispositivo_viga[]' value='$dispositivo_viga'></td>
+			<td><input type='text' class='form-control' name='laina[]' value='$laina'></td>
+			
+			
 
-            
 
-                       
-			<td><input type='text' class='form-control carga' data-id='$id' name='carga[$carga]' value='{$fila['carga']}'></td>
 
 
         </tr>";
@@ -642,7 +712,7 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 			let fechaFormateada = `${yyyy}-${mm}-${dd}`;
 
-			let campoFecha = document.querySelector(`input[name='fecha_ensaye[${idItem}]']`);
+			let campoFecha = document.querySelector(`input[name='ensaye1[${idItem}]']`);
 			if (campoFecha) campoFecha.value = fechaFormateada;
 		});
 	}
