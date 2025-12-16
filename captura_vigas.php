@@ -44,12 +44,17 @@ $id_viga = $_POST['id_viga']
 	?? $_GET['id_viga']
 	?? null;
 
+$item1 = $_POST['id_especimen1']
+	?? $_GET['id_especimen1']
+	?? null;
+
 
 if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 	$exp = $_GET['exp_registro'];
 	$rep = $_GET['reporte'];
 	$id_viga = $_GET['id_viga'];
+	$item1 = $_GET['item1'];
 
 
 	// Obtener lista de personal
@@ -101,130 +106,125 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 	}
 	// ---------- ACTUALIZAR DATOS DE MUESTREO ----------
 
-	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-		$fecha = $_POST['fecha'];
-		$fecha_recepcion = $_POST['fecha_recepcion'];
-		$elemento = $_POST['elemento'];
-		$ubicacion = $_POST['ubicacion'];
-		// $fc = $_POST['fc'];
-		// $edad = $_POST['edad'];
-		$revenimientop = $_POST['revenimientop'];
-		$revenimientor = $_POST['revenimientor'];
-		$tma = $_POST['agregado'];
-		$concretera = $_POST['concretera'];
-		$temperatura = $_POST['temperatura'];
-		$remision = $_POST['remision'];
-		$volumen = $_POST['volumen'];
-		// $hora_muestreo = $_POST['hora_muestreo'];
-		$hora_desmoldeo = $_POST['hora_desmoldeo'];
-		$muestreo = $_POST['muestreo'];
-		$recibio = $_POST['recibio'];
-		$observacion = $_POST['observacion'];
-
-		$sqlUpdate = "UPDATE vigas SET
-		fecha = '$fecha',
-		fecha_recepcion = '$fecha_recepcion',
-		elemento = '$elemento',
-		ubicacion = '$ubicacion',
-		-- fc = '$fc',
-		-- edad = '$edad',
-		revenimientop = '$revenimientop',
-		revenimientor = '$revenimientor',
-		agregado = '$tma',
-		concretera = '$concretera',
-		temperatura = '$temperatura',
-		remision = '$remision',
-		volumen = '$volumen',
-		-- hora_muestreo = '$hora_muestreo',
-		hora_desmoldeo = '$hora_desmoldeo',
-		muestreo = '$muestreo',
-		recibio = '$recibio',
-		observacion = '$observacion'
-	WHERE id = '$id_viga'";
-
-
-		$sqlUpdate = "UPDATE registros_vigas_campo_actualizado SET
-		-- fecha = '$fecha',
-		-- fecha_recepcion = '$fecha_recepcion',
-		-- elemento = '$elemento',
-		-- ubicacion = '$ubicacion',
-		-- fc = '$fc',
-		-- edad = '$edad',
-		-- revenimientop = '$revenimientop',
-		-- revenimientor = '$revenimientor',
-		-- agregado = '$tma',
-		-- concretera = '$concretera',
-		-- temperatura = '$temperatura',
-		-- remision = '$remision',
-		-- volumen = '$volumen',
-		hora_muestreo = '$hora_muestreo',
-		-- hora_desmoldeo = '$hora_desmoldeo',
-		-- muestreo = '$muestreo',
-		-- recibio = '$recibio',
-		-- observacion = '$observacion'
-	WHERE id = '$id_viga'";
+	// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-		// if ($conexion->query($sqlUpdate)) {
-		// 	// 	echo "<script>alert('Datos de muestreo actualizados correctamente'); 
-		// 	// window.location.href='captura_cilindros.php?exp_registro=$exp&reporte=$rep';</script>";
-		// } else {
-		// 	echo "Error: " . $conexion->error;
-		// }
-	}
+	// 	// $sqlCampo = "
+	//     // UPDATE registros_vigas_campo_actualizado SET
+	//     //     hora_muestreo = '$hora_muestreo'
+	//     // WHERE id_especimen1 = '$id_viga'"
+	// 	// ;
+	// echo "<script>alert($muestreo);</script>";
+
+	// 	// $conexion->query($sqlVigas);
+	// 	// $conexion->query($sqlCampo);
+	// }
 }
 // ---------- ACTUALIZAR ENSAYE DE ESPECÍMENES ----------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-	$id_viga = $_POST['id_viga'];
+
+	$id_viga = $_POST['id_viga'] ?? null;
+	// $item1 = $_POST['id_especimen1'] ?? null;
+
+	$fecha = $_POST['fecha'];
+	// $fecha_recepcion = $_POST['fecha_recepcion'];
+	$elemento = $_POST['elemento'];
+	$ubicacion = $_POST['ubicacion'];
+	$revenimientop = $_POST['revenimientop'];
+	$revenimientor = $_POST['revenimientor'];
+	$tma = $_POST['agregado'];
+	$concretera = $_POST['concretera'];
+	$temperatura = $_POST['temperatura'];
+	$remision = $_POST['remision'];
+	$volumen = $_POST['volumen'];
+	$hora_muestreo = $_POST['hora_muestreo'];
+	$hora_desmoldeo = $_POST['hora_desmoldeo'];
+	$muestreo = $_POST['muestreo'];
+	$recibio = $_POST['recibio'];
+	$observacion = $_POST['observacion'];
+
+	$sqlVigas = "UPDATE registros_vigas_campo_actualizado SET
+            fecha = '$fecha',
+         
+			
+            elemento_colado = '$elemento',
+            ubicacion = '$ubicacion',
+            revenimiento_dis = '$revenimientop',
+            revenimiento_r1 = '$revenimientor',
+            tma = '$tma',
+            concretera = '$concretera',
+            temperatura = '$temperatura',
+            remision = '$remision',
+            volumen_muestra = '$volumen',
+			
+            personal = '$muestreo',
+			
+            observaciones = '$observacion'
+        WHERE id_especimen1 = '$item1'
+    ";
+	// $conexion->query($sqlCampo);
+
+	// echo "<script>alert('$item1');</script>";
+	$conexion->query($sqlVigas);
+
+	if ($conexion->affected_rows === 0) {
+		error_log("No se actualizó ningún registro en registros_vigas_campo_actualizado para id_especimen1 = $item1");
+	}
+
+
+
 
 	for ($i = 1; $i <= 3; $i++) {
 
-		$ensaye     = $_POST["ensaye$i"] ?? null;
-		$edad       = $_POST["edad$i"] ?? null;
-		$diametro   = $_POST["diametro$i"] ?? null;
-		$diametroo  = $_POST["diametroo$i"] ?? null;
-		$altura     = $_POST["altura$i"] ?? null;
-		$alturaa    = $_POST["alturaa$i"] ?? null;
-		$L_vigas    = $_POST["L_vigas$i"] ?? null;
-		$carga      = $_POST["carga$i"] ?? null;
-		$a_vigas    = $_POST["a_vigas$i"] ?? null;
-		$fc         = $_POST["fc$i"] ?? null;
-		$tiempo     = $_POST["tiempo_ensaye$i"] ?? null;
-		$falla      = $_POST["falla$i"] ?? null;
-		$flexo      = $_POST["flexometro$i"] ?? null;
-		$prensa     = $_POST["prensa$i"] ?? null;
-		$disp       = $_POST["dispositivo_viga$i"] ?? null;
-		$laina      = $_POST["laina$i"] ?? null;
+		$id_viga = $_POST['id_viga'] ?? null;
 
-		$sql = "
-        UPDATE vigas SET
-            ensaye$i = '$ensaye',
-            edad$i = '$edad',
-            diametro$i = '$diametro',
-            diametroo$i = '$diametroo',
-            altura$i = '$altura',
-            alturaa$i = '$alturaa',
-            L_vigas$i = '$L_vigas',
-            carga$i = '$carga',
-            a_vigas$i = '$a_vigas',
-            fc$i = '$fc',
-            tiempo_ensaye$i = '$tiempo',
-            falla$i = '$falla',
-            flexometro$i = '$flexo',
-            prensa$i = '$prensa',
-            dispositivo_viga$i = '$disp',
-            laina$i = '$laina'
-        WHERE id = '$id_viga'
+		$ensaye     = $_POST["ensaye$i"] ?? '';
+		$edad       = $_POST["edad$i"] ?? '';
+		$diametro   = $_POST["diametro$i"] ?? '';
+		$diametroo  = $_POST["diametroo$i"] ?? '';
+		$altura     = $_POST["altura$i"] ?? '';
+		$alturaa    = $_POST["alturaa$i"] ?? '';
+		$L_vigas    = $_POST["L_vigas$i"] ?? '';
+		$carga      = $_POST["carga$i"] ?? '';
+		$a_vigas    = $_POST["a_vigas$i"] ?? '';
+		$fc         = $_POST["fc$i"] ?? '';
+		$tiempo     = $_POST["tiempo_ensaye$i"] ?? '';
+		$falla      = $_POST["falla$i"] ?? '';
+		$flexo      = $_POST["flexometro$i"] ?? '';
+		$prensa     = $_POST["prensa$i"] ?? '';
+		$disp       = $_POST["dispositivo_viga$i"] ?? '';
+		$laina      = $_POST["laina$i"] ?? '';
+
+		$sql = "UPDATE vigas SET
+                elemento = '$elemento',
+				ensaye$i = '$ensaye',
+                edad$i = '$edad',
+                diametro$i = '$diametro',
+                diametroo$i = '$diametroo',
+                altura$i = '$altura',
+                alturaa$i = '$alturaa',
+                L_vigas$i = '$L_vigas',
+                carga$i = '$carga',
+                a_vigas$i = '$a_vigas',
+                fc$i = '$fc',
+                tiempo_ensaye$i = '$tiempo',
+                falla$i = '$falla',
+                flexometro$i = '$flexo',
+                prensa$i = '$prensa',
+                dispositivo_viga$i = '$disp',
+                laina$i = '$laina'
+            WHERE id = '$id_viga'
         ";
+	echo "<script>alert('$ensaye');</script>";
 
 		$conexion->query($sql);
 	}
 
-	echo "<script>alert('Ensayes actualizados correctamente');</script>";
+	// echo "<script>alert('Datos guardados correctamente');</script>";
 }
+
 
 
 
@@ -587,12 +587,13 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 							$laina     = $fila["laina$i"];
 							echo "
         <tr>
-    <td><?= $id ?></td>
+  
 
+    <td><input type='text' class='form-control' name='id<?= $i ?>' value='$id'></td>
     <td><input type='date' class='form-control' name='ensaye<?= $i ?>' value='$ensaye'></td>
     <td><input type='text' class='form-control' name='edad<?= $i ?>' value='$edad'></td>
 
-    <td><input type='text' class='form-control' name='diametro<?= $i ?>' value=' $diametro'></td>
+    <td><input type='text' class='form-control' name='diametro<?= $i ?>' value='$diametro'></td>
     <td><input type='text' class='form-control' name='diametroo<?= $i ?>' value='$diametroo'></td>
 
     <td><input type='text' class='form-control' name='altura<?= $i ?>' value='$altura'></td>
@@ -602,7 +603,7 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
     <td><input type='text' class='form-control' name='carga<?= $i ?>' value='$carga'></td>
     <td><input type='text' class='form-control' name='a_vigas<?= $i ?>' value='$a_vigas'></td>
 
-    <td><input type='text' class='form-control' name='fc<?= $i ?>' value='$resistencia'></td>
+    <td><input type='text' class='form-control' name='resistencia<?= $i ?>' value='$resistencia'></td>
     <td><input type='text' class='form-control' name='fc<?= $i ?>' value='$fc'></td>
 
     <td><input type='text' class='form-control' name='tiempo_ensaye<?= $i ?>' value='$tiempo'></td>
@@ -611,12 +612,12 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
     <td><input type='text' class='form-control' value=''></td>
 
     
-    <td><input type='text' class='form-control' name='falla<?= $i ?>' value=' $falla'></td>
-    <td><input type='text' class='form-control' name='flexometro<?= $i ?>' value='$flexo '></td>
-    <td><input type='text' class='form-control' name='prensa<?= $i ?>' value=' $prensa'></td>
+    <td><input type='text' class='form-control' name='falla<?= $i ?>' value='$falla'></td>
+    <td><input type='text' class='form-control' name='flexometro<?= $i ?>' value='$flexo'></td>
+    <td><input type='text' class='form-control' name='prensa<?= $i ?>' value='$prensa'></td>
 
-    <td><input type='text' class='form-control' name='dispositivo_viga<?= $i ?>' value=' $disp '></td>
-    <td><input type='text' class='form-control' name='laina<?= $i ?>' value=' $laina'></td>
+    <td><input type='text' class='form-control' name='dispositivo_viga<?= $i ?>' value='$disp'></td>
+    <td><input type='text' class='form-control' name='laina<?= $i ?>' value='$laina'></td>
 </tr>";
 						}
 					}

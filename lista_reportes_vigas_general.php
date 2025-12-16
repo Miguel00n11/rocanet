@@ -112,11 +112,14 @@ include("conexion.php");
 							
 
 								<td class='text-center'>
-								<a href='captura_vigas.php?exp_registro={$fila['exp_registro']}&reporte={$fila['reporte']}&id_viga={$fila['id_viga']}'
+								<a href='captura_vigas.php?exp_registro={$fila['exp_registro']}&reporte={$fila['reporte']}&id_viga={$fila['id_viga']}&item1={$fila['item1']}'
   	 								class='btn btn-outline-theme btn-sm w-80px'
-									target='_blank'>
+									target='_blank'
+								  onclick=\"alert('item1: {$fila['item1']}')\">
+									
    									Editar
 								</a>
+								
 
 
 							</td>
