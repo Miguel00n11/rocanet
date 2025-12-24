@@ -678,103 +678,191 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 <script>
 	function actualizarFechasEnsaye() {
 
-		const fechaMuestreo = document.querySelector("input[name='fecha']").value;
-		if (!fechaMuestreo) return;
+		const fechaBaseInput = document.querySelector("input[name='fecha']");
+		if (!fechaBaseInput || !fechaBaseInput.value) return;
 
-		// Crear fecha en zona local sin conversión UTC
-		let partes = fechaMuestreo.split("-");
-		let fechaBase = new Date(partes[0], partes[1] - 1, partes[2]);
+		// Fecha base (muestreo)
+		const partes = fechaBaseInput.value.split("-");
+		const fechaBase = new Date(
+			parseInt(partes[0]),
+			parseInt(partes[1]) - 1,
+			parseInt(partes[2])
+		);
 
-		document.querySelectorAll("input[name^='edad_item']").forEach(input => {
+		for (let i = 1; i <= 3; i++) {
 
-			let idItem = input.name.match(/\[(.*?)\]/)[1];
-			let edad = parseInt(input.value) || 0;
+			const edadInput = document.querySelector(`input[name='edad${i}']`);
+			const ensayeInput = document.querySelector(`input[name='ensaye${i}']`);
 
-			let nuevaFecha = new Date(fechaBase);
+			if (!edadInput || !ensayeInput) continue;
+
+			const edad = parseInt(edadInput.value);
+			if (isNaN(edad)) continue;
+
+			const nuevaFecha = new Date(fechaBase);
 			nuevaFecha.setDate(nuevaFecha.getDate() + edad);
 
-			let yyyy = nuevaFecha.getFullYear();
-			let mm = String(nuevaFecha.getMonth() + 1).padStart(2, '0');
-			let dd = String(nuevaFecha.getDate()).padStart(2, '0');
+			const yyyy = nuevaFecha.getFullYear();
+			const mm = String(nuevaFecha.getMonth() + 1).padStart(2, '0');
+			const dd = String(nuevaFecha.getDate()).padStart(2, '0');
 
-			let fechaFormateada = `${yyyy}-${mm}-${dd}`;
+			ensayeInput.value = `${yyyy}-${mm}-${dd}`;
+		}
+	}
 
-			let campoFecha = document.querySelector(`input[name='ensaye1[${idItem}]']`);
-			if (campoFecha) campoFecha.value = fechaFormateada;
-		});
+	function actualizarFechaDesdeEdad(edadInput) {
+
+		const fila = edadInput.closest("tr");
+		if (!fila) return;
+
+		const fechaBaseInput = document.querySelector("input[name='fecha']");
+		if (!fechaBaseInput || !fechaBaseInput.value) return;
+
+		const edad = parseInt(edadInput.value);
+		if (isNaN(edad)) return;
+
+		// Obtener número de ensaye (1,2,3)
+		const match = edadInput.name.match(/edad(\d+)/);
+		if (!match) return;
+
+		const i = match[1];
+
+		const ensayeInput = fila.querySelector(`input[name='ensaye${i}']`);
+		if (!ensayeInput) return;
+
+		const [y, m, d] = fechaBaseInput.value.split("-");
+		const fechaBase = new Date(y, m - 1, d);
+
+		const nuevaFecha = new Date(fechaBase);
+		nuevaFecha.setDate(nuevaFecha.getDate() + edad);
+
+		const yyyy = nuevaFecha.getFullYear();
+		const mm = String(nuevaFecha.getMonth() + 1).padStart(2, '0');
+		const dd = String(nuevaFecha.getDate()).padStart(2, '0');
+
+		ensayeInput.value = `${yyyy}-${mm}-${dd}`;
 	}
 
 
 	// === ACTUALIZAR CILINDROS SEGÚN LA EDAD DE MUESTREO ===
-	function actualizarVigas() {
-		let edad = document.querySelector("input[name='edad']").value;
+	// function actualizarVigas() {
+	// 	let edad = document.querySelector("input[name='edad']").value;
 
-		let edades = document.querySelectorAll("input[name^='edad']");
-		let tolerancias = document.querySelectorAll("input[name^='tolerancia']");
+	// 	let edades = document.querySelectorAll("input[name^='edad']");
+	// 	let tolerancias = document.querySelectorAll("input[name^='tolerancia']");
 
-		if (edades.length < 4) return;
+	// 	if (edades.length < 4) return;
 
-		switch (edad) {
-			case "1":
-				edades[0].value = edades[1].value = edades[2].value = edades[3].value = 1;
-				tolerancias[0].value = tolerancias[1].value = tolerancias[2].value = tolerancias[3].value = 0.5;
+	// 	switch (edad) {
+	// 		case "1":
+	// 			edades[0].value = edades[1].value = edades[2].value = edades[3].value = 1;
+	// 			tolerancias[0].value = tolerancias[1].value = tolerancias[2].value = tolerancias[3].value = 0.5;
+	// 			break;
+
+	// 		case "3":
+	// 			edades[0].value = edades[1].value = edades[2].value = edades[3].value = 3;
+	// 			tolerancias[0].value = tolerancias[1].value = tolerancias[2].value = tolerancias[3].value = 2;
+	// 			break;
+
+	// 		case "5":
+	// 			edades[0].value = 1;
+	// 			edades[1].value = 3;
+	// 			edades[2].value = edades[3].value = 5;
+	// 			tolerancias[0].value = 0.5;
+	// 			tolerancias[1].value = 2;
+	// 			tolerancias[2].value = tolerancias[3].value = 2;
+	// 			break;
+
+	// 		case "7":
+	// 			edades[0].value = 3;
+	// 			edades[1].value = 5;
+	// 			edades[2].value = edades[3].value = 7;
+	// 			tolerancias[0].value = 2;
+	// 			tolerancias[1].value = 2;
+	// 			tolerancias[2].value = tolerancias[3].value = 6;
+	// 			break;
+
+	// 		case "14":
+	// 			edades[0].value = 5;
+	// 			edades[1].value = 7;
+	// 			edades[2].value = edades[3].value = 14;
+	// 			tolerancias[0].value = 2;
+	// 			tolerancias[1].value = 6;
+	// 			tolerancias[2].value = tolerancias[3].value = 12;
+	// 			break;
+
+	// 		case "28":
+	// 			edades[0].value = 7;
+	// 			edades[1].value = 14;
+	// 			edades[2].value = edades[3].value = 28;
+	// 			tolerancias[0].value = 6;
+	// 			tolerancias[1].value = 12;
+	// 			tolerancias[2].value = tolerancias[3].value = 20;
+	// 			break;
+	// 	}
+
+	// 	// Recalcular f'c
+	// 	document.querySelectorAll(".fc_res").forEach(span => {
+	// 		let itemID = span.id.replace("fc_res_", "");
+	// 		calcularFC(itemID);
+	// 	});
+
+	// 	// 👈 Nueva línea: actualizar fechas automáticamente
+	// 	actualizarFechasEnsaye();
+	// }
+	function actualizarEdadesVigas() {
+
+		const edadMuestreo = parseInt(
+			document.querySelector("input[name='edad']").value
+		);
+
+		if (!edadMuestreo) return;
+
+		let edades = [];
+
+		switch (edadMuestreo) {
+			case 1:
+				edades = [1, 1, 1];
 				break;
-
-			case "3":
-				edades[0].value = edades[1].value = edades[2].value = edades[3].value = 3;
-				tolerancias[0].value = tolerancias[1].value = tolerancias[2].value = tolerancias[3].value = 2;
+			case 3:
+				edades = [3, 3, 3];
 				break;
-
-			case "5":
-				edades[0].value = 1;
-				edades[1].value = 3;
-				edades[2].value = edades[3].value = 5;
-				tolerancias[0].value = 0.5;
-				tolerancias[1].value = 2;
-				tolerancias[2].value = tolerancias[3].value = 2;
+			case 5:
+				edades = [1, 3, 5];
 				break;
-
-			case "7":
-				edades[0].value = 3;
-				edades[1].value = 5;
-				edades[2].value = edades[3].value = 7;
-				tolerancias[0].value = 2;
-				tolerancias[1].value = 2;
-				tolerancias[2].value = tolerancias[3].value = 6;
+			case 7:
+				edades = [3, 5, 7];
 				break;
-
-			case "14":
-				edades[0].value = 5;
-				edades[1].value = 7;
-				edades[2].value = edades[3].value = 14;
-				tolerancias[0].value = 2;
-				tolerancias[1].value = 6;
-				tolerancias[2].value = tolerancias[3].value = 12;
+			case 14:
+				edades = [5, 7, 14];
 				break;
-
-			case "28":
-				edades[0].value = 7;
-				edades[1].value = 14;
-				edades[2].value = edades[3].value = 28;
-				tolerancias[0].value = 6;
-				tolerancias[1].value = 12;
-				tolerancias[2].value = tolerancias[3].value = 20;
+			case 28:
+				edades = [7, 14, 28];
 				break;
+			default:
+				return;
 		}
 
-		// Recalcular f'c
-		document.querySelectorAll(".fc_res").forEach(span => {
-			let itemID = span.id.replace("fc_res_", "");
-			calcularFC(itemID);
-		});
+		for (let i = 1; i <= 3; i++) {
+			let inputEdad = document.querySelector(`input[name='edad${i}']`);
+			if (inputEdad) {
+				inputEdad.value = edades[i - 1];
+			}
+		}
 
-		// 👈 Nueva línea: actualizar fechas automáticamente
+		// 🔁 Recalcular fechas de ensaye si ya tienes esa función
 		actualizarFechasEnsaye();
 	}
 
+	document.addEventListener("input", function(e) {
+		if (e.target.name && e.target.name.match(/^edad[1-3]$/)) {
+			actualizarFechaDesdeEdad(e.target);
+		}
+	});
+
 
 	// Ejecutar cuando cambie la edad del muestreo
-	document.querySelector("input[name='edad']").addEventListener("input", actualizarVigas);
+	document.querySelector("input[name='edad']").addEventListener("input", actualizarEdadesVigas);
 
 
 	// Cálculo en tiempo real de porcentaje f'c respecto al f'c de diseño
@@ -846,7 +934,7 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 	});
 
 	// Ejecutar cuando cambie la edad del muestreo
-	document.querySelector("input[name='edad']").addEventListener("input", actualizarVigas);
+	document.querySelector("input[name='edad']").addEventListener("input", actualizarEdadesVigas);
 	// Cuando cambia la fecha de muestreo, recalcular fechas de ensaye
 	document.querySelector("input[name='fecha']").addEventListener("change", actualizarFechasEnsaye);
 
