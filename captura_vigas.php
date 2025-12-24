@@ -38,6 +38,7 @@ $reporte = "";
 $elemento = "";
 $ubicacion = "";
 $fc = "";
+$mr = "";
 $edad = "";
 
 $id_viga = $_POST['id_viga']
@@ -87,7 +88,8 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 		$reporte       = $data['reporte'];
 		$elemento      = $data['elemento'];
 		$ubicacion     = $data['ubicacion_viga'];
-		$fc            = $data['fc_viga'];
+		$mr            = $data['fc_viga'];
+		// $mr            = $data['fc'];
 		$edad          = $data['edad'];
 		$revenimientop          = $data['revenimientop'];
 		$revenimientor          = $data['revenimientor'];
@@ -131,6 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$fecha = $_POST['fecha'];
 	// $fecha_recepcion = $_POST['fecha_recepcion'];
 	$elemento = $_POST['elemento'];
+	$mr = $_POST['fc'];
 	$ubicacion = $_POST['ubicacion'];
 	$revenimientop = $_POST['revenimientop'];
 	$revenimientor = $_POST['revenimientor'];
@@ -150,6 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
          
 			
             elemento_colado = '$elemento',
+            fc = '$mr',
             ubicacion = '$ubicacion',
             revenimiento_dis = '$revenimientop',
             revenimiento_r1 = '$revenimientor',
@@ -180,7 +184,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 		$id_viga = $_POST['id_viga'] ?? null;
 
-		$ensaye     = $_POST["ensaye$i"] ?? '';
+		$ensaye = $_POST["ensaye$i"] ?? '';
+
+		if (!empty($ensaye)) {
+			$fechaObj = DateTime::createFromFormat('Y-m-d', $ensaye);
+			$ensaye = $fechaObj ? $fechaObj->format('d/m/Y') : $ensaye;
+		}
 		$edad       = $_POST["edad$i"] ?? '';
 		$diametro   = $_POST["diametro$i"] ?? '';
 		$diametroo  = $_POST["diametroo$i"] ?? '';
@@ -196,9 +205,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$prensa     = $_POST["prensa$i"] ?? '';
 		$disp       = $_POST["dispositivo_viga$i"] ?? '';
 		$laina      = $_POST["laina$i"] ?? '';
+		// echo "<script>alert('i=$i | id_viga=$id_viga | ensaye=$ensaye');</script>";
 
 		$sql = "UPDATE vigas SET
+                fecha = '$fecha',
+                fecha_recepcion = '$fecha_recepcion',
                 elemento = '$elemento',
+                ubicacion = '$ubicacion',
+                fc = '$mr',
+                edad = '$edad',
+                revenimientop = '$revenimientop',
+                revenimientor = '$revenimientor',
+                tma = '$tma',
+                concretera = '$concretera',
+                temperatura = '$temperatura',
+                remision = '$remision',
+                volumen = '$volumen',
+                hora_desmoldeo = '$hora_desmoldeo',
+                personal_muestreo = '$muestreo',
+                personal_recibio = '$recibio',
+                observaciones = '$observacion',
 				ensaye$i = '$ensaye',
                 edad$i = '$edad',
                 diametro$i = '$diametro',
@@ -217,7 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 laina$i = '$laina'
             WHERE id = '$id_viga'
         ";
-	echo "<script>alert('$ensaye');</script>";
+		echo "<script>alert('$mr');</script>";
 
 		$conexion->query($sql);
 	}
@@ -417,7 +443,7 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 					<div class="col-xl-3">
 						<label class="form-label">f'c *</label>
-						<input type="number" class="form-control" name="fc" value="<?= $fc ?>">
+						<input type="number" class="form-control" name="fc" value="<?= $mr ?>">
 					</div>
 
 					<div class="col-xl-3">
@@ -590,34 +616,34 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
   
 
     <td><input type='text' class='form-control' name='id<?= $i ?>' value='$id'></td>
-    <td><input type='date' class='form-control' name='ensaye<?= $i ?>' value='$ensaye'></td>
-    <td><input type='text' class='form-control' name='edad<?= $i ?>' value='$edad'></td>
+    <td><input type='date' class='form-control' name='ensaye$i' value='$ensaye'></td>
+    <td><input type='text' class='form-control' name='edad$i' value='$edad'></td>
 
-    <td><input type='text' class='form-control' name='diametro<?= $i ?>' value='$diametro'></td>
-    <td><input type='text' class='form-control' name='diametroo<?= $i ?>' value='$diametroo'></td>
+    <td><input type='text' class='form-control' name='diametro$i' value='$diametro'></td>
+    <td><input type='text' class='form-control' name='diametroo$i' value='$diametroo'></td>
 
-    <td><input type='text' class='form-control' name='altura<?= $i ?>' value='$altura'></td>
-    <td><input type='text' class='form-control' name='alturaa<?= $i ?>' value='$alturaa'></td>
+    <td><input type='text' class='form-control' name='altura$i' value='$altura'></td>
+    <td><input type='text' class='form-control' name='alturaa$i' value='$alturaa'></td>
 
-    <td><input type='text' class='form-control' name='L_vigas<?= $i ?>' value='$L_vigas'></td>
-    <td><input type='text' class='form-control' name='carga<?= $i ?>' value='$carga'></td>
-    <td><input type='text' class='form-control' name='a_vigas<?= $i ?>' value='$a_vigas'></td>
+    <td><input type='text' class='form-control' name='L_vigas$i' value='$L_vigas'></td>
+    <td><input type='text' class='form-control' name='carga$i' value='$carga'></td>
+    <td><input type='text' class='form-control' name='a_vigas$i' value='$a_vigas'></td>
 
-    <td><input type='text' class='form-control' name='resistencia<?= $i ?>' value='$resistencia'></td>
-    <td><input type='text' class='form-control' name='fc<?= $i ?>' value='$fc'></td>
+    <td><input type='text' class='form-control' name='resistencia$i' value='$resistencia'></td>
+    <td><input type='text' class='form-control' name='fc$i' value='$fc'></td>
 
-    <td><input type='text' class='form-control' name='tiempo_ensaye<?= $i ?>' value='$tiempo'></td>
+    <td><input type='text' class='form-control' name='tiempo_ensaye$i' value='$tiempo'></td>
     <td><input type='text' class='form-control' value=''></td>
     <td><input type='text' class='form-control' value=''></td>
     <td><input type='text' class='form-control' value=''></td>
 
-    
-    <td><input type='text' class='form-control' name='falla<?= $i ?>' value='$falla'></td>
-    <td><input type='text' class='form-control' name='flexometro<?= $i ?>' value='$flexo'></td>
-    <td><input type='text' class='form-control' name='prensa<?= $i ?>' value='$prensa'></td>
 
-    <td><input type='text' class='form-control' name='dispositivo_viga<?= $i ?>' value='$disp'></td>
-    <td><input type='text' class='form-control' name='laina<?= $i ?>' value='$laina'></td>
+    <td><input type='text' class='form-control' name='falla$i' value='$falla'></td>
+    <td><input type='text' class='form-control' name='flexometro$i' value='$flexo'></td>
+    <td><input type='text' class='form-control' name='prensa$i' value='$prensa'></td>
+
+    <td><input type='text' class='form-control' name='dispositivo_viga$i' value='$disp'></td>
+    <td><input type='text' class='form-control' name='laina$i' value='$laina'></td>
 </tr>";
 						}
 					}
@@ -680,10 +706,10 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 
 	// === ACTUALIZAR CILINDROS SEGÚN LA EDAD DE MUESTREO ===
-	function actualizarCilindros() {
+	function actualizarVigas() {
 		let edad = document.querySelector("input[name='edad']").value;
 
-		let edades = document.querySelectorAll("input[name^='edad_item']");
+		let edades = document.querySelectorAll("input[name^='edad']");
 		let tolerancias = document.querySelectorAll("input[name^='tolerancia']");
 
 		if (edades.length < 4) return;
@@ -748,7 +774,7 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 
 	// Ejecutar cuando cambie la edad del muestreo
-	document.querySelector("input[name='edad']").addEventListener("input", actualizarCilindros);
+	document.querySelector("input[name='edad']").addEventListener("input", actualizarVigas);
 
 
 	// Cálculo en tiempo real de porcentaje f'c respecto al f'c de diseño
@@ -820,7 +846,7 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 	});
 
 	// Ejecutar cuando cambie la edad del muestreo
-	document.querySelector("input[name='edad']").addEventListener("input", actualizarCilindros);
+	document.querySelector("input[name='edad']").addEventListener("input", actualizarVigas);
 	// Cuando cambia la fecha de muestreo, recalcular fechas de ensaye
 	document.querySelector("input[name='fecha']").addEventListener("change", actualizarFechasEnsaye);
 
