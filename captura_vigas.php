@@ -162,6 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             temperatura = '$temperatura',
             remision = '$remision',
             volumen_muestra = '$volumen',
+            hora_muestreo = '$hora_muestreo',
 			
             personal = '$muestreo',
 			
@@ -190,6 +191,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$fechaObj = DateTime::createFromFormat('Y-m-d', $ensaye);
 			$ensaye = $fechaObj ? $fechaObj->format('d/m/Y') : $ensaye;
 		}
+		$tma       = $_POST["agregado"] ?? '';
+		$fecha       = $_POST["fecha"] ?? '';
+		$fecha_recepcion       = $_POST["fecha_recepcion"] ?? '';
 		$edad       = $_POST["edad$i"] ?? '';
 		$diametro   = $_POST["diametro$i"] ?? '';
 		$diametroo  = $_POST["diametroo$i"] ?? '';
@@ -198,6 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$L_vigas    = $_POST["L_vigas$i"] ?? '';
 		$carga      = $_POST["carga$i"] ?? '';
 		$a_vigas    = $_POST["a_vigas$i"] ?? '';
+		$resistencia         = $_POST["resistencia$i"] ?? '';
 		$fc         = $_POST["fc$i"] ?? '';
 		$tiempo     = $_POST["tiempo_ensaye$i"] ?? '';
 		$falla      = $_POST["falla$i"] ?? '';
@@ -216,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 edad = '$edad',
                 revenimientop = '$revenimientop',
                 revenimientor = '$revenimientor',
-                tma = '$tma',
+                agregado = '$tma',
                 concretera = '$concretera',
                 temperatura = '$temperatura',
                 remision = '$remision',
@@ -234,6 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 L_vigas$i = '$L_vigas',
                 carga$i = '$carga',
                 a_vigas$i = '$a_vigas',
+                resistencia$i = '$resistencia',
                 fc$i = '$fc',
                 tiempo_ensaye$i = '$tiempo',
                 falla$i = '$falla',
@@ -921,6 +927,17 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 		const i = match[2];
 		calcularMRDesdeFila(fila, i);
+	});
+	document.querySelector("input[name='fc']").addEventListener("input", function() {
+
+		const filas = document.querySelectorAll("tbody tr");
+
+		filas.forEach(fila => {
+			for (let i = 1; i <= 3; i++) {
+				calcularMRDesdeFila(fila, i);
+			}
+		});
+
 	});
 
 
