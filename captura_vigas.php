@@ -860,6 +860,70 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 		}
 	});
 
+	function calcularMRDesdeFila(fila, i) {
+
+		const get = name => {
+			const input = fila.querySelector(`input[name='${name}${i}']`);
+			return input ? parseFloat(input.value) || 0 : 0;
+		};
+
+		// Datos geométricos
+		const altura1 = get("altura");
+		const altura2 = get("alturaa");
+		const lado1 = get("diametro");
+		const lado2 = get("diametroo");
+
+		const carga = get("carga");
+		const L = get("L_vigas");
+		const a = get("a_vigas");
+
+		const fcDisenio =
+			parseFloat(document.querySelector("input[name='fc']").value) || 0;
+
+		if (!altura1 || !altura2 || !lado1 || !lado2 || !carga || !fcDisenio) return;
+
+		// Promedios
+		const alturaProm = (altura1 + altura2) / 2;
+		const ladoProm = (lado1 + lado2) / 2;
+
+		const area = alturaProm * ladoProm;
+		if (area <= 0 || alturaProm <= 0) return;
+
+		let resistencia;
+
+		if (a === 0) {
+			resistencia = (carga * L) / (area * alturaProm);
+		} else {
+			resistencia = (3 * carga * a) / (area * alturaProm);
+		}
+
+		resistencia = Math.round(resistencia * 100) / 100;
+
+		const mrPorcentaje =
+			Math.round((resistencia * 100 / fcDisenio) * 100) / 100;
+
+		// Pintar resultados del MISMO ensaye
+		fila.querySelector(`input[name='resistencia${i}']`).value = resistencia;
+		fila.querySelector(`input[name='fc${i}']`).value = mrPorcentaje;
+		fila.querySelector(`input[name='falla${i}']`).value = (a !== 0) ? "2" : "1";
+	}
+
+	document.addEventListener("input", function(e) {
+
+		const fila = e.target.closest("tr");
+		if (!fila) return;
+
+		const match = e.target.name.match(
+			/(altura|alturaa|diametro|diametroo|carga|L_vigas|a_vigas)(\d)/
+		);
+
+		if (!match) return;
+
+		const i = match[2];
+		calcularMRDesdeFila(fila, i);
+	});
+
+
 
 	// Ejecutar cuando cambie la edad del muestreo
 	document.querySelector("input[name='edad']").addEventListener("input", actualizarEdadesVigas);
