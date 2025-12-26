@@ -13,10 +13,9 @@ include("conexion.php");
 		<li class="breadcrumb-item"><a href="#">LAYOUT</a></li>
 		<li class="breadcrumb-item active">STARTER PAGE</li>
 	</ul>
-	<?php $obra = $_GET['obra']; ?>
+
 	<h1 class="page-header">
-		Lista de reporte de los cilindros.
-		<small><?= $obra ?></small>
+		Lista de reporte de los vigas.
 	</h1>
 
 	<div class="card">
@@ -114,8 +113,7 @@ include("conexion.php");
 								<td class='text-center'>
 								<a href='captura_vigas.php?exp_registro={$fila['exp_registro']}&reporte={$fila['reporte']}&id_viga={$fila['id_viga']}&item1={$fila['item1']}'
   	 								class='btn btn-outline-theme btn-sm w-80px'
-									target='_blank'
-								  onclick=\"alert('item1: {$fila['item1']}')\">
+									target='_blank'>
 									
    									Editar
 								</a>

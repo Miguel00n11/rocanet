@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="utf-8" />
 	<title>ROCAnet | Control de Calidad</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="description" content="" />
 	<meta name="author" content="" />
-	
+
 	<!-- ================== BEGIN core-css ================== -->
 	<link href="assets/css/vendor.min.css" rel="stylesheet" />
 	<link href="assets/css/app.min.css" rel="stylesheet" />
 	<!-- ================== END core-css ================== -->
-	
+
 </head>
-<body >
+
+<body>
 	<!-- BEGIN #loader -->
 	<div id="loader" class="app-loader">
 		<div class="d-flex align-items-center">
@@ -35,7 +37,7 @@
 				</button>
 			</div>
 			<!-- END desktop-toggler -->
-			
+
 			<!-- BEGIN mobile-toggler -->
 			<div class="mobile-toggler">
 				<button type="button" class="menu-toggler" data-toggle-class="app-sidebar-mobile-toggled" data-toggle-target=".app">
@@ -44,7 +46,7 @@
 				</button>
 			</div>
 			<!-- END mobile-toggler -->
-			
+
 			<!-- BEGIN brand -->
 			<div class="brand">
 				<a href="index.php" class="brand-logo w-100">
@@ -53,7 +55,7 @@
 				</a>
 			</div>
 			<!-- END brand -->
-			
+
 			<!-- BEGIN menu -->
 			<div class="menu">
 				<div class="menu-item dropdown d-lg-flex d-none">
@@ -61,9 +63,9 @@
 						<span>$1,859,050.12</span>
 					</a>
 				</div>
-				
-				
-				
+
+
+
 				<div class="menu-item dropdown">
 					<a href="#" data-toggle="theme-panel-expand" class="menu-link menu-link-icon">
 						<iconify-icon icon="ph:gear-duotone" class="menu-icon"></iconify-icon>
@@ -81,7 +83,7 @@
 				</div>
 				<div class="menu-item dropdown dropdown-mobile-full">
 					<a href="#" data-bs-toggle="dropdown" data-bs-display="static" class="menu-link d-flex align-items-center">
-						
+
 						<div class="menu-text d-sm-block d-none">
 							<span class="d-block"><span>USERNAME@GMAIL.COM</span></span>
 						</div>
@@ -98,7 +100,7 @@
 				</div>
 			</div>
 			<!-- END menu -->
-			
+
 			<!-- BEGIN menu-search-float -->
 			<form class="menu-search-float" method="POST" name="header_search_form">
 				<div class="menu-search-container">
@@ -114,7 +116,7 @@
 			<!-- END menu-search-float -->
 		</div>
 		<!-- END #header -->
-		
+
 		<!-- BEGIN #sidebar -->
 		<div id="sidebar" class="app-sidebar">
 			<!-- BEGIN scrollbar -->
@@ -146,28 +148,83 @@
 							<span class="menu-text">COTIZACIONES</span>
 						</a>
 					</div>
-					<div class="menu-item ">
+					<!-- <div class="menu-item ">
 						<a href="lista_reportes_cilindros_general.php" class="menu-link">
 							<span class="menu-icon">
 								<iconify-icon icon="ph:chart-bar-duotone"></iconify-icon>
 							</span>
 							<span class="menu-text">CILINDROS</span>
 						</a>
+					</div> -->
+
+					<div class="menu-header">CAPTURA DIGITAL</div>
+
+					<div class="menu-item has-sub ">
+						<a href="#" class="menu-link">
+							<span class="menu-icon">
+								<iconify-icon icon="ph:stack-duotone"></iconify-icon>
+							</span>
+							<span class="menu-text">CILINDROS</span>
+							<span class="menu-caret"><b class="caret"></b></span>
+						</a>
+						<div class="menu-submenu">
+							<div class="menu-item ">
+								<a href="lista_reportes_cilindros_general.php" class="menu-link">
+									<span class="menu-text">Validar cilindros</span>
+								</a>
+							</div>
+							<div class="menu-item ">
+								<a href="lista_reportes_vigas_general.php" class="menu-link">
+									<span class="menu-text">Ver actulalizados</span>
+								</a>
+							</div>
+							<div class="menu-item ">
+								<a href="lista_reportes_vigas_general.php" class="menu-link">
+									<span class="menu-text">Ver originales</span>
+								</a>
+							</div>
+						</div>
 					</div>
-					
+					<div class="menu-item has-sub ">
+						<a href="#" class="menu-link">
+							<span class="menu-icon">
+								<iconify-icon icon="ph:stack-duotone"></iconify-icon>
+							</span>
+							<span class="menu-text">VIGAS</span>
+							<span class="menu-caret"><b class="caret"></b></span>
+						</a>
+						<div class="menu-submenu">
+							<div class="menu-item ">
+								<a href="lista_reportes_cilindros_general.php" class="menu-link">
+									<span class="menu-text">Validar vigas</span>
+								</a>
+							</div>
+							<div class="menu-item ">
+								<a href="lista_reportes_vigas_general.php" class="menu-link">
+									<span class="menu-text">Ver actulalizados</span>
+								</a>
+							</div>
+							<div class="menu-item ">
+								<a href="lista_reportes_vigas_general.php" class="menu-link">
+									<span class="menu-text">Ver originales</span>
+								</a>
+							</div>
+						</div>
+					</div>
 					<div class="menu-header">SISTEMAS</div>
-					<div class="menu-item ">
+					<!-- <div class="menu-item ">
 						<a href="widgets.html" class="menu-link">
 							<span class="menu-icon">
 								<iconify-icon icon="ph:stack-duotone"></iconify-icon>
 							</span>
 							<span class="menu-text">WIDGETS</span>
 						</a>
-					</div>
+					</div> -->
+
 					<div class="menu-item has-sub ">
 						<a href="#" class="menu-link">
 							<span class="menu-icon">
-								<iconify-icon icon="ph:sparkle-duotone"></iconify-icon>
+								<iconify-icon icon="ph:stack-duotone"></iconify-icon>
 							</span>
 							<span class="menu-text">ITEMS</span>
 							<span class="menu-caret"><b class="caret"></b></span>
@@ -190,7 +247,7 @@
 							<div class="menu-icon">
 								<iconify-icon icon="ph:handbag-simple-duotone"></iconify-icon>
 							</div>
-							<div class="menu-text d-flex align-items-center">POS SYSTEM</div> 
+							<div class="menu-text d-flex align-items-center">POS SYSTEM</div>
 							<span class="menu-caret"><b class="caret"></b></span>
 						</a>
 						<div class="menu-submenu">
@@ -226,7 +283,7 @@
 							<span class="menu-icon">
 								<iconify-icon icon="ph:game-controller-duotone"></iconify-icon>
 							</span>
-							<span class="menu-text">UI KITS</span> 
+							<span class="menu-text">UI KITS</span>
 							<span class="menu-caret"><b class="caret"></b></span>
 						</a>
 						<div class="menu-submenu">
@@ -272,7 +329,7 @@
 							<span class="menu-icon">
 								<iconify-icon icon="ph:pencil-simple-duotone"></iconify-icon>
 							</span>
-							<span class="menu-text">FORMS</span> 
+							<span class="menu-text">FORMS</span>
 							<span class="menu-caret"><b class="caret"></b></span>
 						</a>
 						<div class="menu-submenu">
@@ -535,8 +592,7 @@
 			<!-- END scrollbar -->
 		</div>
 		<!-- END #sidebar -->
-			
+
 		<!-- BEGIN mobile-sidebar-backdrop -->
 		<button class="app-sidebar-mobile-backdrop" data-toggle-target=".app" data-toggle-class="app-sidebar-mobile-toggled"></button>
 		<!-- END mobile-sidebar-backdrop -->
-		

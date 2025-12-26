@@ -249,10 +249,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 laina$i = '$laina'
             WHERE id = '$id_viga'
         ";
-		echo "<script>alert('$mr');</script>";
+		// echo "<script>alert('$mr');</script>";
 
 		$conexion->query($sql);
 	}
+	echo "<script>
+        alert('Ensaye de viga actualizado correctamente');
+        window.close();
+    </script>";
+	exit;
 
 	// echo "<script>alert('Datos guardados correctamente');</script>";
 }
@@ -325,7 +330,7 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 		</ul>
 
 		<h1 class="page-header">
-			Captura de cilindros <small></small>
+			Captura de vigas <small></small>
 		</h1>
 
 
