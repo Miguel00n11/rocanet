@@ -381,16 +381,14 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					<div class="col-xl-6">
 						<div class="mb-3">
 							<label class="form-label">Cliente <span class="text-danger"></label>
-							<input type="text" class="form-control"
-								value="<?= $cliente ?>" readonly
+							<input type="text" id="cliente" class="form-control" value="<?= $cliente ?>" readonly
 								placeholder="Nombre del cliente">
 						</div>
 					</div>
 					<div class="col-xl-6">
 						<div class="mb-3">
 							<label class="form-label">Id cliente <span class="text-danger"></label>
-							<input type="number" class="form-control"
-								value="<?= $id_cliente ?>" readonly
+							<input type="number" id="id_cliente" class="form-control" value="<?= $id_cliente ?>" readonly
 								placeholder="Id cliente">
 							<!-- <div class="input-group">
 								<label class="input-group-text" for="datepicker-component"><i class="fa fa-calendar"></i></label>
@@ -400,16 +398,14 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					<div class="col-xl-6">
 						<div class="mb-3">
 							<label class="form-label">Obra <span class="text-danger"></label>
-							<input type="text" class="form-control"
-								value="<?= $obra ?>" readonly
+							<input type="text" id="obra" class="form-control" value="<?= $obra ?>" readonly
 								placeholder="Nombre de la obra">
 						</div>
 					</div>
 					<div class="col-xl-6">
 						<div class="mb-3">
 							<label class="form-label">Expediente <span class="text-danger"></label>
-							<input type="number" class="form-control"
-								value="<?= $expediente ?>" readonly
+							<input type="number" id="expediente" class="form-control" value="<?= $expediente ?>" readonly
 								placeholder="Numero de expediente">
 						</div>
 					</div>
@@ -417,8 +413,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					<div class="col-xl-6">
 						<div class="mb-3">
 							<label class="form-label">Localización <span class="text-danger"></label>
-							<input type="text" class="form-control"
-								value="<?= $localizacion ?>" readonly
+							<input type="text" id="localizacion" class="form-control" value="<?= $localizacion ?>" readonly
 								placeholder="Localización">
 						</div>
 					</div>
@@ -426,19 +421,21 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					<div class="col-xl-6">
 						<div class="mb-3">
 							<label class="form-label">Reporte <span class="text-danger"></label>
-							<input type="number" class="form-control"
-								value="<?= $reporte ?>" readonly
+							<input type="number" id="reporte" class="form-control" value="<?= $reporte ?>" readonly
 								placeholder="Numero de reporte">
 						</div>
 					</div>
 					<div class="col-xl-6">
 						<label class="form-label">Seleccionar expediente *</label>
-						<select class="form-select" name="seleccionar_exp" data-live-search="true">
-							<option value="" selected></option>
+						<select class="form-select" id="seleccionar_exp" name="seleccionar_exp">
+							<option value="">Seleccionar expediente</option>
 							<?php foreach ($expLista as $p): ?>
-								<option value="<?= $p['expediente'] ?>"><?= $p['expediente'] ?></option>
+								<option value="<?= $p['expediente'] ?>">
+									<?= $p['expediente'] ?> – <?= $p['obra'] ?>
+								</option>
 							<?php endforeach; ?>
 						</select>
+
 					</div>
 
 
@@ -937,4 +934,32 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 	// Actualizar fechas al cargar la página
 	window.addEventListener("DOMContentLoaded", actualizarFechasEnsaye); // ✔ corregido
+
+	document.getElementById("seleccionar_exp").addEventListener("change", function() {
+
+		const expediente = this.value;
+		if (!expediente) return;
+		// alert("Expediente enviado: " + expediente);
+		fetch(`ajax_get_expediente.php?expediente=${expediente}`)
+			.then(response => response.json())
+			.then(data => {
+
+				if (data.error) {
+					alert(data.error);
+					return;
+				}
+
+				// 🔁 Equivalente a tu LookUpEdit
+				document.getElementById("expediente").value = data.expediente;
+				document.getElementById("obra").value = data.obra;
+				document.getElementById("localizacion").value = data.localizacion;
+				document.getElementById("cliente").value = data.cliente;
+				document.getElementById("id_cliente").value = data.idcliente;
+				document.getElementById("reporte").value = data.siguiente_reporte;
+
+				// Opcional: resetear cilindros
+				actualizarCilindros();
+			})
+			.catch(err => console.error(err));
+	});
 </script>
