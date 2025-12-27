@@ -31,43 +31,49 @@ include("conexion_forta.php");
 /* FIREBASE CONFIG */
 $firebaseURL = "https://registrocompactacioneroca-default-rtdb.firebaseio.com";
 $auth = "64KDwSjgUkDpEMGcNryDylwJtGQX3XQsGbu4QxwI";
+
 function firebaseGet($ruta)
 {
 	global $firebaseURL, $auth;
-	$url = "$firebaseURL/$ruta.json?auth=$auth";
+
+	$segmentos = explode('/', $ruta);
+	$segmentos = array_map('rawurlencode', $segmentos);
+
+	$rutaSegura = implode('/', $segmentos);
+
+	$url = "$firebaseURL/$rutaSegura.json?auth=$auth";
+
 	$ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	$response = curl_exec($ch);
 	curl_close($ch);
+
 	return json_decode($response, true);
 }
 
+
 /* PARAMETROS (equivalente al constructor) */
 // $usuario = $_GET['usuario'];
-$usuario = urldecode($_GET['usuario']);
-
+$usuario = $_GET['usuario']; // NO urldecode
 $llave   = $_GET['llave'] ?? '';
-$tipo    = $_GET['tipo'] ?? 'Cilindros';
 
-/* CARGAR REPORTE */
 $ruta = "Cilindros/Reportes/$usuario/$llave";
 $reporte = firebaseGet($ruta);
 
-echo "<script>alert('$ruta');</script>";
-$clienteFirebase = $reporte['cliente'] ?? 'SIN CLIENTE';
+if ($reporte === null) {
+	die("NO SE ENCONTRÓ EL REPORTE<br>Ruta lógica: $ruta");
+}
 
-echo "<script>
-	alert(" . json_encode($clienteFirebase) . ");
-</script>";
+$cliente = $reporte['cliente'] ?? 'SIN CLIENTE';
 
-// if (!$reporte) {
-//     die("Reporte no encontrado");
-// }
 
-// Verificar si vienen datos por GET (editar)
+
+
+
+/* VARIABLES DEL REPORTE */
 $cliente = "";
 $id_cliente = "";
-$obra = "";
+$obra = $reporte['obra'] ?? 'SIN OBRA';
 $expediente = "";
 $localizacion = "";
 $reporte = "";
@@ -75,6 +81,11 @@ $elemento = "";
 $ubicacion = "";
 $fc = "";
 $edad = "";
+
+echo "<script>
+	alert('CLIENTE: ' + " . json_encode($obra) . ");
+</script>";
+
 
 $id_reporte_concreto = $_POST['id_reporte_concreto']
 	?? $_GET['id_reporte_concreto']
