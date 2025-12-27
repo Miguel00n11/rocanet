@@ -28,6 +28,25 @@ include("cabeza.php");
 include("conexion.php");
 include("conexion_forta.php");
 
+// Obtener lista de personal
+$sqlPersonal = "SELECT ID, Nombre FROM personal ORDER BY Nombre ASC";
+$resPersonal = $conexion_forta->query($sqlPersonal);
+// Guardar resultados en un arreglo
+$personalLista = [];
+while ($row = $resPersonal->fetch_assoc()) {
+	$personalLista[] = $row;
+}
+
+// Obtener lista de obras
+$sqlObra = "SELECT * FROM obras JOIN clientes ON obras.cliente=clientes.idcliente ORDER BY id_expediente DESC";
+$resObra = $conexion->query($sqlObra);
+// Guardar resultados en un arreglo
+$expLista = [];
+while ($row = $resObra->fetch_assoc()) {
+	$expLista[] = $row;
+}
+
+
 /* FIREBASE CONFIG */
 $firebaseURL = "https://registrocompactacioneroca-default-rtdb.firebaseio.com";
 $auth = "64KDwSjgUkDpEMGcNryDylwJtGQX3XQsGbu4QxwI";
@@ -97,8 +116,8 @@ $observacion = $reporte['observaciones'] ?? 'SIN observaciones';
 
 // Convertir fecha de Firebase (dd/mm/yyyy) a yyyy-mm-dd
 if ($fecha !== 'SIN FECHA' && strpos($fecha, '/') !== false) {
-    [$d, $m, $y] = explode('/', $fecha);
-    $fecha = "$y-$m-$d";
+	[$d, $m, $y] = explode('/', $fecha);
+	$fecha = "$y-$m-$d";
 }
 
 // Crear fecha de recepción = fecha de muestreo + 1 día
@@ -123,20 +142,15 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 	$id_reporte_concreto = $_GET['id_reporte_concreto'];
 
 
-	// Obtener lista de personal
-	$sqlPersonal = "SELECT ID, Nombre FROM personal ORDER BY Nombre ASC";
-	$resPersonal = $conexion_forta->query($sqlPersonal);
-	// Guardar resultados en un arreglo
-	$personalLista = [];
-	while ($row = $resPersonal->fetch_assoc()) {
-		$personalLista[] = $row;
-	}
+
+
+
 	// ----
 
 	// // Consulta del registro
 	// $sql = "SELECT * FROM reporte_concreto 
-    //         WHERE expediente = '$exp' AND reporte = '$rep' 
-    //         LIMIT 1";
+	//         WHERE expediente = '$exp' AND reporte = '$rep' 
+	//         LIMIT 1";
 	// $res = $conexion->query($sql);
 
 	// if ($res->num_rows > 0) {
@@ -416,6 +430,15 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 								value="<?= $reporte ?>" readonly
 								placeholder="Numero de reporte">
 						</div>
+					</div>
+					<div class="col-xl-6">
+						<label class="form-label">Seleccionar expediente *</label>
+						<select class="form-select" name="seleccionar_exp" data-live-search="true">
+							<option value="" selected></option>
+							<?php foreach ($expLista as $p): ?>
+								<option value="<?= $p['expediente'] ?>"><?= $p['expediente'] ?></option>
+							<?php endforeach; ?>
+						</select>
 					</div>
 
 
