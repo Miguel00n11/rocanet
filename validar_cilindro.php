@@ -74,16 +74,40 @@ $cliente = $reporte['cliente'] ?? 'SIN CLIENTE';
 $cliente = "";
 $id_cliente = "";
 $obra = $reporte['obra'] ?? 'SIN OBRA';
-$expediente = "";
-$localizacion = "";
-$reporte = "";
-$elemento = "";
-$ubicacion = "";
-$fc = "";
-$edad = "";
+// $expediente = $reporte['obra'] ?? 'SIN OBRA';
+$localizacion = $reporte['localizacion'] ?? 'SIN LOCALIZACION';
+// $reporte = "";
+$fecha = $reporte['fecha'] ?? 'SIN FECHA';
+$elemento = $reporte['elemento'] ?? 'SIN ELEMENTO';
+$ubicacion = $reporte['ubicacion'] ?? 'SIN UBICACION';
+$fc = $reporte['fc'] ?? 'SIN fc';
+$edad = $reporte['edad'] ?? 'SIN edad';
+$revenimientop = $reporte['revenimientoDis'] ?? 'SIN revenimientop';
+$revenimientor = $reporte['revenimientoR1'] ?? 'SIN revenimiento1';
+$tma = $reporte['tma'] ?? 'SIN tma';
+$concretera = $reporte['concretera'] ?? 'SIN concretera';
+$temperatura = $reporte['temperatura'] ?? 'SIN temperatura';
+$remision = $reporte['remision'] ?? 'SIN remision';
+$volumen = $reporte['volumenMuestra'] ?? 'SIN volumen muestra';
+$hora_muestreo = $reporte['horaMuestreo'] ?? 'SIN hora muestreo';
+$hora_desmoldeo = "";
+$muestreo = $reporte['personal'] ?? 'SIN personal';
+$recibio = "";
+$observacion = $reporte['observaciones'] ?? 'SIN observaciones';
+
+// Convertir fecha de Firebase (dd/mm/yyyy) a yyyy-mm-dd
+if ($fecha !== 'SIN FECHA' && strpos($fecha, '/') !== false) {
+    [$d, $m, $y] = explode('/', $fecha);
+    $fecha = "$y-$m-$d";
+}
+
+// Crear fecha de recepción = fecha de muestreo + 1 día
+$fechaObj = new DateTime($fecha);
+$fechaObj->modify('+1 day');
+$fecha_recepcion = $fechaObj->format('Y-m-d');
 
 echo "<script>
-	alert('CLIENTE: ' + " . json_encode($obra) . ");
+	alert('CLIENTE: ' + " . json_encode($fecha) . ");
 </script>";
 
 
@@ -109,43 +133,43 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 	}
 	// ----
 
-	// Consulta del registro
-	$sql = "SELECT * FROM reporte_concreto 
-            WHERE expediente = '$exp' AND reporte = '$rep' 
-            LIMIT 1";
-	$res = $conexion->query($sql);
+	// // Consulta del registro
+	// $sql = "SELECT * FROM reporte_concreto 
+    //         WHERE expediente = '$exp' AND reporte = '$rep' 
+    //         LIMIT 1";
+	// $res = $conexion->query($sql);
 
-	if ($res->num_rows > 0) {
-		$data = $res->fetch_assoc();
+	// if ($res->num_rows > 0) {
+	// 	$data = $res->fetch_assoc();
 
-		// Llenar variables
-		// $cliente       = $data['cliente'];
-		// $id_cliente    = $data['id_cliente'];
-		// $obra          = $data['obra'];
-		$expediente    = $data['expediente'];
-		// $localizacion  = $data['ubicacion'];
-		$fecha       = $data['fecha'];
-		$fecha_recepcion       = $data['fecha_recepcion'];
-		$reporte       = $data['reporte'];
-		$elemento      = $data['elemento'];
-		$ubicacion     = $data['ubicacion'];
-		$fc            = $data['fc'];
-		$edad          = $data['edad'];
-		$revenimientop          = $data['revenimientop'];
-		$revenimientor          = $data['revenimientor'];
-		$tma          = $data['agregado'];
-		$concretera          = $data['concretera'];
-		$temperatura          = $data['temperatura'];
-		$remision          = $data['remision'];
-		$volumen          = $data['volumen'];
-		$hora_muestreo          = $data['hora_muestreo'];
-		$hora_desmoldeo          = $data['hora_desmoldeo'];
+	// 	// Llenar variables
+	// 	// $cliente       = $data['cliente'];
+	// 	// $id_cliente    = $data['id_cliente'];
+	// 	// $obra          = $data['obra'];
+	// 	$expediente    = $data['expediente'];
+	// 	// $localizacion  = $data['ubicacion'];
+	// 	$fecha       = $data['fecha'];
+	// 	$fecha_recepcion       = $data['fecha_recepcion'];
+	// 	$reporte       = $data['reporte'];
+	// 	$elemento      = $data['elemento'];
+	// 	$ubicacion     = $data['ubicacion'];
+	// 	$fc            = $data['fc'];
+	// 	$edad          = $data['edad'];
+	// 	$revenimientop          = $data['revenimientop'];
+	// 	$revenimientor          = $data['revenimientor'];
+	// 	$tma          = $data['agregado'];
+	// 	$concretera          = $data['concretera'];
+	// 	$temperatura          = $data['temperatura'];
+	// 	$remision          = $data['remision'];
+	// 	$volumen          = $data['volumen'];
+	// 	$hora_muestreo          = $data['hora_muestreo'];
+	// 	$hora_desmoldeo          = $data['hora_desmoldeo'];
 
-		$muestreo          = $data['muestreo'];
-		$recibio          = $data['recibio'];
-		$observacion          = $data['observacion'];
-		// $revisado_autorizado          = $data['revisado_autorizado'];
-	}
+	// 	$muestreo          = $data['muestreo'];
+	// 	$recibio          = $data['recibio'];
+	// 	$observacion          = $data['observacion'];
+	// 	// $revisado_autorizado          = $data['revisado_autorizado'];
+	// }
 	// ---------- ACTUALIZAR DATOS DE MUESTREO ----------
 
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
