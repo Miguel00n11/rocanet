@@ -593,143 +593,51 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 			<div class="card-body">
 
-				<?php
-				$sql = "SELECT * FROM item 
-                WHERE id_reporte_concreto = '$id_reporte_concreto'
-                ORDER BY item ASC";
-				$resultado = $conexion->query($sql);
+				<div class="card">
+					<div class="card-header with-btn">
+						ENSAYE A LA COMPRESIÓN DE ESPECÍMENES CILÍNDRICOS DE CONCRETO
+						<div class="card-header-btn">
+							<a href="#" data-toggle="card-collapse" class="btn"></a>
+							<a href="#" data-toggle="card-expand" class="btn"></a>
+						</div>
+					</div>
 
-				if ($resultado->num_rows > 0) {
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-bordered table-striped table-hover wide-table">
+								<thead class="table-dark">
+									<tr>
+										<th>Item</th>
+										<th>Fecha ensaye</th>
+										<th>Edad [d]</th>
+										<th>Tolerancia [h]</th>
+										<th>Diametro 1 [cm]</th>
+										<th>Diametro 2 [cm]</th>
+										<th>Altura 1 [cm]</th>
+										<th>Altura 2 [cm]</th>
+										<th>Condición</th>
+										<th>Flexómetro</th>
+										<th>Escuadra</th>
+										<th>Compás</th>
+										<th>Prensa</th>
+										<th>Hora ensaye</th>
+										<th>Carga</th>
+										<th>f´c %</th>
+										<th>Tiempo [s]</th>
+										<th>Falla</th>
+										<th>Observaciones</th>
+										<th>Ensayó</th>
+										<th>Capturó</th>
+									</tr>
+								</thead>
+								<tbody>
+									<!-- JS INSERTA AQUÍ LOS 4 CILINDROS -->
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
 
-					$clientes = $resultado->fetch_all(MYSQLI_ASSOC);
-
-					echo '<div class="table-responsive">';
-					echo '<table class="table table-bordered table-striped table-hover wide-table">';
-					echo '
-            <thead class="table-dark">
-            <tr>
-                <th>Item</th>
-                <th>Fecha ensaye</th>
-                <th>Edad [d]</th>
-                <th>Tolerancia [h]</th>
-                <th>Diametro 1 [cm]</th>
-                <th>Diametro 2 [cm]</th>
-                <th>Altura 1 [cm]</th>
-                <th>Altura 2 [cm]</th>
-                <th>Condición</th>
-                <th>Flexómetro</th>
-                <th>Escuadra</th>
-                <th>Compás</th>
-                <th>Prensa</th>
-                <th>Hora ensaye</th>
-                <th>Carga</th>
-                <th>f´c [kgf/cm²]</th>
-                <th>Tiempo [s]</th>
-                <th>Falla</th>
-                <th>Observaciones</th>
-                <th>Ensayó</th>
-                <th>Capturó</th>
-            </tr>
-            </thead>';
-
-					echo '<tbody>';
-
-					foreach ($clientes as $fila) {
-						$id = $fila['item'];
-
-						echo "
-			<tr>
-
-                <td>
-                    <input type='hidden' name='item[]' value='$id'>
-                    $id
-                </td>
-
-                <td><input type='date' class='form-control' name='fecha_ensaye[$id]' value='{$fila['fecha_ensaye']}'></td>
-
-                <td><input type='text' class='form-control' name='edad_item[$id]' value='{$fila['edad_item']}'></td>
-
-                <td><input type='text' class='form-control' name='tolerancia[$id]' value='{$fila['tolerancia']}'></td>
-
-                <td><input type='text' class='form-control diametro1' data-id='$id' name='diametro1[$id]' value='{$fila['diametro1']}'></td>
-
-                <td><input type='text' class='form-control diametro2' data-id='$id' name='diametro2[$id]' value='{$fila['diametro2']}'></td>
-
-                <td><input type='text' class='form-control' name='altura1[$id]' value='{$fila['altura1']}'></td>
-
-                <td><input type='text' class='form-control' name='altura2[$id]' value='{$fila['altura2']}'></td>
-
-                <td>
-                    <select class='form-select' name='condicion_especimen[$id]'>
-                        <option selected>{$fila['condicion_especimen']}</option>
-                        <option>---</option>
-                        <option>Bien</option>
-                        <option>Mal</option>
-                    </select>
-                </td>
-
-                <td><input type='text' class='form-control' name='flexometro[$id]' value='{$fila['flexometro']}'></td>
-
-                <td><input type='text' class='form-control' name='escuadra[$id]' value='{$fila['escuadra']}'></td>
-
-                <td><input type='text' class='form-control' name='compas[$id]' value='{$fila['compas']}'></td>
-
-                <td><input type='text' class='form-control' name='prensa[$id]' value='{$fila['prensa']}'></td>
-
-                <td><input type='time' class='form-control' name='hora_ensaye[$id]' value='{$fila['hora_ensaye']}'></td>
-
-                <td><input type='text' class='form-control carga' data-id='$id' name='carga[$id]' value='{$fila['carga']}'></td>
-
-				<td><span class='fc_res' id='fc_res_$id'>{$fila['fc_res']}</span></td>
-
-                <td><input type='text' class='form-control' name='tiempo_ensaye[$id]' value='{$fila['tiempo_ensaye']}'></td>
-
-                <td>
-                    <select class='form-select' name='falla[$id]'>
-                        <option selected>{$fila['falla']}</option>
-                        <option>---</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                    </select>
-                </td>
-
-                <td><input type='text' class='form-control' name='observaciones[$id]' value='{$fila['observaciones']}'></td>
-
-                <td>
-                    <select class='form-select' name='persona_ensayo[$id]'>
-                        <option selected>{$fila['persona_ensayo']}</option>";
-
-						foreach ($personalLista as $p) {
-							echo "<option value='{$p['Nombre']}'>{$p['Nombre']}</option>";
-						}
-
-						echo "</select>
-                </td>
-
-                <td>
-                    <select class='form-select' name='persona_capturo[$id]'>
-                        <option selected>{$fila['persona_capturo']}</option>";
-
-						foreach ($personalLista as $p) {
-							echo "<option value='{$p['Nombre']}'>{$p['Nombre']}</option>";
-						}
-
-						echo "</select>
-                </td>
-
-               
-
-            </tr>";
-					}
-
-					echo "</tbody></table></div>";
-				} else {
-					echo "No se encontraron registros.";
-				}
-
-				?>
 			</div>
 		</div>
 
@@ -939,9 +847,10 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 		const expediente = this.value;
 		if (!expediente) return;
-		// alert("Expediente enviado: " + expediente);
+
+		// 1️⃣ Cargar datos generales del expediente
 		fetch(`ajax_get_expediente.php?expediente=${expediente}`)
-			.then(response => response.json())
+			.then(r => r.json())
 			.then(data => {
 
 				if (data.error) {
@@ -949,7 +858,6 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					return;
 				}
 
-				// 🔁 Equivalente a tu LookUpEdit
 				document.getElementById("expediente").value = data.expediente;
 				document.getElementById("obra").value = data.obra;
 				document.getElementById("localizacion").value = data.localizacion;
@@ -957,9 +865,88 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 				document.getElementById("id_cliente").value = data.idcliente;
 				document.getElementById("reporte").value = data.siguiente_reporte;
 
-				// Opcional: resetear cilindros
-				actualizarCilindros();
+				// 2️⃣ Consultar último item REAL
+				return fetch(`ajax_get_ultimo_item.php?expediente=${expediente}`);
+			})
+			.then(r => r.json())
+			.then(data => {
+
+				if (data.error) {
+					alert(data.error);
+					return;
+				}
+
+				reconstruirCilindros(data.ultimo_item);
 			})
 			.catch(err => console.error(err));
 	});
+
+	function reconstruirCilindros(ultimoItem) {
+
+		const tbody = document.querySelector("table tbody");
+		if (!tbody) return;
+
+		tbody.innerHTML = "";
+
+		for (let i = 1; i <= 4; i++) {
+
+			let id = ultimoItem + i;
+
+			tbody.insertAdjacentHTML("beforeend", `
+            <tr>
+                <td>
+                    <input type="hidden" name="item[]" value="${id}">
+                    ${id}
+                </td>
+
+                <td><input type="date" class="form-control" name="fecha_ensaye[${id}]"></td>
+                <td><input type="text" class="form-control" name="edad_item[${id}]"></td>
+                <td><input type="text" class="form-control" name="tolerancia[${id}]"></td>
+
+                <td><input type="text" class="form-control diametro1" data-id="${id}" name="diametro1[${id}]"></td>
+                <td><input type="text" class="form-control diametro2" data-id="${id}" name="diametro2[${id}]"></td>
+
+                <td><input type="text" class="form-control" name="altura1[${id}]"></td>
+                <td><input type="text" class="form-control" name="altura2[${id}]"></td>
+
+                <td>
+                    <select class="form-select" name="condicion_especimen[${id}]">
+                        <option></option>
+                        <option>Bien</option>
+                        <option>Mal</option>
+                    </select>
+                </td>
+
+                <td><input type="text" class="form-control" name="flexometro[${id}]" value="9"></td>
+                <td><input type="text" class="form-control" name="escuadra[${id}]" value="4"></td>
+                <td><input type="text" class="form-control" name="compas[${id}]" value="1"></td>
+
+                <td><input type="text" class="form-control" name="prensa[${id}]"></td>
+                <td><input type="time" class="form-control" name="hora_ensaye[${id}]"></td>
+
+                <td><input type="text" class="form-control carga" data-id="${id}" name="carga[${id}]"></td>
+
+                <td><span class="fc_res" id="fc_res_${id}">—</span></td>
+
+                <td><input type="text" class="form-control" name="tiempo_ensaye[${id}]"></td>
+
+                <td>
+                    <select class="form-select" name="falla[${id}]">
+                        <option></option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </td>
+
+                <td><input type="text" class="form-control" name="observaciones[${id}]"></td>
+                <td><select class="form-select" name="persona_ensayo[${id}]"></select></td>
+                <td><select class="form-select" name="persona_capturo[${id}]"></select></td>
+            </tr>
+        `);
+		}
+
+		actualizarCilindros();
+	}
 </script>
