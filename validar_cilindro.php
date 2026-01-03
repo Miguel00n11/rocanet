@@ -271,6 +271,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 
 	$conexion->begin_transaction();
 
+	echo "<script>
+	alert('CLIENTE: ' + " . $elemento . ");
+</script>";
 	try {
 
 		// =========================
@@ -290,7 +293,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 
 		$stmt = $conexion->prepare($sqlInsertReporte);
 		$stmt->bind_param(
-			"siisssssssssssssssss",
+			"sissssssssssssssssss",
 			$expediente,
 			$reporte,
 			$_POST['elemento'],
@@ -377,7 +380,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 		$conexion->commit();
 
 		echo "<script>
-            alert('Reporte y cilindros guardados correctamente');
+            alert('Reporte y cilindros guardados correctamente $elemento');
             window.close();
         </script>";
 		exit;
