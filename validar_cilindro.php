@@ -262,119 +262,129 @@ $id_reporte_concreto = $_POST['id_reporte_concreto']
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 
-	// =========================
-	// 1️⃣ DATOS GENERALES
-	// ========================}
 	$expediente = $_POST['expediente'];
 	$reporte    = $_POST['reporte'];
 
-	echo "<script>
-        alert('$expediente - $reporte');
-    </script>";
-	// =========================
-	// 2️⃣ INSERT REPORTE (MASTER)
-	// =========================
-	$sqlInsertReporte = "
-        INSERT INTO reporte_concreto (
-            expediente, reporte, elemento, ubicacion, fc,
-            revenimientop, revenimientor, concretera, remision,
-            fecha, edad, volumen, temperatura, agregado,
-            hora_muestreo, hora_desmoldeo, recibio, muestreo,
-            fecha_recepcion, meta_lab, observacion
-        ) VALUES (
-            ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?
-        )
-    ";
-
-	$stmt = $conexion->prepare($sqlInsertReporte);
-	$stmt->bind_param(
-		"sisssssssssssssssss",
-		$expediente,
-		$reporte,
-		$_POST['elemento'],
-		$_POST['ubicacion'],
-		$_POST['fc'],
-		$_POST['revenimientop'],
-		$_POST['revenimientor'],
-		$_POST['concretera'],
-		$_POST['remision'],
-		$_POST['fecha'],
-		$_POST['edad'],
-		$_POST['volumen'],
-		$_POST['temperatura'],
-		$_POST['agregado'],
-		$_POST['hora_muestreo'],
-		$_POST['hora_desmoldeo'],
-		$_POST['recibio'],
-		$_POST['muestreo'],
-		$_POST['fecha_recepcion'],
-		$_POST['observacion']
-	);
-
-	$stmt->execute();
-
-	// 👈 equivalente a buscarIdReporte()
-	$id_reporte_concreto = $conexion->insert_id;
-
-	// =========================
-	// 3️⃣ INSERT CILINDROS (DETAIL)
-	// =========================
-	$sqlInsertItem = "
-        INSERT INTO item (
-            id_reporte_concreto, item, reporte,
-            fecha_ensaye, edad_item, tolerancia,
-            diametro1, diametro2, altura1, altura2,
-            carga, falla, meta_lab,
-            condicion_especimen, observaciones,
-            tiempo_ensaye, hora_ensaye,
-            persona_ensayo, flexometro, compas,
-            escuadra, prensa, persona_capturo
-        ) VALUES (
-            ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
-        )
-    ";
-
-	$stmtItem = $conexion->prepare($sqlInsertItem);
-
-	foreach ($_POST['item'] as $idItem) {
-
-		$stmtItem->bind_param(
-			"iiisssddddddissssssss",
-			$id_reporte_concreto,
-			$idItem,
-			$reporte,
-			$_POST['fecha_ensaye'][$idItem],
-			$_POST['edad_item'][$idItem],
-			$_POST['tolerancia'][$idItem],
-			$_POST['diametro1'][$idItem],
-			$_POST['diametro2'][$idItem],
-			$_POST['altura1'][$idItem],
-			$_POST['altura2'][$idItem],
-			$_POST['carga'][$idItem],
-			$_POST['falla'][$idItem],
-			$_POST['condicion_especimen'][$idItem],
-			$_POST['observaciones'][$idItem],
-			$_POST['tiempo_ensaye'][$idItem],
-			$_POST['hora_ensaye'][$idItem],
-			$_POST['persona_ensayo'][$idItem],
-			$_POST['flexometro'][$idItem],
-			$_POST['compas'][$idItem],
-			$_POST['escuadra'][$idItem],
-			$_POST['prensa'][$idItem],
-			$_POST['persona_capturo'][$idItem]
-		);
-
-		$stmtItem->execute();
+	if (empty($_POST['item'])) {
+		die("No hay cilindros para guardar");
 	}
 
-	// =========================
-	// 4️⃣ FIN
-	// =========================
-	echo "<script>
-        alert('Reporte y cilindros guardados correctamente');
-        window.close();
-    </script>";
-	exit;
+	$conexion->begin_transaction();
+
+	try {
+
+		// =========================
+		// 1️⃣ INSERT REPORTE (MASTER)
+		// =========================
+		$sqlInsertReporte = "
+            INSERT INTO reporte_concreto (
+                expediente, reporte, elemento, ubicacion, fc,
+                revenimientop, revenimientor, concretera, remision,
+                fecha, edad, volumen, temperatura, agregado,
+                hora_muestreo, hora_desmoldeo, recibio, muestreo,
+                fecha_recepcion, meta_lab, observacion
+            ) VALUES (
+                ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?
+            )
+        ";
+
+		$stmt = $conexion->prepare($sqlInsertReporte);
+		$stmt->bind_param(
+			"siisssssssssssssssss",
+			$expediente,
+			$reporte,
+			$_POST['elemento'],
+			$_POST['ubicacion'],
+			$_POST['fc'],
+			$_POST['revenimientop'],
+			$_POST['revenimientor'],
+			$_POST['concretera'],
+			$_POST['remision'],
+			$_POST['fecha'],
+			$_POST['edad'],
+			$_POST['volumen'],
+			$_POST['temperatura'],
+			$_POST['agregado'],
+			$_POST['hora_muestreo'],
+			$_POST['hora_desmoldeo'],
+			$_POST['recibio'],
+			$_POST['muestreo'],
+			$_POST['fecha_recepcion'],
+			$_POST['observacion']
+		);
+
+		$stmt->execute();
+		$id_reporte_concreto = $conexion->insert_id;
+
+		// =========================
+		// 2️⃣ INSERT CILINDROS (DETAIL)
+		// =========================
+		$sqlInsertItem = "
+            INSERT INTO item (
+                id_reporte_concreto, item, reporte,
+                fecha_ensaye, edad_item, tolerancia,
+                diametro1, diametro2, altura1, altura2,
+                carga, falla, meta_lab,
+                condicion_especimen, observaciones,
+                tiempo_ensaye, hora_ensaye,
+                persona_ensayo, flexometro, compas,
+                escuadra, prensa, persona_capturo
+            ) VALUES (
+                ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+            )
+        ";
+
+		$stmtItem = $conexion->prepare($sqlInsertItem);
+
+		foreach ($_POST['item'] as $idItem) {
+
+			$meta_lab = 1;
+
+			$stmtItem->bind_param(
+				"iiisssddddssissssssssss",
+				$id_reporte_concreto,                 // i
+				$idItem,                              // i
+				$reporte,                             // i
+				$_POST['fecha_ensaye'][$idItem],      // s
+				$_POST['edad_item'][$idItem],         // s
+				$_POST['tolerancia'][$idItem],        // s
+				$_POST['diametro1'][$idItem],         // d
+				$_POST['diametro2'][$idItem],         // d
+				$_POST['altura1'][$idItem],           // d
+				$_POST['altura2'][$idItem],           // d
+				$_POST['carga'][$idItem],              // d
+				$_POST['falla'][$idItem],              // s
+				$meta_lab,                             // i
+				$_POST['condicion_especimen'][$idItem], // s
+				$_POST['observaciones'][$idItem],      // s
+				$_POST['tiempo_ensaye'][$idItem],      // s
+				$_POST['hora_ensaye'][$idItem],        // s
+				$_POST['persona_ensayo'][$idItem],     // s
+				$_POST['flexometro'][$idItem],          // s
+				$_POST['compas'][$idItem],              // s
+				$_POST['escuadra'][$idItem],            // s
+				$_POST['prensa'][$idItem],              // s
+				$_POST['persona_capturo'][$idItem]      // s
+			);
+
+
+			$stmtItem->execute();
+		}
+
+		// =========================
+		// 3️⃣ COMMIT
+		// =========================
+		$conexion->commit();
+
+		echo "<script>
+            alert('Reporte y cilindros guardados correctamente');
+            window.close();
+        </script>";
+		exit;
+	} catch (Exception $e) {
+		$conexion->rollback();
+		die("Error al guardar el reporte: " . $e->getMessage());
+	}
 }
 
 
