@@ -93,7 +93,7 @@ $cliente = $reporte['cliente'] ?? 'SIN CLIENTE';
 $cliente = "";
 $id_cliente = "";
 $obra = $reporte['obra'] ?? 'SIN OBRA';
-// $expediente = $reporte['obra'] ?? 'SIN OBRA';
+$expediente = $reporte['expediente'] ?? 'SIN OBRA';
 $localizacion = $reporte['localizacion'] ?? 'SIN LOCALIZACION';
 // $reporte = "";
 $fecha = $reporte['fecha'] ?? 'SIN FECHA';
@@ -125,9 +125,9 @@ $fechaObj = new DateTime($fecha);
 $fechaObj->modify('+1 day');
 $fecha_recepcion = $fechaObj->format('Y-m-d');
 
-echo "<script>
-	alert('CLIENTE: ' + " . json_encode($fecha) . ");
-</script>";
+// echo "<script>
+// 	alert('CLIENTE: ' + " . json_encode($fecha) . ");
+// </script>";
 
 
 $id_reporte_concreto = $_POST['id_reporte_concreto']
@@ -135,169 +135,249 @@ $id_reporte_concreto = $_POST['id_reporte_concreto']
 	?? null;
 
 
-if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
+// if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
-	$exp = $_GET['expediente'];
-	$rep = $_GET['reporte'];
-	$id_reporte_concreto = $_GET['id_reporte_concreto'];
-
-
+// 	$exp = $_GET['expediente'];
+// 	$rep = $_GET['reporte'];
+// 	$id_reporte_concreto = $_GET['id_reporte_concreto'];
 
 
 
-	// ----
 
-	// // Consulta del registro
-	// $sql = "SELECT * FROM reporte_concreto 
-	//         WHERE expediente = '$exp' AND reporte = '$rep' 
-	//         LIMIT 1";
-	// $res = $conexion->query($sql);
 
-	// if ($res->num_rows > 0) {
-	// 	$data = $res->fetch_assoc();
+// 	// ----
 
-	// 	// Llenar variables
-	// 	// $cliente       = $data['cliente'];
-	// 	// $id_cliente    = $data['id_cliente'];
-	// 	// $obra          = $data['obra'];
-	// 	$expediente    = $data['expediente'];
-	// 	// $localizacion  = $data['ubicacion'];
-	// 	$fecha       = $data['fecha'];
-	// 	$fecha_recepcion       = $data['fecha_recepcion'];
-	// 	$reporte       = $data['reporte'];
-	// 	$elemento      = $data['elemento'];
-	// 	$ubicacion     = $data['ubicacion'];
-	// 	$fc            = $data['fc'];
-	// 	$edad          = $data['edad'];
-	// 	$revenimientop          = $data['revenimientop'];
-	// 	$revenimientor          = $data['revenimientor'];
-	// 	$tma          = $data['agregado'];
-	// 	$concretera          = $data['concretera'];
-	// 	$temperatura          = $data['temperatura'];
-	// 	$remision          = $data['remision'];
-	// 	$volumen          = $data['volumen'];
-	// 	$hora_muestreo          = $data['hora_muestreo'];
-	// 	$hora_desmoldeo          = $data['hora_desmoldeo'];
+// 	// // Consulta del registro
+// 	// $sql = "SELECT * FROM reporte_concreto 
+// 	//         WHERE expediente = '$exp' AND reporte = '$rep' 
+// 	//         LIMIT 1";
+// 	// $res = $conexion->query($sql);
 
-	// 	$muestreo          = $data['muestreo'];
-	// 	$recibio          = $data['recibio'];
-	// 	$observacion          = $data['observacion'];
-	// 	// $revisado_autorizado          = $data['revisado_autorizado'];
-	// }
-	// ---------- ACTUALIZAR DATOS DE MUESTREO ----------
+// 	// if ($res->num_rows > 0) {
+// 	// 	$data = $res->fetch_assoc();
 
-	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// 	// 	// Llenar variables
+// 	// 	// $cliente       = $data['cliente'];
+// 	// 	// $id_cliente    = $data['id_cliente'];
+// 	// 	// $obra          = $data['obra'];
+// 	// 	$expediente    = $data['expediente'];
+// 	// 	// $localizacion  = $data['ubicacion'];
+// 	// 	$fecha       = $data['fecha'];
+// 	// 	$fecha_recepcion       = $data['fecha_recepcion'];
+// 	// 	$reporte       = $data['reporte'];
+// 	// 	$elemento      = $data['elemento'];
+// 	// 	$ubicacion     = $data['ubicacion'];
+// 	// 	$fc            = $data['fc'];
+// 	// 	$edad          = $data['edad'];
+// 	// 	$revenimientop          = $data['revenimientop'];
+// 	// 	$revenimientor          = $data['revenimientor'];
+// 	// 	$tma          = $data['agregado'];
+// 	// 	$concretera          = $data['concretera'];
+// 	// 	$temperatura          = $data['temperatura'];
+// 	// 	$remision          = $data['remision'];
+// 	// 	$volumen          = $data['volumen'];
+// 	// 	$hora_muestreo          = $data['hora_muestreo'];
+// 	// 	$hora_desmoldeo          = $data['hora_desmoldeo'];
 
-		$fecha = $_POST['fecha'];
-		$fecha_recepcion = $_POST['fecha_recepcion'];
-		$elemento = $_POST['elemento'];
-		$ubicacion = $_POST['ubicacion'];
-		$fc = $_POST['fc'];
-		$edad = $_POST['edad'];
-		$revenimientop = $_POST['revenimientop'];
-		$revenimientor = $_POST['revenimientor'];
-		$tma = $_POST['agregado'];
-		$concretera = $_POST['concretera'];
-		$temperatura = $_POST['temperatura'];
-		$remision = $_POST['remision'];
-		$volumen = $_POST['volumen'];
-		$hora_muestreo = $_POST['hora_muestreo'];
-		$hora_desmoldeo = $_POST['hora_desmoldeo'];
-		$muestreo = $_POST['muestreo'];
-		$recibio = $_POST['recibio'];
-		$observacion = $_POST['observacion'];
+// 	// 	$muestreo          = $data['muestreo'];
+// 	// 	$recibio          = $data['recibio'];
+// 	// 	$observacion          = $data['observacion'];
+// 	// 	// $revisado_autorizado          = $data['revisado_autorizado'];
+// 	// }
+// 	// ---------- agregar DATOS DE MUESTREO ----------
 
-		$sqlUpdate = "UPDATE reporte_concreto SET
-		fecha = '$fecha',
-		fecha_recepcion = '$fecha_recepcion',
-		elemento = '$elemento',
-		ubicacion = '$ubicacion',
-		fc = '$fc',
-		edad = '$edad',
-		revenimientop = '$revenimientop',
-		revenimientor = '$revenimientor',
-		agregado = '$tma',
-		concretera = '$concretera',
-		temperatura = '$temperatura',
-		remision = '$remision',
-		volumen = '$volumen',
-		hora_muestreo = '$hora_muestreo',
-		hora_desmoldeo = '$hora_desmoldeo',
-		muestreo = '$muestreo',
-		recibio = '$recibio',
-		observacion = '$observacion'
-	WHERE expediente = '$exp' AND reporte = '$rep'";
+// 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-		if ($conexion->query($sqlUpdate)) {
-			// 	echo "<script>alert('Datos de muestreo actualizados correctamente'); 
-			// window.location.href='captura_cilindros.php?expediente=$exp&reporte=$rep';</script>";
-		} else {
-			echo "Error: " . $conexion->error;
-		}
-	}
-}
-// ---------- ACTUALIZAR ENSAYE DE ESPECÍMENES ----------
+// 		$fecha = $_POST['fecha'];
+// 		$fecha_recepcion = $_POST['fecha_recepcion'];
+// 		$elemento = $_POST['elemento'];
+// 		$ubicacion = $_POST['ubicacion'];
+// 		$fc = $_POST['fc'];
+// 		$edad = $_POST['edad'];
+// 		$revenimientop = $_POST['revenimientop'];
+// 		$revenimientor = $_POST['revenimientor'];
+// 		$tma = $_POST['agregado'];
+// 		$concretera = $_POST['concretera'];
+// 		$temperatura = $_POST['temperatura'];
+// 		$remision = $_POST['remision'];
+// 		$volumen = $_POST['volumen'];
+// 		$hora_muestreo = $_POST['hora_muestreo'];
+// 		$hora_desmoldeo = $_POST['hora_desmoldeo'];
+// 		$muestreo = $_POST['muestreo'];
+// 		$recibio = $_POST['recibio'];
+// 		$observacion = $_POST['observacion'];
+
+// 		$sqlInsertReporte = "
+//     INSERT INTO reporte_concreto (
+//         expediente, reporte, elemento, ubicacion, fc,
+//         revenimientop, revenimientor, concretera, remision,
+//         fecha, edad, volumen, temperatura, agregado,
+//         hora_muestreo, hora_desmoldeo, recibio, muestreo,
+//         fecha_recepcion, meta_lab, observacion
+//     ) VALUES (
+//         ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?
+//     )
+// ";
+
+// 		$stmt = $conexion->prepare($sqlInsertReporte);
+// 		$stmt->bind_param(
+// 			"sisssssssssssssssss",
+// 			$expediente,
+// 			$reporte,
+// 			$elemento,
+// 			$ubicacion,
+// 			$fc,
+// 			$revenimientop,
+// 			$revenimientor,
+// 			$concretera,
+// 			$remision,
+// 			$fecha,
+// 			$edad,
+// 			$volumen,
+// 			$temperatura,
+// 			$tma,
+// 			$hora_muestreo,
+// 			$hora_desmoldeo,
+// 			$recibio,
+// 			$muestreo,
+// 			$fecha_recepcion,
+// 			$observacion
+// 		);
+
+// 		$stmt->execute();
+
+// 		/** 👈 ESTE ES TU buscarIdReporte() */
+// 		$id_reporte_concreto = $conexion->insert_id;
+
+
+// 		if ($conexion->query($sqlUpdate)) {
+// 			// 	echo "<script>alert('Datos de muestreo actualizados correctamente'); 
+// 			// window.location.href='captura_cilindros.php?expediente=$exp&reporte=$rep';</script>";
+// 		} else {
+// 			echo "Error: " . $conexion->error;
+// 		}
+// 	}
+// }
+// ---------- agregar ENSAYE DE ESPECÍMENES ----------
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 
-	$id_reporte_concreto = $_POST['id_reporte_concreto'];
+	// =========================
+	// 1️⃣ DATOS GENERALES
+	// ========================}
+	$expediente = $_POST['expediente'];
+	$reporte    = $_POST['reporte'];
+
+	echo "<script>
+        alert('$expediente - $reporte');
+    </script>";
+	// =========================
+	// 2️⃣ INSERT REPORTE (MASTER)
+	// =========================
+	$sqlInsertReporte = "
+        INSERT INTO reporte_concreto (
+            expediente, reporte, elemento, ubicacion, fc,
+            revenimientop, revenimientor, concretera, remision,
+            fecha, edad, volumen, temperatura, agregado,
+            hora_muestreo, hora_desmoldeo, recibio, muestreo,
+            fecha_recepcion, meta_lab, observacion
+        ) VALUES (
+            ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?
+        )
+    ";
+
+	$stmt = $conexion->prepare($sqlInsertReporte);
+	$stmt->bind_param(
+		"sisssssssssssssssss",
+		$expediente,
+		$reporte,
+		$_POST['elemento'],
+		$_POST['ubicacion'],
+		$_POST['fc'],
+		$_POST['revenimientop'],
+		$_POST['revenimientor'],
+		$_POST['concretera'],
+		$_POST['remision'],
+		$_POST['fecha'],
+		$_POST['edad'],
+		$_POST['volumen'],
+		$_POST['temperatura'],
+		$_POST['agregado'],
+		$_POST['hora_muestreo'],
+		$_POST['hora_desmoldeo'],
+		$_POST['recibio'],
+		$_POST['muestreo'],
+		$_POST['fecha_recepcion'],
+		$_POST['observacion']
+	);
+
+	$stmt->execute();
+
+	// 👈 equivalente a buscarIdReporte()
+	$id_reporte_concreto = $conexion->insert_id;
+
+	// =========================
+	// 3️⃣ INSERT CILINDROS (DETAIL)
+	// =========================
+	$sqlInsertItem = "
+        INSERT INTO item (
+            id_reporte_concreto, item, reporte,
+            fecha_ensaye, edad_item, tolerancia,
+            diametro1, diametro2, altura1, altura2,
+            carga, falla, meta_lab,
+            condicion_especimen, observaciones,
+            tiempo_ensaye, hora_ensaye,
+            persona_ensayo, flexometro, compas,
+            escuadra, prensa, persona_capturo
+        ) VALUES (
+            ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+        )
+    ";
+
+	$stmtItem = $conexion->prepare($sqlInsertItem);
 
 	foreach ($_POST['item'] as $idItem) {
 
-		$fecha_ensaye      = $_POST['fecha_ensaye'][$idItem];
-		$edad_item         = $_POST['edad_item'][$idItem];
-		$tolerancia        = $_POST['tolerancia'][$idItem];
-		$diametro1         = $_POST['diametro1'][$idItem];
-		$diametro2         = $_POST['diametro2'][$idItem];
-		$altura1           = $_POST['altura1'][$idItem];
-		$altura2           = $_POST['altura2'][$idItem];
-		$condicion         = $_POST['condicion_especimen'][$idItem];
-		$flexometro        = $_POST['flexometro'][$idItem];
-		$escuadra          = $_POST['escuadra'][$idItem];
-		$compas            = $_POST['compas'][$idItem];
-		$prensa            = $_POST['prensa'][$idItem];
-		$hora_ensaye       = $_POST['hora_ensaye'][$idItem];
-		$carga             = $_POST['carga'][$idItem];
-		$tiempo_ensaye     = $_POST['tiempo_ensaye'][$idItem];
-		// $velocidad         = $_POST['velocidad'][$idItem];
-		// $cumple_velocidad  = $_POST['cumple_velocidad'][$idItem];
-		$falla             = $_POST['falla'][$idItem];
-		$observaciones     = $_POST['observaciones'][$idItem];
-		$persona_ensayo    = $_POST['persona_ensayo'][$idItem];
-		$persona_capturo   = $_POST['persona_capturo'][$idItem];
+		$stmtItem->bind_param(
+			"iiisssddddddissssssss",
+			$id_reporte_concreto,
+			$idItem,
+			$reporte,
+			$_POST['fecha_ensaye'][$idItem],
+			$_POST['edad_item'][$idItem],
+			$_POST['tolerancia'][$idItem],
+			$_POST['diametro1'][$idItem],
+			$_POST['diametro2'][$idItem],
+			$_POST['altura1'][$idItem],
+			$_POST['altura2'][$idItem],
+			$_POST['carga'][$idItem],
+			$_POST['falla'][$idItem],
+			$_POST['condicion_especimen'][$idItem],
+			$_POST['observaciones'][$idItem],
+			$_POST['tiempo_ensaye'][$idItem],
+			$_POST['hora_ensaye'][$idItem],
+			$_POST['persona_ensayo'][$idItem],
+			$_POST['flexometro'][$idItem],
+			$_POST['compas'][$idItem],
+			$_POST['escuadra'][$idItem],
+			$_POST['prensa'][$idItem],
+			$_POST['persona_capturo'][$idItem]
+		);
 
-		$sqlUpdateItem = "UPDATE item SET
-    fecha_ensaye = '$fecha_ensaye',
-    edad_item = '$edad_item',
-    tolerancia = '$tolerancia',
-    diametro1 = '$diametro1',
-    diametro2 = '$diametro2',
-    altura1 = '$altura1',
-    altura2 = '$altura2',
-    condicion_especimen = '$condicion',
-    flexometro = '$flexometro',
-    escuadra = '$escuadra',
-    compas = '$compas',
-    prensa = '$prensa',
-    hora_ensaye = '$hora_ensaye',
-    carga = '$carga',
-    tiempo_ensaye = '$tiempo_ensaye',
-    falla = '$falla',
-    observaciones = '$observaciones',
-    persona_ensayo = '$persona_ensayo',
-    persona_capturo = '$persona_capturo'
-WHERE item = '$idItem' AND id_reporte_concreto = '$id_reporte_concreto'
-";
-
-
-		$conexion->query($sqlUpdateItem);
+		$stmtItem->execute();
 	}
+
+	// =========================
+	// 4️⃣ FIN
+	// =========================
 	echo "<script>
-        alert('Ensaye actualizado correctamente');
+        alert('Reporte y cilindros guardados correctamente');
         window.close();
     </script>";
 	exit;
-	// echo "<script>alert('Ensaye actualizado correctamente');location.reload();</script>";
 }
+
+
 
 
 
@@ -381,14 +461,14 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					<div class="col-xl-6">
 						<div class="mb-3">
 							<label class="form-label">Cliente <span class="text-danger"></label>
-							<input type="text" id="cliente" class="form-control" value="<?= $cliente ?>" readonly
+							<input type="text" id="cliente" class="form-control" name="cliente" value="<?= $cliente ?>" readonly
 								placeholder="Nombre del cliente">
 						</div>
 					</div>
 					<div class="col-xl-6">
 						<div class="mb-3">
 							<label class="form-label">Id cliente <span class="text-danger"></label>
-							<input type="number" id="id_cliente" class="form-control" value="<?= $id_cliente ?>" readonly
+							<input type="number" id="id_cliente" class="form-control" name="id_cliente" value="<?= $id_cliente ?>" readonly
 								placeholder="Id cliente">
 							<!-- <div class="input-group">
 								<label class="input-group-text" for="datepicker-component"><i class="fa fa-calendar"></i></label>
@@ -398,14 +478,14 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					<div class="col-xl-6">
 						<div class="mb-3">
 							<label class="form-label">Obra <span class="text-danger"></label>
-							<input type="text" id="obra" class="form-control" value="<?= $obra ?>" readonly
+							<input type="text" id="obra" class="form-control" name="obra" value="<?= $obra ?>" readonly
 								placeholder="Nombre de la obra">
 						</div>
 					</div>
 					<div class="col-xl-6">
 						<div class="mb-3">
 							<label class="form-label">Expediente <span class="text-danger"></label>
-							<input type="number" id="expediente" class="form-control" value="<?= $expediente ?>" readonly
+							<input type="number" id="expediente" class="form-control" name="expediente" value="<?= $expediente ?>" readonly
 								placeholder="Numero de expediente">
 						</div>
 					</div>
@@ -413,7 +493,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					<div class="col-xl-6">
 						<div class="mb-3">
 							<label class="form-label">Localización <span class="text-danger"></label>
-							<input type="text" id="localizacion" class="form-control" value="<?= $localizacion ?>" readonly
+							<input type="text" id="localizacion" class="form-control" name="localizacion" value="<?= $localizacion ?>" readonly
 								placeholder="Localización">
 						</div>
 					</div>
@@ -421,7 +501,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					<div class="col-xl-6">
 						<div class="mb-3">
 							<label class="form-label">Reporte <span class="text-danger"></label>
-							<input type="number" id="reporte" class="form-control" value="<?= $reporte ?>" readonly
+							<input type="number" id="reporte" class="form-control" name="reporte" value="<?= $reporte ?>" readonly
 								placeholder="Numero de reporte">
 						</div>
 					</div>
@@ -582,14 +662,14 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 
 		<div class="card">
-			<div class="card-header with-btn">
+			<!-- <div class="card-header with-btn">
 				ENSAYE A LA COMPRESIÓN DE ESPECÍMENES CILÍNDRICOS DE CONCRETO
 				<div class="card-header-btn">
 					<a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
 					<a href="#" data-toggle="card-expand" class="btn"><iconify-icon icon="material-symbols-light:fullscreen"></iconify-icon></a>
 					<a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="card-body">
 
@@ -657,6 +737,17 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 
 <?php include("pie.php"); ?>
+<script>
+	const personalLista = <?= json_encode($personalLista, JSON_UNESCAPED_UNICODE) ?>;
+
+	function generarOpcionesPersonal() {
+		let opciones = `<option value=""></option>`;
+		personalLista.forEach(p => {
+			opciones += `<option value="${p.Nombre}">${p.Nombre}</option>`;
+		});
+		return opciones;
+	}
+</script>
 
 <script>
 	function actualizarFechasEnsaye() {
@@ -887,7 +978,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		if (!tbody) return;
 
 		tbody.innerHTML = "";
-
+		let opcionesPersonal = generarOpcionesPersonal();
 		for (let i = 1; i <= 4; i++) {
 
 			let id = ultimoItem + i;
@@ -941,8 +1032,17 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
                 </td>
 
                 <td><input type="text" class="form-control" name="observaciones[${id}]"></td>
-                <td><select class="form-select" name="persona_ensayo[${id}]"></select></td>
-                <td><select class="form-select" name="persona_capturo[${id}]"></select></td>
+<td>
+    <select class="form-select" name="persona_ensayo[${id}]">
+        ${opcionesPersonal}
+    </select>
+</td>
+
+<td>
+    <select class="form-select" name="persona_capturo[${id}]">
+        ${opcionesPersonal}
+    </select>
+</td>
             </tr>
         `);
 		}
