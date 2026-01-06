@@ -118,8 +118,8 @@ $elemento = $reporte['elementoColado'] ?? 'SIN ELEMENTO';
 $ubicacion = $reporte['ubicacion'] ?? 'SIN UBICACION';
 $fc = $reporte['fc'] ?? 'SIN fc';
 $edad = $reporte['edad'] ?? 'SIN edad';
-$revenimientop = $reporte['revenimientoDis'] ?? 'SIN revenimientop';
-$revenimientor = $reporte['revenimientoR1'] ?? 'SIN revenimiento1';
+$revenimiento_dis = $reporte['revenimientoDis'] ?? 'SIN revenimientop';
+$revenimiento_r1 = $reporte['revenimientoR1'] ?? 'SIN revenimiento1';
 $tma = $reporte['tma'] ?? 'SIN tma';
 $concretera = $reporte['concretera'] ?? 'SIN concretera';
 $temperatura = $reporte['temperatura'] ?? 'SIN temperatura';
@@ -636,7 +636,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					<div class="col-xl-6">
 						<div class="mb-3">
 							<label class="form-label">Elemento *</label>
-							<input type="text" class="form-control" name="elemento_colado" value="<?= $elemento_colado ?>">
+							<input type="text" class="form-control" name="elemento_colado" value="<?= $elemento ?>">
 						</div>
 					</div>
 
