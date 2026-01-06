@@ -195,7 +195,7 @@
 						</a>
 						<div class="menu-submenu">
 							<div class="menu-item ">
-								<a href="lista_reportes_cilindros_validar.php" class="menu-link">
+								<a href="lista_reportes_vigas_validar.php" class="menu-link">
 									<span class="menu-text">Validar vigas</span>
 								</a>
 							</div>

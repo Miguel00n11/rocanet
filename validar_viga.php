@@ -93,7 +93,7 @@ function firebaseDelete($ruta)
 $usuario = $_GET['usuario']; // NO urldecode
 $llave   = $_GET['llave'] ?? '';
 
-$ruta = "Cilindros/Reportes/$usuario/$llave";
+$ruta = "Vigas/Reportes/$usuario/$llave";
 $reporte = firebaseGet($ruta);
 
 if ($reporte === null) {
@@ -283,7 +283,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 	$reporte    = $_POST['reporte'];
 
 	if (empty($_POST['item'])) {
-		die("No hay cilindros para guardar");
+		die("No hay vigas para guardar");
 	}
 
 	$conexion->begin_transaction();
@@ -297,41 +297,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 		// 1️⃣ INSERT REPORTE (MASTER)
 		// =========================
 		$sqlInsertReporte = "
-            INSERT INTO reporte_concreto (
-                expediente, reporte, elemento, ubicacion, fc,
-                revenimientop, revenimientor, concretera, remision,
-                fecha, edad, volumen, temperatura, agregado,
-                hora_muestreo, hora_desmoldeo, recibio, muestreo,
-                fecha_recepcion, meta_lab, observacion
-            ) VALUES (
-                ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?
-            )
-        ";
+INSERT INTO $tablaDatos (
+    id_reporte_concreto, obra, fecha, aditivo, carretilla, cliente, concretera,
+    cono, cucharon, edad, elemento_colado, enrasador,
+    estado_molde1, estado_molde2, estado_molde3, estado_molde4,
+    exp, fc, flexometro, hora_llegada, hora_muestreo, hora_salida,
+    id_especimen1, id_especimen2, id_especimen3, id_especimen4,
+    localizacion, mazo,
+    molde1, molde2, molde3, molde4,
+    muestra, numero_reporte, observaciones, personal, placa,
+    proporciones, remision,
+    revenimiento_dis, revenimiento_r1, revenimiento_r2,
+    revisado, temperatura, termometro, tipo_muestreo,
+    tipo_resistencia, tma, ubicacion, validado, varilla,
+    volumen_total, volumen_muestra, olla
+) VALUES (
+    ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+)";
 
 		$stmt = $conexion->prepare($sqlInsertReporte);
+
 		$stmt->bind_param(
-			"sissssssssssssssssss",
-			$expediente,
-			$reporte,
-			$_POST['elemento'],
-			$_POST['ubicacion'],
-			$_POST['fc'],
-			$_POST['revenimientop'],
-			$_POST['revenimientor'],
-			$_POST['concretera'],
-			$_POST['remision'],
+			"issssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+			$_POST['id_reporte_concreto'],
+			$_POST['obra'],
 			$_POST['fecha'],
+			$_POST['aditivo'],
+			$_POST['carretilla'],
+			$_POST['cliente'],
+			$_POST['concretera'],
+			$_POST['cono'],
+			$_POST['cucharon'],
 			$_POST['edad'],
-			$_POST['volumen'],
-			$_POST['temperatura'],
-			$_POST['agregado'],
+			$_POST['elemento_colado'],
+			$_POST['enrasador'],
+			$_POST['estado_molde1'],
+			$_POST['estado_molde2'],
+			$_POST['estado_molde3'],
+			$_POST['estado_molde4'],
+			$_POST['exp'],
+			$_POST['fc'],
+			$_POST['flexometro'],
+			$_POST['hora_llegada'],
 			$_POST['hora_muestreo'],
-			$_POST['hora_desmoldeo'],
-			$_POST['recibio'],
-			$_POST['muestreo'],
-			$_POST['fecha_recepcion'],
-			$_POST['observacion']
+			$_POST['hora_salida'],
+			$_POST['id_especimen1'],
+			$_POST['id_especimen2'],
+			$_POST['id_especimen3'],
+			$_POST['id_especimen4'],
+			$_POST['localizacion'],
+			$_POST['mazo'],
+			$_POST['molde1'],
+			$_POST['molde2'],
+			$_POST['molde3'],
+			$_POST['molde4'],
+			$_POST['muestra'],
+			$_POST['numero_reporte'],
+			$_POST['observaciones'],
+			$_POST['personal'],
+			$_POST['placa'],
+			$_POST['proporciones'],
+			$_POST['remision'],
+			$_POST['revenimiento_dis'],
+			$_POST['revenimiento_r1'],
+			$_POST['revenimiento_r2'],
+			$_POST['revisado'],
+			$_POST['temperatura'],
+			$_POST['termometro'],
+			$_POST['tipo_muestreo'],
+			$_POST['tipo_resistencia'],
+			$_POST['tma'],
+			$_POST['ubicacion'],
+			$_POST['validado'],
+			$_POST['varilla'],
+			$_POST['volumen_total'],
+			$_POST['volumen_muestra'],
+			$_POST['olla']
 		);
+
 
 		$stmt->execute();
 		$id_reporte_concreto = $conexion->insert_id;
@@ -399,10 +442,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 		// =========================
 		// 4️⃣ BORRAR REPORTE EN FIREBASE
 		// =========================
-		firebaseDelete($ruta);
+		// firebaseDelete($ruta);
 
 		echo "<script>
-            alert('Reporte y cilindros guardados correctamente $elemento');
+            alert('Reporte y vigas guardados correctamente $elemento');
             window.close();
         </script>";
 		exit;
@@ -478,7 +521,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		</ul>
 
 		<h1 class="page-header">
-			Validación de cilindros <small></small>
+			Validación de vigas <small></small>
 		</h1>
 
 
@@ -593,7 +636,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					<div class="col-xl-6">
 						<div class="mb-3">
 							<label class="form-label">Elemento *</label>
-							<input type="text" class="form-control" name="elemento" value="<?= $elemento ?>">
+							<input type="text" class="form-control" name="elemento_colado" value="<?= $elemento_colado ?>">
 						</div>
 					</div>
 
@@ -618,12 +661,12 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 					<div class="col-xl-3">
 						<label class="form-label">Rev. Proy. *</label>
-						<input type="number" class="form-control" name="revenimientop" value="<?= $revenimientop ?>">
+						<input type="number" class="form-control" name="revenimiento_dis" value="<?= $revenimiento_dis ?>">
 					</div>
 
 					<div class="col-xl-3">
 						<label class="form-label">Rev. Real *</label>
-						<input type="number" class="form-control" name="revenimientor" value="<?= $revenimientor ?>">
+						<input type="number" class="form-control" name="revenimiento_r1" value="<?= $revenimiento_r1 ?>">
 					</div>
 
 					<!-- </div> -->
@@ -632,7 +675,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 					<div class="col-xl-2">
 						<label class="form-label">T.M.A. [mm] *</label>
-						<input type="text" class="form-control" name="agregado" value="<?= $tma ?>">
+						<input type="text" class="form-control" name="tma" value="<?= $tma ?>">
 					</div>
 					<div class="col-xl-4">
 						<label class="form-label">Concretera *</label>
@@ -815,7 +858,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 
 	// === ACTUALIZAR CILINDROS SEGÚN LA EDAD DE MUESTREO ===
-	function actualizarCilindros() {
+	function actualizarVigas() {
 		let edad = document.querySelector("input[name='edad']").value;
 
 		let edades = document.querySelectorAll("input[name^='edad_item']");
@@ -883,7 +926,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 
 	// Ejecutar cuando cambie la edad del muestreo
-	document.querySelector("input[name='edad']").addEventListener("input", actualizarCilindros);
+	document.querySelector("input[name='edad']").addEventListener("input", actualizarVigas);
 
 
 	// Cálculo en tiempo real de porcentaje f'c respecto al f'c de diseño
@@ -955,7 +998,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 	});
 
 	// Ejecutar cuando cambie la edad del muestreo
-	document.querySelector("input[name='edad']").addEventListener("input", actualizarCilindros);
+	document.querySelector("input[name='edad']").addEventListener("input", actualizarVigas);
 	// Cuando cambia la fecha de muestreo, recalcular fechas de ensaye
 	document.querySelector("input[name='fecha']").addEventListener("change", actualizarFechasEnsaye);
 
@@ -975,7 +1018,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		if (!expediente) return;
 
 		// 1️⃣ Cargar datos generales del expediente
-		fetch(`ajax_get_expediente.php?expediente=${expediente}`)
+		fetch(`ajax_get_expediente_viga.php?expediente=${expediente}`)
 			.then(r => r.json())
 			.then(data => {
 
@@ -990,9 +1033,10 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 				document.getElementById("cliente").value = data.cliente;
 				document.getElementById("id_cliente").value = data.idcliente;
 				document.getElementById("reporte").value = data.siguiente_reporte;
+				document.getElementById("id").value = data.ultimo_item;
 
 				// 2️⃣ Consultar último item REAL
-				return fetch(`ajax_get_ultimo_item.php?expediente=${expediente}`);
+				return fetch(`ajax_get_ultimo_viga.php?expediente=${expediente}`);
 			})
 			.then(r => r.json())
 			.then(data => {
@@ -1007,7 +1051,9 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 			.catch(err => console.error(err));
 	});
 
-	function reconstruirCilindros(ultimoItem) {
+
+
+	function reconstruirVigas(ultimoItem) {
 
 		const tbody = document.querySelector("table tbody");
 		if (!tbody) return;
@@ -1082,6 +1128,6 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
         `);
 		}
 
-		actualizarCilindros();
+		actualizarVigas();
 	}
 </script>
