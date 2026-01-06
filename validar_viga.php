@@ -297,7 +297,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 		// 1️⃣ INSERT REPORTE (MASTER)
 		// =========================
 		$sqlInsertReporte = "
-INSERT INTO $tablaDatos (
+INSERT INTO registros_vigas_campo_actualizado (
     id_reporte_concreto, obra, fecha, aditivo, carretilla, cliente, concretera,
     cono, cucharon, edad, elemento_colado, enrasador,
     estado_molde1, estado_molde2, estado_molde3, estado_molde4,
@@ -857,72 +857,71 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 	}
 
 
-	// === ACTUALIZAR CILINDROS SEGÚN LA EDAD DE MUESTREO ===
+	// === ACTUALIZAR VIGAS SEGÚN LA EDAD DE MUESTREO ===
 	function actualizarVigas() {
+
 		let edad = document.querySelector("input[name='edad']").value;
 
 		let edades = document.querySelectorAll("input[name^='edad_item']");
 		let tolerancias = document.querySelectorAll("input[name^='tolerancia']");
 
-		if (edades.length < 4) return;
+		if (edades.length === 0) return;
 
 		switch (edad) {
+
 			case "1":
-				edades[0].value = edades[1].value = edades[2].value = edades[3].value = 1;
-				tolerancias[0].value = tolerancias[1].value = tolerancias[2].value = tolerancias[3].value = 0.5;
+				edades.forEach(e => e.value = 1);
+				tolerancias.forEach(t => t.value = 0.5);
 				break;
 
 			case "3":
-				edades[0].value = edades[1].value = edades[2].value = edades[3].value = 3;
-				tolerancias[0].value = tolerancias[1].value = tolerancias[2].value = tolerancias[3].value = 2;
+				edades.forEach(e => e.value = 3);
+				tolerancias.forEach(t => t.value = 2);
 				break;
 
 			case "5":
 				edades[0].value = 1;
 				edades[1].value = 3;
-				edades[2].value = edades[3].value = 5;
+				edades[2].value = 5;
+
 				tolerancias[0].value = 0.5;
 				tolerancias[1].value = 2;
-				tolerancias[2].value = tolerancias[3].value = 2;
+				tolerancias[2].value = 2;
 				break;
 
 			case "7":
 				edades[0].value = 3;
 				edades[1].value = 5;
-				edades[2].value = edades[3].value = 7;
+				edades[2].value = 7;
+
 				tolerancias[0].value = 2;
 				tolerancias[1].value = 2;
-				tolerancias[2].value = tolerancias[3].value = 6;
+				tolerancias[2].value = 6;
 				break;
 
 			case "14":
 				edades[0].value = 5;
 				edades[1].value = 7;
-				edades[2].value = edades[3].value = 14;
+				edades[2].value = 14;
+
 				tolerancias[0].value = 2;
 				tolerancias[1].value = 6;
-				tolerancias[2].value = tolerancias[3].value = 12;
+				tolerancias[2].value = 12;
 				break;
 
 			case "28":
 				edades[0].value = 7;
 				edades[1].value = 14;
-				edades[2].value = edades[3].value = 28;
+				edades[2].value = 28;
+
 				tolerancias[0].value = 6;
 				tolerancias[1].value = 12;
-				tolerancias[2].value = tolerancias[3].value = 20;
+				tolerancias[2].value = 20;
 				break;
 		}
-
-		// Recalcular f'c
-		document.querySelectorAll(".fc_res").forEach(span => {
-			let itemID = span.id.replace("fc_res_", "");
-			calcularFC(itemID);
-		});
-
-		// 👈 Nueva línea: actualizar fechas automáticamente
 		actualizarFechasEnsaye();
 	}
+
 
 
 	// Ejecutar cuando cambie la edad del muestreo
@@ -1033,7 +1032,6 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 				document.getElementById("cliente").value = data.cliente;
 				document.getElementById("id_cliente").value = data.idcliente;
 				document.getElementById("reporte").value = data.siguiente_reporte;
-				document.getElementById("id").value = data.ultimo_item;
 
 				// 2️⃣ Consultar último item REAL
 				return fetch(`ajax_get_ultimo_viga.php?expediente=${expediente}`);
@@ -1046,7 +1044,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					return;
 				}
 
-				reconstruirCilindros(data.ultimo_item);
+				reconstruirVigas(data.ultimo_item);
 			})
 			.catch(err => console.error(err));
 	});
@@ -1060,7 +1058,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 		tbody.innerHTML = "";
 		let opcionesPersonal = generarOpcionesPersonal();
-		for (let i = 1; i <= 4; i++) {
+		for (let i = 1; i <= 3; i++) {
 
 			let id = ultimoItem + i;
 
@@ -1129,5 +1127,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		}
 
 		actualizarVigas();
+		// 2️⃣ YA existen edad_item → calcular fechas
+		actualizarFechasEnsaye();
 	}
 </script>
