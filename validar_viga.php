@@ -138,12 +138,15 @@ $proporciones = $reporte['proporciones'] ?? 'SIN proporciones';
 $estado_molde1 = $reporte['estadoMolde1'] ?? 'SIN estado molde1';
 $estado_molde2 = $reporte['estadoMolde2'] ?? 'SIN estado molde2';
 $estado_molde3 = $reporte['estadoMolde3'] ?? 'SIN estado molde3';
+$estado_molde4 = "";
+$item4 = 0;
 $id_especimen1 = $reporte['idEspecimen1'] ?? 'SIN id especimen1';
 $id_especimen2 = $reporte['idEspecimen2'] ?? 'SIN id especimen2';
 $id_especimen3 = $reporte['idEspecimen3'] ?? 'SIN id especimen3';
 $molde1 = $reporte['molde1'] ?? 'SIN molde 1';
 $molde2 = $reporte['molde2'] ?? 'SIN molde 2';
 $molde3 = $reporte['molde3'] ?? 'SIN molde 3';
+$molde4 = 0;
 $concretera = $reporte['concretera'] ?? 'SIN concretera';
 $temperatura = $reporte['temperatura'] ?? 'SIN temperatura';
 $remision = $reporte['remision'] ?? 'SIN remision';
@@ -157,10 +160,11 @@ $muestra = $reporte['muestra'] ?? 'SIN muestra';
 $hora_muestreo = $reporte['horaMuestreo'] ?? 'SIN hora muestreo';
 $hora_llegada = $reporte['horaLLegada'] ?? 'SIN hora llegada';
 $hora_salida = $reporte['horaSalida'] ?? 'SIN hora salida';
-$hora_desmoldeo = "";
 $muestreo = $reporte['personal'] ?? 'SIN personal';
-$recibio = "";
+$recibio = "Jesús Miguel Rodríguez Ortega"; // Valor por defecto
+$revisado_autorizado = "Cristina Andrea Rodríguez Ortega"; // Valor por defecto
 $observacion = $reporte['observaciones'] ?? 'SIN observaciones';
+
 
 // Convertir fecha de Firebase (dd/mm/yyyy) a yyyy-mm-dd
 if ($fecha !== 'SIN FECHA' && strpos($fecha, '/') !== false) {
@@ -201,24 +205,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 	alert('CLIENTE: ' + " . $elemento . ");
 </script>";
 
-		$item   = [null, null, null];
-		$edad   = [null, null, null];
-		$ensaye = [null, null, null];
-		$carga  = [null, null, null];
-		$falla  = [null, null, null];
+	$item   = [null, null, null];
+	$edad   = [null, null, null];
+	$ensaye = [null, null, null];
+	$carga  = [null, null, null];
+	$falla  = [null, null, null];
 
-		$i = 0;
-		foreach ($_POST['item'] as $id) {
-			if ($i >= 3) break;
+	$i = 0;
+	foreach ($_POST['item'] as $id) {
+		if ($i >= 3) break;
 
-			$item[$i]   = $id;
-			$edad[$i]   = $_POST['edad_item'][$id] ?? null;
-			$ensaye[$i] = $_POST['fecha_ensaye'][$id] ?? null;
-			$carga[$i]  = $_POST['carga'][$id] ?? null;
-			$falla[$i]  = $_POST['falla'][$id] ?? null;
+		$item[$i]   = $id;
+		$edad[$i]   = $_POST['edad_item'][$id] ?? null;
 
-			$i++;
+		$fechaEnsayeRaw = $_POST['fecha_ensaye'][$id] ?? null;
+
+		if ($fechaEnsayeRaw) {
+			$dt = DateTime::createFromFormat('Y-m-d', $fechaEnsayeRaw);
+			$ensaye[$i] = $dt ? $dt->format('d/m/Y') : null;
+		} else {
+			$ensaye[$i] = null;
 		}
+
+		$carga[$i]  = $_POST['carga'][$id] ?? null;
+		$falla[$i]  = $_POST['falla'][$id] ?? null;
+
+		$i++;
+	}
 
 	try {
 
@@ -258,29 +271,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 			$_POST['concretera'],
 			$cono,
 			$cucharon,
-			$_POST['edad_muestreo'],//10
+			$_POST['edad_muestreo'], //10
 			$_POST['elemento_colado'],
 			$enrasador,
 			$estado_molde1,
 			$estado_molde2,
 			$estado_molde3,
-			$_POST['estado_molde4'],
+			$estado_molde4,
 			$expediente,
 			$_POST['fc'],
 			$flexometro,
-			$hora_llegada,//20
+			$hora_llegada, //20
 			$_POST['hora_muestreo'],
 			$hora_salida,
 			$item[0],
 			$item[1],
 			$item[2],
-			$_POST['id_especimen4'],
+			$item4,
 			$_POST['localizacion'],
 			$mazo,
 			$molde1,
-			$molde2,//30
+			$molde2, //30
 			$molde3,
-			$_POST['molde4'],
+			$molde4,
 			$muestra,
 			$_POST['reporte'],
 			$_POST['observacion'],
@@ -288,17 +301,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 			$placa,
 			$proporciones,
 			$_POST['remision'],
-			$_POST['revenimiento_dis'],//40
+			$_POST['revenimiento_dis'], //40
 			$_POST['revenimiento_r1'],
 			$revenimiento_r2,
-			$_POST['revisado'],
+			$_POST['revisado_autorizado'],
 			$_POST['temperatura'],
 			$termometro,
 			$tipo_muestreo,
 			$tipo_resistencia,
 			$_POST['tma'],
 			$_POST['ubicacion'],
-			$validado,//50
+			$validado, //50
 			$varilla,
 			$volumen_total,
 			$volumen,
@@ -321,7 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 		INSERT INTO vigas (
 			expediente, idcliente, reporte, elemento, ubicacion,
 			fc, revenimientop, revenimientor, concretera, remision,
-			fecha, edad, volumen, temperatura, agregado,
+			fecha, edad, volumen, temperatura, tma, agregado,
 
 			item1, item2, item3,
 			edad1, edad2, edad3,
@@ -340,12 +353,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 			?,?,?,
 			?,?,?,
 			?,?,?,
-			?,?,?,?,?
+			?,?,?,?,?,?
 		)";
 		$stmt = $conexion->prepare($sql);
 
 		$stmt->bind_param(
-			"iisssssssssisssssssssssssssssssssss",//35
+			"iisssssssssissssssssssssssssssssssss", //35
 			$expediente,
 			$id_cliente,
 			$reporte,
@@ -360,6 +373,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 			$edad_muestreo,
 			$volumen,
 			$temperatura,
+			$tma,
 			$tma,
 
 			$item[0],
@@ -379,10 +393,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 			$falla[2],
 
 			$muestreo,
-			$recibio,
+			$_POST['recibio'],
 			$observacion,
 			$fecha_recepcion,
-			$hora_desmoldeo
+			$_POST['hora_desmoldeo']
 		);
 
 		if (!$stmt->execute()) {
@@ -687,6 +701,16 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 						<input type="text" class="form-control" name="observacion" value="<?= $observacion ?>">
 					</div>
 
+					<div class="col-xl-6">
+						<label class="form-label">Revisado y autorizado por: *</label>
+						<select class="form-select" name="revisado_autorizado" data-live-search="true">
+							<option value="<?= $revisado_autorizado ?>" selected><?= $revisado_autorizado ?></option>
+							<?php foreach ($personalLista as $p): ?>
+								<option value="<?= $p['Nombre'] ?>"><?= $p['Nombre'] ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+
 				</div>
 
 
@@ -951,7 +975,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 			calcularFC(itemID);
 		});
 	});
-	
+
 	// Cuando cambia la fecha de muestreo, recalcular fechas de ensaye
 	document.querySelector("input[name='fecha']").addEventListener("change", actualizarFechasEnsaye);
 
