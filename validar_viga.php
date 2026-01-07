@@ -297,28 +297,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 		// 1️⃣ INSERT REPORTE (MASTER)
 		// =========================
 		$sqlInsertReporte = "
-INSERT INTO registros_vigas_campo_actualizado (
-    id_reporte_concreto, obra, fecha, aditivo, carretilla, cliente, concretera,
-    cono, cucharon, edad, elemento_colado, enrasador,
-    estado_molde1, estado_molde2, estado_molde3, estado_molde4,
-    exp, fc, flexometro, hora_llegada, hora_muestreo, hora_salida,
-    id_especimen1, id_especimen2, id_especimen3, id_especimen4,
-    localizacion, mazo,
-    molde1, molde2, molde3, molde4,
-    muestra, numero_reporte, observaciones, personal, placa,
-    proporciones, remision,
-    revenimiento_dis, revenimiento_r1, revenimiento_r2,
-    revisado, temperatura, termometro, tipo_muestreo,
-    tipo_resistencia, tma, ubicacion, validado, varilla,
-    volumen_total, volumen_muestra, olla
-) VALUES (
-    ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
-)";
+		INSERT INTO registros_vigas_campo_actualizado (
+			id_reporte_concreto, obra, fecha, aditivo, carretilla, cliente, concretera,
+			cono, cucharon, edad, elemento_colado, enrasador,
+			estado_molde1, estado_molde2, estado_molde3, estado_molde4,
+			exp, fc, flexometro, hora_llegada, hora_muestreo, hora_salida,
+			id_especimen1, id_especimen2, id_especimen3, id_especimen4,
+			localizacion, mazo,
+			molde1, molde2, molde3, molde4,
+			muestra, numero_reporte, observaciones, personal, placa,
+			proporciones, remision,
+			revenimiento_dis, revenimiento_r1, revenimiento_r2,
+			revisado, temperatura, termometro, tipo_muestreo,
+			tipo_resistencia, tma, ubicacion, validado, varilla,
+			volumen_total, volumen_muestra, olla
+		) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+		)";
+
+
 
 		$stmt = $conexion->prepare($sqlInsertReporte);
 
 		$stmt->bind_param(
-			"issssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+			"isssssssssssssssssssssssssssssssssssssssssssssssssssss",
 			$_POST['id_reporte_concreto'],
 			$_POST['obra'],
 			$_POST['fecha'],
@@ -328,7 +329,7 @@ INSERT INTO registros_vigas_campo_actualizado (
 			$_POST['concretera'],
 			$_POST['cono'],
 			$_POST['cucharon'],
-			$_POST['edad'],
+			$_POST['edad'],//10
 			$_POST['elemento_colado'],
 			$_POST['enrasador'],
 			$_POST['estado_molde1'],
@@ -338,7 +339,7 @@ INSERT INTO registros_vigas_campo_actualizado (
 			$_POST['exp'],
 			$_POST['fc'],
 			$_POST['flexometro'],
-			$_POST['hora_llegada'],
+			$_POST['hora_llegada'],//20
 			$_POST['hora_muestreo'],
 			$_POST['hora_salida'],
 			$_POST['id_especimen1'],
@@ -348,7 +349,7 @@ INSERT INTO registros_vigas_campo_actualizado (
 			$_POST['localizacion'],
 			$_POST['mazo'],
 			$_POST['molde1'],
-			$_POST['molde2'],
+			$_POST['molde2'],//30
 			$_POST['molde3'],
 			$_POST['molde4'],
 			$_POST['muestra'],
@@ -358,7 +359,7 @@ INSERT INTO registros_vigas_campo_actualizado (
 			$_POST['placa'],
 			$_POST['proporciones'],
 			$_POST['remision'],
-			$_POST['revenimiento_dis'],
+			$_POST['revenimiento_dis'],//40
 			$_POST['revenimiento_r1'],
 			$_POST['revenimiento_r2'],
 			$_POST['revisado'],
@@ -368,72 +369,114 @@ INSERT INTO registros_vigas_campo_actualizado (
 			$_POST['tipo_resistencia'],
 			$_POST['tma'],
 			$_POST['ubicacion'],
-			$_POST['validado'],
+			$_POST['validado'],//50
 			$_POST['varilla'],
 			$_POST['volumen_total'],
 			$_POST['volumen_muestra'],
 			$_POST['olla']
 		);
 
+		$item   = [null, null, null];
+		$edad   = [null, null, null];
+		$ensaye = [null, null, null];
+		$carga  = [null, null, null];
+		$falla  = [null, null, null];
 
+		$i = 0;
+		foreach ($_POST['item'] as $id) {
+			if ($i >= 3) break;
+
+			$item[$i]   = $id;
+			$edad[$i]   = $_POST['edad_item'][$id] ?? null;
+			$ensaye[$i] = $_POST['fecha_ensaye'][$id] ?? null;
+			$carga[$i]  = $_POST['carga'][$id] ?? null;
+			$falla[$i]  = $_POST['falla'][$id] ?? null;
+
+			$i++;
+		}
+
+
+		if (!$stmt->execute()) {
+			die("ERROR SQL MASTER: " . $stmt->error);
+		}
 		$stmt->execute();
 		$id_reporte_concreto = $conexion->insert_id;
 
 		// =========================
 		// 2️⃣ INSERT CILINDROS (DETAIL)
 		// =========================
-		$sqlInsertItem = "
-            INSERT INTO item (
-                id_reporte_concreto, item, reporte,
-                fecha_ensaye, edad_item, tolerancia,
-                diametro1, diametro2, altura1, altura2,
-                carga, falla, meta_lab,
-                condicion_especimen, observaciones,
-                tiempo_ensaye, hora_ensaye,
-                persona_ensayo, flexometro, compas,
-                escuadra, prensa, persona_capturo
-            ) VALUES (
-                ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
-            )
-        ";
+		$sql = "
+		INSERT INTO vigas (
+			expediente, idcliente, reporte, elemento, ubicacion, fc,
+			revenimientop, revenimientor, concretera, remision,
+			fecha, edad, volumen, temperatura, agregado,
 
-		$stmtItem = $conexion->prepare($sqlInsertItem);
+			item1, item2, item3,
+			edad1, edad2, edad3,
+			ensaye1, ensaye2, ensaye3,
+			carga1, carga2, carga3,
+			falla1, falla2, falla3,
 
-		foreach ($_POST['item'] as $idItem) {
+			personal_muestreo, personal_recibio,
+			observaciones, fecha_recepcion, hora_desmoldeo
+		) VALUES (
+			?,?,?,?,?,?,?,?,?,?,
+			?,?,?,?,?,?,
+			?,?,?,
+			?,?,?,
+			?,?,?,
+			?,?,?,
+			?,?,?,
+			?,?,?,?,?
+		)";
+		$stmt = $conexion->prepare($sql);
 
-			$meta_lab = 1;
+		$stmt->bind_param(
+			"iisssssssssissssssssssssssssssssss",
+			$expediente,
+			$id_cliente,
+			$reporte,
+			$elemento,
+			$ubicacion,
+			$fc,
+			$revenimiento_dis,
+			$revenimiento_r1,
+			$concretera,
+			$remision,
+			$fecha,
+			$edad_muestreo,
+			$volumen,
+			$temperatura,
+			$tma,
 
-			$stmtItem->bind_param(
-				"iiisssddddssissssssssss",
-				$id_reporte_concreto,                 // i
-				$idItem,                              // i
-				$reporte,                             // i
-				$_POST['fecha_ensaye'][$idItem],      // s
-				$_POST['edad_item'][$idItem],         // s
-				$_POST['tolerancia'][$idItem],        // s
-				$_POST['diametro1'][$idItem],         // d
-				$_POST['diametro2'][$idItem],         // d
-				$_POST['altura1'][$idItem],           // d
-				$_POST['altura2'][$idItem],           // d
-				$_POST['carga'][$idItem],              // d
-				$_POST['falla'][$idItem],              // s
-				$meta_lab,                             // i
-				$_POST['condicion_especimen'][$idItem], // s
-				$_POST['observaciones'][$idItem],      // s
-				$_POST['tiempo_ensaye'][$idItem],      // s
-				$_POST['hora_ensaye'][$idItem],        // s
-				$_POST['persona_ensayo'][$idItem],     // s
-				$_POST['flexometro'][$idItem],          // s
-				$_POST['compas'][$idItem],              // s
-				$_POST['escuadra'][$idItem],            // s
-				$_POST['prensa'][$idItem],              // s
-				$_POST['persona_capturo'][$idItem]      // s
-			);
+			$item[0],
+			$item[1],
+			$item[2],
+			$edad[0],
+			$edad[1],
+			$edad[2],
+			$ensaye[0],
+			$ensaye[1],
+			$ensaye[2],
+			$carga[0],
+			$carga[1],
+			$carga[2],
+			$falla[0],
+			$falla[1],
+			$falla[2],
 
+			$muestreo,
+			$recibio,
+			$observacion,
+			$fecha_recepcion,
+			$hora_desmoldeo
+		);
 
-			$stmtItem->execute();
+		if (!$stmt->execute()) {
+			die("ERROR SQL MASTER: " . $stmt->error);
 		}
-
+		$stmt->execute();
+		$id_reporte_concreto = $conexion->insert_id;
 		// =========================
 		// 3️⃣ COMMIT
 		// =========================
