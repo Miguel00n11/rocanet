@@ -783,7 +783,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 	// === ACTUALIZAR VIGAS SEGÚN LA EDAD DE MUESTREO ===
 	function actualizarVigas() {
 
-		let edad = document.querySelector("input[name='edad']").value;
+		let edad = document.querySelector("input[name='edad_muestreo']").value;
 
 		let edades = document.querySelectorAll("input[name^='edad_item']");
 		let tolerancias = document.querySelectorAll("input[name^='tolerancia']");
@@ -918,9 +918,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 			calcularFC(itemID);
 		});
 	});
-
-	// Ejecutar cuando cambie la edad del muestreo
-	document.querySelector("input[name='edad_muestreo']").addEventListener("input", actualizarVigas);
+	
 	// Cuando cambia la fecha de muestreo, recalcular fechas de ensaye
 	document.querySelector("input[name='fecha']").addEventListener("change", actualizarFechasEnsaye);
 
