@@ -644,9 +644,9 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
     <td><input type='text' class='form-control' name='fc$i' value='$fc'></td>
 
     <td><input type='text' class='form-control' name='tiempo_ensaye$i' value='$tiempo'></td>
-    <td><input type='text' class='form-control' value=''></td>
-    <td><input type='text' class='form-control' value=''></td>
-    <td><input type='text' class='form-control' value=''></td>
+    <td><input type='text' class='form-control' name='tiempo_minimo$i'></td>
+    <td><input type='text' class='form-control' name='velocidad$i'></td>
+    <td><input type='text' class='form-control' name='cumple$i'></td>
 
 
     <td><input type='text' class='form-control' name='falla$i' value='$falla'></td>
@@ -917,6 +917,68 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 		fila.querySelector(`input[name='resistencia${i}']`).value = resistencia;
 		fila.querySelector(`input[name='fc${i}']`).value = mrPorcentaje;
 		fila.querySelector(`input[name='falla${i}']`).value = (a !== 0) ? "2" : "1";
+
+
+		// ===============================
+		// 🔥 TIEMPO MÍNIMO = MR × 6
+		// ===============================
+		const tiempoMinimo = Math.round(resistencia * 6 * 100) / 100;
+
+		const tiempoMinInput =
+			fila.querySelector(`input[name='tiempo_minimo${i}']`);
+
+		if (tiempoMinInput) {
+			tiempoMinInput.value = tiempoMinimo;
+		}
+
+
+		// ===============================
+		// ⚡ VELOCIDAD DE APLICACIÓN
+		// Vel = MR / tiempo * 60
+		// ===============================
+		const tiempoEnsayeInput =
+			fila.querySelector(`input[name='tiempo_ensaye${i}']`);
+
+		const velocidadInput =
+			fila.querySelector(`input[name='velocidad${i}']`);
+
+		const tiempoEnsaye =
+			tiempoEnsayeInput ? parseFloat(tiempoEnsayeInput.value) : 0;
+
+		if (velocidadInput && tiempoEnsaye > 0) {
+			const velocidad = Math.round((resistencia / tiempoEnsaye) * 60 * 100) / 100;
+			velocidadInput.value = velocidad;
+		} else if (velocidadInput) {
+			velocidadInput.value = "";
+		}
+
+
+		// ===============================
+		// ✅ VALIDAR CUMPLE VELOCIDAD
+		// ===============================
+		const cumpleInput =
+			fila.querySelector(`input[name='cumple${i}']`);
+
+		if (cumpleInput && tiempoEnsaye > 0 && tiempoMinInput) {
+
+			const tiempoMin = parseFloat(tiempoMinInput.value);
+
+			if (!isNaN(tiempoMin)) {
+				if (tiempoEnsaye > tiempoMin) {
+					cumpleInput.value = "CUMPLE";
+					cumpleInput.classList.remove("is-invalid");
+					cumpleInput.classList.add("is-valid");
+				} else {
+					cumpleInput.value = "NO CUMPLE";
+					cumpleInput.classList.remove("is-valid");
+					cumpleInput.classList.add("is-invalid");
+				}
+			}
+		} else if (cumpleInput) {
+			cumpleInput.value = "";
+			cumpleInput.classList.remove("is-valid", "is-invalid");
+		}
+
 	}
 
 	document.addEventListener("input", function(e) {
@@ -925,7 +987,8 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 		if (!fila) return;
 
 		const match = e.target.name.match(
-			/(altura|alturaa|diametro|diametroo|carga|L_vigas|a_vigas)(\d)/
+			/(altura|alturaa|diametro|diametroo|carga|L_vigas|a_vigas|tiempo_ensaye)(\d)/
+
 		);
 
 		if (!match) return;
@@ -1033,4 +1096,19 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
 
 	// Actualizar fechas al cargar la página
 	window.addEventListener("DOMContentLoaded", actualizarFechasEnsaye); // ✔ corregido
+
+
+	// ===============================
+	// 🔁 RECALCULAR TODO AL CARGAR
+	// ===============================
+	window.addEventListener("DOMContentLoaded", function() {
+
+		const filas = document.querySelectorAll("tbody tr");
+
+		filas.forEach(fila => {
+			for (let i = 1; i <= 3; i++) {
+				calcularMRDesdeFila(fila, i);
+			}
+		});
+	});
 </script>
