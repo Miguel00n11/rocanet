@@ -122,6 +122,10 @@ $edad_muestreo = $reporte['edad'] ?? 'SIN edad';
 $revenimiento_dis = $reporte['revenimientoDis'] ?? 'SIN revenimientop';
 $revenimiento_r1 = $reporte['revenimientoR1'] ?? 'SIN revenimiento1';
 $tma = $reporte['tma'] ?? 'SIN tma';
+$aditivo = $reporte['aditivo'] ?? 'SIN aditivo';
+$carretilla = $reporte['carretilla'] ?? 'SIN carretilla';
+$cono = $reporte['cono'] ?? 'SIN cono';
+$cucharon = $reporte['cucharon'] ?? 'SIN cucharon';
 $concretera = $reporte['concretera'] ?? 'SIN concretera';
 $temperatura = $reporte['temperatura'] ?? 'SIN temperatura';
 $remision = $reporte['remision'] ?? 'SIN remision';
@@ -202,12 +206,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 			$_POST['id_reporte_concreto'],
 			$_POST['obra'],
 			$_POST['fecha'],
-			$_POST['aditivo'],
-			$_POST['carretilla'],
+			$aditivo,
+			$carretilla,
 			$_POST['cliente'],
 			$_POST['concretera'],
-			$_POST['cono'],
-			$_POST['cucharon'],
+			$cono,
+			$cucharon,
 			$_POST['edad'],//10
 			$_POST['elemento_colado'],
 			$_POST['enrasador'],
@@ -278,7 +282,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 		if (!$stmt->execute()) {
 			die("ERROR SQL MASTER: " . $stmt->error);
 		}
-		$stmt->execute();
+		// $stmt->execute();
 		$id_reporte_concreto = $conexion->insert_id;
 
 		// =========================
@@ -355,7 +359,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 		if (!$stmt->execute()) {
 			die("ERROR SQL MASTER: " . $stmt->error);
 		}
-		$stmt->execute();
+		// $stmt->execute();
 		$id_reporte_concreto = $conexion->insert_id;
 		// =========================
 		// 3️⃣ COMMIT
