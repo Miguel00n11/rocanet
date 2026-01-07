@@ -118,6 +118,7 @@ $elemento = $reporte['elementoColado'] ?? 'SIN ELEMENTO';
 $ubicacion = $reporte['ubicacion'] ?? 'SIN UBICACION';
 $fc = $reporte['fc'] ?? 'SIN fc';
 $edad = $reporte['edad'] ?? 'SIN edad';
+$edad_muestreo = $reporte['edad'] ?? 'SIN edad';
 $revenimiento_dis = $reporte['revenimientoDis'] ?? 'SIN revenimientop';
 $revenimiento_r1 = $reporte['revenimientoR1'] ?? 'SIN revenimiento1';
 $tma = $reporte['tma'] ?? 'SIN tma';
@@ -152,129 +153,7 @@ $id_reporte_concreto = $_POST['id_reporte_concreto']
 	?? null;
 
 
-// if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
-// 	$exp = $_GET['expediente'];
-// 	$rep = $_GET['reporte'];
-// 	$id_reporte_concreto = $_GET['id_reporte_concreto'];
-
-
-
-
-
-// 	// ----
-
-// 	// // Consulta del registro
-// 	// $sql = "SELECT * FROM reporte_concreto 
-// 	//         WHERE expediente = '$exp' AND reporte = '$rep' 
-// 	//         LIMIT 1";
-// 	// $res = $conexion->query($sql);
-
-// 	// if ($res->num_rows > 0) {
-// 	// 	$data = $res->fetch_assoc();
-
-// 	// 	// Llenar variables
-// 	// 	// $cliente       = $data['cliente'];
-// 	// 	// $id_cliente    = $data['id_cliente'];
-// 	// 	// $obra          = $data['obra'];
-// 	// 	$expediente    = $data['expediente'];
-// 	// 	// $localizacion  = $data['ubicacion'];
-// 	// 	$fecha       = $data['fecha'];
-// 	// 	$fecha_recepcion       = $data['fecha_recepcion'];
-// 	// 	$reporte       = $data['reporte'];
-// 	// 	$elemento      = $data['elemento'];
-// 	// 	$ubicacion     = $data['ubicacion'];
-// 	// 	$fc            = $data['fc'];
-// 	// 	$edad          = $data['edad'];
-// 	// 	$revenimientop          = $data['revenimientop'];
-// 	// 	$revenimientor          = $data['revenimientor'];
-// 	// 	$tma          = $data['agregado'];
-// 	// 	$concretera          = $data['concretera'];
-// 	// 	$temperatura          = $data['temperatura'];
-// 	// 	$remision          = $data['remision'];
-// 	// 	$volumen          = $data['volumen'];
-// 	// 	$hora_muestreo          = $data['hora_muestreo'];
-// 	// 	$hora_desmoldeo          = $data['hora_desmoldeo'];
-
-// 	// 	$muestreo          = $data['muestreo'];
-// 	// 	$recibio          = $data['recibio'];
-// 	// 	$observacion          = $data['observacion'];
-// 	// 	// $revisado_autorizado          = $data['revisado_autorizado'];
-// 	// }
-// 	// ---------- agregar DATOS DE MUESTREO ----------
-
-// 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-// 		$fecha = $_POST['fecha'];
-// 		$fecha_recepcion = $_POST['fecha_recepcion'];
-// 		$elemento = $_POST['elemento'];
-// 		$ubicacion = $_POST['ubicacion'];
-// 		$fc = $_POST['fc'];
-// 		$edad = $_POST['edad'];
-// 		$revenimientop = $_POST['revenimientop'];
-// 		$revenimientor = $_POST['revenimientor'];
-// 		$tma = $_POST['agregado'];
-// 		$concretera = $_POST['concretera'];
-// 		$temperatura = $_POST['temperatura'];
-// 		$remision = $_POST['remision'];
-// 		$volumen = $_POST['volumen'];
-// 		$hora_muestreo = $_POST['hora_muestreo'];
-// 		$hora_desmoldeo = $_POST['hora_desmoldeo'];
-// 		$muestreo = $_POST['muestreo'];
-// 		$recibio = $_POST['recibio'];
-// 		$observacion = $_POST['observacion'];
-
-// 		$sqlInsertReporte = "
-//     INSERT INTO reporte_concreto (
-//         expediente, reporte, elemento, ubicacion, fc,
-//         revenimientop, revenimientor, concretera, remision,
-//         fecha, edad, volumen, temperatura, agregado,
-//         hora_muestreo, hora_desmoldeo, recibio, muestreo,
-//         fecha_recepcion, meta_lab, observacion
-//     ) VALUES (
-//         ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?
-//     )
-// ";
-
-// 		$stmt = $conexion->prepare($sqlInsertReporte);
-// 		$stmt->bind_param(
-// 			"sisssssssssssssssss",
-// 			$expediente,
-// 			$reporte,
-// 			$elemento,
-// 			$ubicacion,
-// 			$fc,
-// 			$revenimientop,
-// 			$revenimientor,
-// 			$concretera,
-// 			$remision,
-// 			$fecha,
-// 			$edad,
-// 			$volumen,
-// 			$temperatura,
-// 			$tma,
-// 			$hora_muestreo,
-// 			$hora_desmoldeo,
-// 			$recibio,
-// 			$muestreo,
-// 			$fecha_recepcion,
-// 			$observacion
-// 		);
-
-// 		$stmt->execute();
-
-// 		/** 👈 ESTE ES TU buscarIdReporte() */
-// 		$id_reporte_concreto = $conexion->insert_id;
-
-
-// 		if ($conexion->query($sqlUpdate)) {
-// 			// 	echo "<script>alert('Datos de muestreo actualizados correctamente'); 
-// 			// window.location.href='captura_cilindros.php?expediente=$exp&reporte=$rep';</script>";
-// 		} else {
-// 			echo "Error: " . $conexion->error;
-// 		}
-// 	}
-// }
 // ---------- agregar ENSAYE DE ESPECÍMENES ----------
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
@@ -407,8 +286,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 		// =========================
 		$sql = "
 		INSERT INTO vigas (
-			expediente, idcliente, reporte, elemento, ubicacion, fc,
-			revenimientop, revenimientor, concretera, remision,
+			expediente, idcliente, reporte, elemento, ubicacion,
+			fc, revenimientop, revenimientor, concretera, remision,
 			fecha, edad, volumen, temperatura, agregado,
 
 			item1, item2, item3,
@@ -420,8 +299,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 			personal_muestreo, personal_recibio,
 			observaciones, fecha_recepcion, hora_desmoldeo
 		) VALUES (
-			?,?,?,?,?,?,?,?,?,?,
-			?,?,?,?,?,?,
+			?,?,?,?,?,
+			?,?,?,?,?,
+			?,?,?,?,?,
 			?,?,?,
 			?,?,?,
 			?,?,?,
@@ -432,7 +312,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 		$stmt = $conexion->prepare($sql);
 
 		$stmt->bind_param(
-			"iisssssssssissssssssssssssssssssss",
+			"iisssssssssisssssssssssssssssssssss",//35
 			$expediente,
 			$id_cliente,
 			$reporte,
@@ -699,7 +579,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 					<div class="col-xl-3">
 						<label class="form-label">Edad *</label>
-						<input type="number" class="form-control" name="edad" value="<?= $edad ?>">
+						<input type="number" class="form-control" name="edad_muestreo" value="<?= $edad_muestreo ?>">
 					</div>
 
 					<div class="col-xl-3">
@@ -968,7 +848,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 
 	// Ejecutar cuando cambie la edad del muestreo
-	document.querySelector("input[name='edad']").addEventListener("input", actualizarVigas);
+	document.querySelector("input[name='edad_muestreo']").addEventListener("input", actualizarVigas);
 
 
 	// Cálculo en tiempo real de porcentaje f'c respecto al f'c de diseño
@@ -1040,7 +920,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 	});
 
 	// Ejecutar cuando cambie la edad del muestreo
-	document.querySelector("input[name='edad']").addEventListener("input", actualizarVigas);
+	document.querySelector("input[name='edad_muestreo']").addEventListener("input", actualizarVigas);
 	// Cuando cambia la fecha de muestreo, recalcular fechas de ensaye
 	document.querySelector("input[name='fecha']").addEventListener("change", actualizarFechasEnsaye);
 
