@@ -412,7 +412,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 		// =========================
 		// 4️⃣ BORRAR REPORTE EN FIREBASE
 		// =========================
-		// firebaseDelete($ruta);
+		firebaseDelete($ruta);
 
 		echo "<script>
             alert('Reporte y vigas guardados correctamente $elemento');

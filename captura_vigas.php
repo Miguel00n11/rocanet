@@ -626,7 +626,7 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
         <tr>
   
 
-    <td><input type='text' class='form-control' name='id<?= $i ?>' value='$id'></td>
+    <td><input type='text' class='form-control' name='id<?= $i ?>' value='$id' readonly></td>
     <td><input type='date' class='form-control' name='ensaye$i' value='$ensaye'></td>
     <td><input type='text' class='form-control' name='edad$i' value='$edad'></td>
 
@@ -640,16 +640,16 @@ if (isset($_GET['exp_registro']) && isset($_GET['reporte'])) {
     <td><input type='text' class='form-control' name='carga$i' value='$carga'></td>
     <td><input type='text' class='form-control' name='a_vigas$i' value='$a_vigas'></td>
 
-    <td><input type='text' class='form-control' name='resistencia$i' value='$resistencia'></td>
-    <td><input type='text' class='form-control' name='fc$i' value='$fc'></td>
+    <td><input type='text' class='form-control' name='resistencia$i' value='$resistencia' readonly></td>
+    <td><input type='text' class='form-control' name='fc$i' value='$fc' readonly></td>
 
     <td><input type='text' class='form-control' name='tiempo_ensaye$i' value='$tiempo'></td>
-    <td><input type='text' class='form-control' name='tiempo_minimo$i'></td>
-    <td><input type='text' class='form-control' name='velocidad$i'></td>
-    <td><input type='text' class='form-control' name='cumple$i'></td>
+    <td><input type='text' class='form-control' name='tiempo_minimo$i' readonly></td>
+    <td><input type='text' class='form-control' name='velocidad$i' readonly></td>
+    <td><input type='text' class='form-control' name='cumple$i' readonly></td>
 
 
-    <td><input type='text' class='form-control' name='falla$i' value='$falla'></td>
+    <td><input type='text' class='form-control' name='falla$i' value='$falla' readonly></td>
     <td><input type='text' class='form-control' name='flexometro$i' value='$flexo'></td>
     <td><input type='text' class='form-control' name='prensa$i' value='$prensa'></td>
 
