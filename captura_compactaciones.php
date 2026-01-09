@@ -142,7 +142,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		}
 	}
 
-	
+
 
 
 	if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
@@ -419,18 +419,17 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 						</div>
 					</div>
 
-					<div class="col-xl-6">
-						<div class="mb-3">
-							<label class="form-label">Fecha de muestreo *</label>
-							<input type="date" class="form-control" name="fecha" value="<?= $fecha ?>">
-						</div>
-					</div>
-
-					<div class="col-xl-6">
+					<div class="col-xl-3">
 						<div class="mb-3">
 							<label class="form-label">Tramo *</label>
 							<input type="text" class="form-control" name="tramo" value="<?= $tramo ?>">
 						</div>
+					</div>
+
+
+					<div class="col-xl-3">
+						<label class="form-label">Subtramo *</label>
+						<input type="text" class="form-control" name="subtramo" value="<?= $subtramo ?>">
 					</div>
 
 					<!-- <div class="row"> -->
@@ -448,11 +447,14 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 						<input type="text" class="form-control" name="humoptima" value="<?= $humoptima ?>">
 					</div>
 
-
-					<div class="col-xl-4">
-						<label class="form-label">Subtramo *</label>
-						<input type="text" class="form-control" name="subtramo" value="<?= $subtramo ?>">
+					<div class="col-xl-3">
+						<div class="mb-3">
+							<label class="form-label">Fecha de muestreo *</label>
+							<input type="date" class="form-control" name="fecha" value="<?= $fecha ?>">
+						</div>
 					</div>
+
+
 
 
 
@@ -474,7 +476,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 
 
-					<div class="col-xl-12">
+					<div class="col-xl-6">
 						<label class="form-label">Observaciones *</label>
 						<input type="text" class="form-control" name="observaciones" value="<?= $observaciones ?>">
 					</div>
@@ -525,7 +527,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 					echo '<tbody>';
 
-						// $contadorCala++;
+					// $contadorCala++;
 
 					foreach ($clientes as $fila) {
 
@@ -586,14 +588,14 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
     </tr>";
 						// $contadorCala++;
 					}
-//  <td class='text-center'>
-//         <button type='hidden'
-//                 class='btn btn-danger btn-sm btn-eliminar-cala'
-//                 data-id='{$idFila}'
-// 				tabindex='-1'>
-//             Eliminar
-//         </button>
-//     </td>
+					//  <td class='text-center'>
+					//         <button type='hidden'
+					//                 class='btn btn-danger btn-sm btn-eliminar-cala'
+					//                 data-id='{$idFila}'
+					// 				tabindex='-1'>
+					//             Eliminar
+					//         </button>
+					//     </td>
 
 					echo "</tbody></table></div>";
 				} else {
