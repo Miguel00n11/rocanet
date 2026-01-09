@@ -211,6 +211,32 @@
 							</div>
 						</div>
 					</div>
+					<div class="menu-item has-sub ">
+						<a href="#" class="menu-link">
+							<span class="menu-icon">
+								<iconify-icon icon="ph:stack-duotone"></iconify-icon>
+							</span>
+							<span class="menu-text">COMPACTACIONES</span>
+							<span class="menu-caret"><b class="caret"></b></span>
+						</a>
+						<div class="menu-submenu">
+							<div class="menu-item ">
+								<a href="lista_reportes_compactaciones_validar.php" class="menu-link">
+									<span class="menu-text">Validar compactaciones</span>
+								</a>
+							</div>
+							<div class="menu-item ">
+								<a href="lista_reportes_vigas_general.php" class="menu-link">
+									<span class="menu-text">Ver actulalizados</span>
+								</a>
+							</div>
+							<div class="menu-item ">
+								<a href="lista_reportes_vigas_general.php" class="menu-link">
+									<span class="menu-text">Ver originales</span>
+								</a>
+							</div>
+						</div>
+					</div>
 					<div class="menu-header">SISTEMAS</div>
 					<!-- <div class="menu-item ">
 						<a href="widgets.html" class="menu-link">
