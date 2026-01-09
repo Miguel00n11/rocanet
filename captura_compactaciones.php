@@ -142,12 +142,32 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		}
 	}
 
+	// ---------- ELIMINAR CALAS (compactaciones y campo) ----------
+	if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['calas_eliminadas'])) {
+
+		$ids = array_map('intval', explode(',', $_POST['calas_eliminadas']));
+
+		foreach ($ids as $idCala) {
+
+			// Eliminar de compactaciones
+			$sql1 = "DELETE FROM compactaciones WHERE id = $idCala";
+			$conexion->query($sql1);
+
+			// Eliminar de registros_calas_campo
+			$sql2 = "DELETE FROM registros_calas_campo WHERE id = $idCala";
+			$conexion->query($sql2);
+		}
+	}
+
+
+
 	if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 
 		$idReporte = $_POST['id']; // id_reporte_compactacion
 
 		foreach ($_POST['item'] as $idFila) {
 
+			$cala      = $_POST['cala'][$idFila] ?? '';
 			$estacion      = $_POST['estacion'][$idFila] ?? '';
 			$prof          = $_POST['prof'][$idFila] ?? '';
 			$humedad       = $_POST['humedad'][$idFila] ?? '';
@@ -205,40 +225,51 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		}
 	}
 }
-// ---------- ACTUALIZAR ENSAYE DE ESPECÍMENES ----------
+// ---------- ACTUALIZAR CALAS ----------
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 
-	$id = $_POST['id'];
+    foreach ($_POST['item'] as $idItem) {
 
-	foreach ($_POST['item'] as $idItem) {
+        $cala = $_POST['cala'][$idItem] ?? '';
+        $estacion = $_POST['estacion'][$idItem] ?? '';
+        $prof = $_POST['prof'][$idItem] ?? '';
+        $humedad = $_POST['humedad'][$idItem] ?? '';
+        $mvsl = $_POST['mvsl'][$idItem] ?? 0;
+        $compactacion = $_POST['compactacion'][$idItem] ?? 0;
 
-		$cala      = $_POST['cala'][$idItem];
-		$estacion         = $_POST['estacion'][$idItem];
-		$prof        = $_POST['prof'][$idItem];
-		$humedad         = $_POST['humedad'][$idItem];
-		$mvsl         = $_POST['mvsl'][$idItem];
-		$compactacion           = $_POST['compactacion'][$idItem];
+        // compactaciones
+        $sql1 = "
+        UPDATE compactaciones SET
+            cala='$cala',
+            estacion='$estacion',
+            prof='$prof',
+            humedad='$humedad',
+            mvsl=" . (float)$mvsl . ",
+            compactacion=" . (float)$compactacion . "
+        WHERE id=" . (int)$idItem;
 
-		$sqlUpdateItem = "UPDATE compactaciones SET
-    cala = '$cala',
-    estacion = '$estacion',
-    prof = '$prof',
-    humedad = '$humedad',
-    mvsl = '$mvsl',
-    compactacion = '$compactacion'
-WHERE id = '$id' AND cala = '$cala'
-";
+        if (!$conexion->query($sql1)) {
+            echo "Error compactaciones: " . $conexion->error;
+        }
 
+        // registros_calas_campo
+        $sql2 = "
+        UPDATE registros_calas_campo SET
+            cala='$cala',
+            estacion='$estacion',
+            profundidad='$prof',
+            humedad_lugar='$humedad',
+            mvsl=" . (float)$mvsl . ",
+            compactacion_cala=" . (float)$compactacion . "
+        WHERE id_reporte_compactacion=" . (int)$idReporte . " AND cala=" . (int)$cala;
 
-		$conexion->query($sqlUpdateItem);
-	}
-	echo "<script>
-        alert('Ensaye actualizado correctamente');
-        window.close();
-    </script>";
-	exit;
-	// echo "<script>alert('Ensaye actualizado correctamente');location.reload();</script>";
+        if (!$conexion->query($sql2)) {
+            echo "Error calas: " . $conexion->error;
+        }
+    }
 }
+
+
 
 
 
@@ -292,10 +323,12 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 
 
+
 <!-- BEGIN #content -->
 <form method="POST">
 
 	<input type="hidden" name="id" value="<?= $id ?>">
+	<input type="hidden" name="calas_eliminadas" id="calas_eliminadas">
 
 	<div id="content" class="app-content">
 		<ul class="breadcrumb">
@@ -514,10 +547,15 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 						$idFila = $fila['id'];
 
 						echo "
-    <tr>
+    <tr id='fila-{$idFila}'>
         <td>
             <input type='hidden' name='item[]' value='{$idFila}'>
-            {$idFila}
+        </td>
+		    <td>
+            <input type='hidden' class='form-control'
+			name='cala[{$idFila}]' 
+			value='{$fila['cala']}' readonly>
+			{$fila['cala']}
         </td>
 
         <td>
@@ -555,6 +593,16 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
                    value='{$fila['compactacion']}'
                    readonly>
         </td>
+		
+		
+			   <td class='text-center'>
+        <button type='button'
+                class='btn btn-danger btn-sm btn-eliminar-cala'
+                data-id='{$idFila}'>
+            Eliminar
+        </button>
+    </td>
+		
     </tr>";
 					}
 
@@ -576,6 +624,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		</button>
 
 </form> <!-- AQUÍ SE CIERRA EL FORMULARIO -->
+
 
 </div>
 </div>
@@ -630,4 +679,25 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 				calcularCompactacion(id);
 			});
 		});
+</script>
+<script>
+	let calasEliminadas = [];
+
+	document.addEventListener("click", function(e) {
+
+		if (!e.target.classList.contains("btn-eliminar-cala")) return;
+
+		const id = e.target.dataset.id;
+
+		if (!confirm("¿Deseas eliminar esta cala?  " + id)) return;
+
+		// Quitar fila del DOM (igual que listaCalas.Remove)
+		const fila = document.getElementById("fila-" + id);
+		if (fila) fila.remove();
+
+		// Guardar ID eliminado
+		calasEliminadas.push(id);
+		document.getElementById("calas_eliminadas").value =
+			calasEliminadas.join(",");
+	});
 </script>
