@@ -590,6 +590,65 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 			Guardar cambios
 		</button>
 
+		<script>
+			const calasFirebase = <?= json_encode($reporte['listaCalas'] ?? [], JSON_UNESCAPED_UNICODE) ?>;
+		</script>
+		<script>
+			function cargarCalas() {
+
+				const tbody = document.querySelector("table tbody");
+				tbody.innerHTML = "";
+
+				if (!calasFirebase.length) {
+					tbody.innerHTML = `
+            <tr>
+                <td colspan="6" class="text-center text-muted">
+                    No hay calas registradas
+                </td>
+            </tr>`;
+					return;
+				}
+
+				calasFirebase.forEach((cala, index) => {
+
+					const fila = document.createElement("tr");
+
+					fila.innerHTML = `
+			<td class="text-center">${index + 1}</td>
+            <td><input type="text" class="form-control" name="cala[]" value="${cala.cala+=1 ?? ''}"></td>
+            <td><input type="text" class="form-control" name="estacion[]" value="${cala.estacion ?? ''}"></td>
+            <td><input type="text" class="form-control text-center" name="prof[]" value="${cala.prof ?? ''}"></td>
+            <td><input type="text" class="form-control text-center" name="humedad[]" value="${cala.humedad ?? ''}"></td>
+   <!-- MVSL -->
+    <td>
+        <input type="text"
+               class="form-control mvsl text-center"
+               data-index="${index}"
+               name="mvsl[]"
+               value="${cala.mvsl ?? ''}">
+    </td>
+
+    <!-- COMPACTACIÓN -->
+    <td>
+        <input type="text"
+               class="form-control text-center compactacion"
+               name="compactacion[]"
+               readonly>
+    </td>
+        `;
+
+					tbody.appendChild(fila);
+				});
+				// 🔥 CALCULAR TODAS AL CARGAR
+				document.querySelectorAll(".mvsl").forEach(input => {
+					calcularCompactacionPorIndice(input.dataset.index);
+				});
+			}
+
+			// 🚀 Cargar automáticamente al abrir la página
+			document.addEventListener("DOMContentLoaded", cargarCalas);
+		</script>
+
 </form> <!-- AQUÍ SE CIERRA EL FORMULARIO -->
 
 </div>
@@ -649,4 +708,50 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 			})
 			.catch(err => console.error(err));
 	});
+</script>
+<script>
+	function calcularCompactacionPorIndice(index) {
+
+		// MVSM del proyecto
+		const mvsmInput = document.querySelector("input[name='mvsm']");
+		if (!mvsmInput) return;
+
+		const mvsmProyecto = parseFloat(mvsmInput.value);
+
+		// MVSL de la cala
+		const mvslInput = document.querySelector(
+			`.mvsl[data-index='${index}']`
+		);
+		const mvsl = parseFloat(mvslInput.value);
+
+		// Campo compactación (misma fila)
+		const compactacionInput = mvslInput
+			.closest("tr")
+			.querySelector(".compactacion");
+
+		if (isNaN(mvsmProyecto) || mvsmProyecto <= 0 || isNaN(mvsl)) {
+			compactacionInput.value = "";
+			return;
+		}
+
+		const compactacion = (mvsl / mvsmProyecto) * 100;
+		compactacionInput.value = compactacion.toFixed(2);
+	}
+
+	// 🔁 Detectar cambios en MVSL
+	document.addEventListener("input", function(e) {
+		if (e.target.classList.contains("mvsl")) {
+			const index = e.target.dataset.index;
+			calcularCompactacionPorIndice(index);
+		}
+	});
+
+	// 🔁 Recalcular todo si cambia el MVSM del proyecto
+	document.querySelector("input[name='mvsm']")
+		?.addEventListener("input", function() {
+
+			document.querySelectorAll(".mvsl").forEach(input => {
+				calcularCompactacionPorIndice(input.dataset.index);
+			});
+		});
 </script>
