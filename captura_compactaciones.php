@@ -202,7 +202,8 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 	WHERE expediente = '$exp' AND reporte = '$rep'";
 
 		if ($conexion->query($sqlUpdate)) {
-			// 	echo "<script>alert('Datos de muestreo actualizados correctamente'); 
+				echo "<script>alert('Datos de muestreo actualizados correctamente'); 
+				window.close();
 			// window.location.href='captura_cilindros.php?expediente=$exp&reporte=$rep';</script>";
 		} else {
 			echo "Error: " . $conexion->error;
@@ -341,7 +342,8 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 							<label class="form-label">Cliente <span class="text-danger"></label>
 							<input type="text" class="form-control"
 								value="<?= $cliente ?>" readonly
-								placeholder="Nombre del cliente">
+								placeholder="Nombre del cliente"
+								tabindex='-1'>
 						</div>
 					</div>
 					<div class="col-xl-6">
@@ -349,7 +351,8 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 							<label class="form-label">Id cliente <span class="text-danger"></label>
 							<input type="number" class="form-control"
 								value="<?= $id_cliente ?>" readonly
-								placeholder="Id cliente">
+								placeholder="Id cliente"
+								tabindex='-1'>
 							<!-- <div class="input-group">
 								<label class="input-group-text" for="datepicker-component"><i class="fa fa-calendar"></i></label>
 							</div> -->
@@ -360,7 +363,8 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 							<label class="form-label">Obra <span class="text-danger"></label>
 							<input type="text" class="form-control"
 								value="<?= $obra ?>" readonly
-								placeholder="Nombre de la obra">
+								placeholder="Nombre de la obra"
+								tabindex='-1'>
 						</div>
 					</div>
 					<div class="col-xl-6">
@@ -368,7 +372,8 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 							<label class="form-label">Expediente <span class="text-danger"></label>
 							<input type="number" class="form-control"
 								value="<?= $expediente ?>" readonly
-								placeholder="Numero de expediente">
+								placeholder="Numero de expediente"
+								tabindex='-1'>
 						</div>
 					</div>
 
@@ -377,7 +382,8 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 							<label class="form-label">Localización <span class="text-danger"></label>
 							<input type="text" class="form-control"
 								value="<?= $localizacion ?>" readonly
-								placeholder="Localización">
+								placeholder="Localización"
+								tabindex='-1'>
 						</div>
 					</div>
 
@@ -386,7 +392,8 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 							<label class="form-label">Reporte <span class="text-danger"></label>
 							<input type="number" class="form-control"
 								value="<?= $reporte ?>" readonly
-								placeholder="Numero de reporte">
+								placeholder="Numero de reporte"
+								tabindex='-1'>
 						</div>
 					</div>
 
@@ -456,12 +463,6 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 
 
-
-
-
-
-
-
 					<div class="col-xl-6">
 						<label class="form-label">Personal *</label>
 						<select class="form-select" name="personal" data-live-search="true">
@@ -471,9 +472,6 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 							<?php endforeach; ?>
 						</select>
 					</div>
-
-
-
 
 
 					<div class="col-xl-6">
@@ -491,7 +489,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 		<div class="card">
 			<div class="card-header with-btn">
-				ENSAYE A LA COMPRESIÓN DE ESPECÍMENES CILÍNDRICOS DE CONCRETO
+				RESULTADOS DE LAS CALAS DE COMPACTACIÓN
 				<div class="card-header-btn">
 					<a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
 					<a href="#" data-toggle="card-expand" class="btn"><iconify-icon icon="material-symbols-light:fullscreen"></iconify-icon></a>
