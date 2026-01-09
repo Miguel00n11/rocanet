@@ -1,0 +1,633 @@
+<style>
+	/* Evita que las columnas se encojan demasiado */
+	.wide-table th,
+	.wide-table td {
+		white-space: nowrap;
+		min-width: 120px;
+		/* Ajusta según lo necesario */
+	}
+
+	/* Columna de item (más pequeña) */
+	.wide-table th:first-child,
+	.wide-table td:first-child {
+		min-width: 60px;
+		text-align: center;
+	}
+
+	/* Columna de f´c (más pequeña) */
+	.wide-table th:last-child,
+	.wide-table td:last-child {
+		min-width: 80px;
+		text-align: center;
+	}
+</style>
+
+<?php
+
+include("cabeza.php");
+include("conexion.php");
+include("conexion_forta.php");
+
+// Verificar si vienen datos por GET (editar)
+$cliente = "";
+$id_cliente = "";
+$obra = "";
+$expediente = "";
+$localizacion = "";
+$reporte = "";
+$capa = "";
+$tramo = "";
+$comproyecto = "";
+$mvsm = "";
+$humoptima = "";
+$edad = "";
+$personal = "";
+$observaciones = "";
+
+$id = $_POST['id']
+	?? $_GET['id']
+	?? null;
+
+
+if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
+
+	$exp = $_GET['expediente'];
+	$rep = $_GET['reporte'];
+	$id = $_GET['id'];
+
+
+	// Obtener lista de personal
+	$sqlPersonal = "SELECT ID, Nombre FROM personal ORDER BY Nombre ASC";
+	$resPersonal = $conexion_forta->query($sqlPersonal);
+	// Guardar resultados en un arreglo
+	$personalLista = [];
+	while ($row = $resPersonal->fetch_assoc()) {
+		$personalLista[] = $row;
+	}
+	// ----
+
+	// Consulta del registro
+	$sql = "SELECT * FROM reportes 
+            WHERE expediente = '$exp' AND reporte = '$rep' 
+            LIMIT 1";
+	$res = $conexion->query($sql);
+
+
+
+	if ($res->num_rows > 0) {
+		$data = $res->fetch_assoc();
+
+		// Llenar variables
+		// $cliente       = $data['cliente'];
+		// $id_cliente    = $data['id_cliente'];
+		// $obra          = $data['obra'];
+		$expediente    = $data['expediente'];
+		// $localizacion  = $data['ubicacion'];
+		$reporte       = $data['reporte'];
+
+		$fecha       = $data['fecha'];
+		$capa      = $data['capa'];
+		$tramo     = $data['tramo'];
+		$comproyecto            = $data['comproyecto'];
+		$mvsm            = $data['mvsm'];
+		$humoptima            = $data['humoptima'];
+		$subtramo          = $data['subtramo'];
+
+		// $revisado_autorizado          = $data['revisado_autorizado'];
+	}
+
+	// Consulta del registro
+	$sql_campo = "SELECT * FROM registros_compactacion_campo 
+            WHERE exp = '$exp' AND reporte = '$rep' 
+            LIMIT 1";
+	$res_campo = $conexion->query($sql_campo);
+
+	if ($res_campo->num_rows > 0) {
+		$data = $res_campo->fetch_assoc();
+
+		$personal          = $data['personal'];
+		$observaciones          = $data['observaciones'];
+	}
+	// ---------- ACTUALIZAR DATOS DE MUESTREO ----------
+
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+		$fecha = $_POST['fecha'];
+		$capa = $_POST['capa'];
+		$tramo = $_POST['tramo'];
+		$comproyecto = $_POST['comproyecto'];
+		$mvsm = $_POST['mvsm'];
+		$humoptima = $_POST['humoptima'];
+		$subtramo = $_POST['subtramo'];
+
+		$personal = $_POST['personal'] ?? '';
+		$observaciones = $_POST['observaciones'] ?? '';
+
+		$sqlUpdateCampo = "
+        UPDATE registros_compactacion_campo SET
+			fecha = '$fecha',
+			capa = '$capa',
+			tramo = '$tramo',
+			comproyecto = '$comproyecto',
+			mvsm = '$mvsm',
+			humoptima = '$humoptima',
+			subtramo = '$subtramo',
+            personal = '$personal',
+            observaciones = '$observaciones'
+        WHERE exp = '$exp' AND reporte = '$rep'
+    ";
+
+		if (!$conexion->query($sqlUpdateCampo)) {
+			echo "Error registros_compactacion_campo: " . $conexion->error;
+		}
+	}
+
+	if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
+
+		$idReporte = $_POST['id']; // id_reporte_compactacion
+
+		foreach ($_POST['item'] as $idFila) {
+
+			$estacion      = $_POST['estacion'][$idFila] ?? '';
+			$prof          = $_POST['prof'][$idFila] ?? '';
+			$humedad       = $_POST['humedad'][$idFila] ?? '';
+			$mvsl          = $_POST['mvsl'][$idFila] ?? 0;
+			$compactacion  = $_POST['compactacion'][$idFila] ?? 0;
+
+			$sqlUpdateCala = "
+            UPDATE compactaciones SET
+                estacion = '$estacion',
+                prof = '$prof',
+                humedad = '$humedad',
+                mvsl = '$mvsl',
+                compactacion = '$compactacion'
+            WHERE id_reporte_compactacion = '$idReporte'
+              AND id = '$idFila'
+        ";
+
+			if (!$conexion->query($sqlUpdateCala)) {
+				echo "Error compactaciones (ID $idFila): " . $conexion->error;
+			}
+		}
+	}
+
+
+
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+		$fecha = $_POST['fecha'];
+		$capa = $_POST['capa'];
+		$tramo = $_POST['tramo'];
+		$comproyecto = $_POST['comproyecto'];
+		$mvsm = $_POST['mvsm'];
+		$humoptima = $_POST['humoptima'];
+		$subtramo = $_POST['subtramo'];
+		// $personal = $_POST['personal'];
+		// $observaciones = $_POST['observaciones'];
+
+		$sqlUpdate = "UPDATE reportes SET
+		fecha = '$fecha',
+		capa = '$capa',
+		tramo = '$tramo',
+		comproyecto = '$comproyecto',
+		mvsm = '$mvsm',
+		humoptima = '$humoptima',
+		subtramo = '$subtramo'
+		-- personal = '$personal',
+		-- observaciones = '$observaciones'
+	WHERE expediente = '$exp' AND reporte = '$rep'";
+
+		if ($conexion->query($sqlUpdate)) {
+			// 	echo "<script>alert('Datos de muestreo actualizados correctamente'); 
+			// window.location.href='captura_cilindros.php?expediente=$exp&reporte=$rep';</script>";
+		} else {
+			echo "Error: " . $conexion->error;
+		}
+	}
+}
+// ---------- ACTUALIZAR ENSAYE DE ESPECÍMENES ----------
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
+
+	$id = $_POST['id'];
+
+	foreach ($_POST['item'] as $idItem) {
+
+		$cala      = $_POST['cala'][$idItem];
+		$estacion         = $_POST['estacion'][$idItem];
+		$prof        = $_POST['prof'][$idItem];
+		$humedad         = $_POST['humedad'][$idItem];
+		$mvsl         = $_POST['mvsl'][$idItem];
+		$compactacion           = $_POST['compactacion'][$idItem];
+
+		$sqlUpdateItem = "UPDATE compactaciones SET
+    cala = '$cala',
+    estacion = '$estacion',
+    prof = '$prof',
+    humedad = '$humedad',
+    mvsl = '$mvsl',
+    compactacion = '$compactacion'
+WHERE id = '$id' AND cala = '$cala'
+";
+
+
+		$conexion->query($sqlUpdateItem);
+	}
+	echo "<script>
+        alert('Ensaye actualizado correctamente');
+        window.close();
+    </script>";
+	exit;
+	// echo "<script>alert('Ensaye actualizado correctamente');location.reload();</script>";
+}
+
+
+
+if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
+
+	$exp = $_GET['expediente'];
+	$rep = $_GET['reporte'];
+	$id = $_GET['id'];
+
+
+	// Consulta del registro
+	$sql = "SELECT * FROM obras 
+            WHERE expediente = '$exp' 
+            LIMIT 1";
+	$res = $conexion->query($sql);
+
+	if ($res->num_rows > 0) {
+		$data = $res->fetch_assoc();
+
+		// Llenar variables
+		// $cliente       = $data['cliente'];
+		$id_cliente    = $data['cliente'];
+		$obra          = $data['obra'];
+		// $expediente    = $data['expediente'];
+		$localizacion  = $data['localizacion'];
+	}
+}
+if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
+
+	$exp = $_GET['expediente'];
+	$rep = $_GET['reporte'];
+
+	// Consulta del registro
+	$sql = "SELECT * FROM clientes 
+            WHERE idcliente = '$id_cliente' 
+            LIMIT 1";
+	$res = $conexion->query($sql);
+
+	if ($res->num_rows > 0) {
+		$data = $res->fetch_assoc();
+
+		// Llenar variables
+		$cliente       = $data['cliente'];
+		// $id_cliente    = $data['id_cliente'];
+		// $obra          = $data['obra'];
+		// $expediente    = $data['expediente'];
+		// $localizacion  = $data['localizacion'];
+	}
+}
+?>
+
+
+
+<!-- BEGIN #content -->
+<form method="POST">
+
+	<input type="hidden" name="id" value="<?= $id ?>">
+
+	<div id="content" class="app-content">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="#">LAYOUT</a></li>
+			<li class="breadcrumb-item active">STARTER PAGE</li>
+		</ul>
+
+		<h1 class="page-header">
+			Captura de cilindros <small></small>
+		</h1>
+
+
+		<div class="card">
+			<div class="card-header with-btn">
+				DATOS GENERALES
+				<div class="card-header-btn">
+					<a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
+					<a href="#" data-toggle="card-expand" class="btn"><iconify-icon icon="material-symbols-light:fullscreen"></iconify-icon></a>
+					<a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a>
+				</div>
+			</div>
+			<div class="card-body pb-2">
+				<div class="row">
+					<div class="col-xl-6">
+						<div class="mb-3">
+							<label class="form-label">Cliente <span class="text-danger"></label>
+							<input type="text" class="form-control"
+								value="<?= $cliente ?>" readonly
+								placeholder="Nombre del cliente">
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<div class="mb-3">
+							<label class="form-label">Id cliente <span class="text-danger"></label>
+							<input type="number" class="form-control"
+								value="<?= $id_cliente ?>" readonly
+								placeholder="Id cliente">
+							<!-- <div class="input-group">
+								<label class="input-group-text" for="datepicker-component"><i class="fa fa-calendar"></i></label>
+							</div> -->
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<div class="mb-3">
+							<label class="form-label">Obra <span class="text-danger"></label>
+							<input type="text" class="form-control"
+								value="<?= $obra ?>" readonly
+								placeholder="Nombre de la obra">
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<div class="mb-3">
+							<label class="form-label">Expediente <span class="text-danger"></label>
+							<input type="number" class="form-control"
+								value="<?= $expediente ?>" readonly
+								placeholder="Numero de expediente">
+						</div>
+					</div>
+
+					<div class="col-xl-6">
+						<div class="mb-3">
+							<label class="form-label">Localización <span class="text-danger"></label>
+							<input type="text" class="form-control"
+								value="<?= $localizacion ?>" readonly
+								placeholder="Localización">
+						</div>
+					</div>
+
+					<div class="col-xl-6">
+						<div class="mb-3">
+							<label class="form-label">Reporte <span class="text-danger"></label>
+							<input type="number" class="form-control"
+								value="<?= $reporte ?>" readonly
+								placeholder="Numero de reporte">
+						</div>
+					</div>
+
+
+
+
+
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="card">
+			<div class="card-header with-btn">
+				DATOS DE LA COMPACTACIÓN
+				<div class="card-header-btn">
+					<a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
+					<a href="#" data-toggle="card-expand" class="btn"><iconify-icon icon="material-symbols-light:fullscreen"></iconify-icon></a>
+					<a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a>
+				</div>
+			</div>
+			<div class="card-body pb-2">
+
+				<div class="row">
+					<div class="col-xl-6">
+						<div class="mb-3">
+							<label class="form-label">Capa *</label>
+							<input type="text" class="form-control" name="capa" value="<?= $capa ?>">
+						</div>
+					</div>
+
+					<div class="col-xl-6">
+						<div class="mb-3">
+							<label class="form-label">Fecha de muestreo *</label>
+							<input type="date" class="form-control" name="fecha" value="<?= $fecha ?>">
+						</div>
+					</div>
+
+					<div class="col-xl-6">
+						<div class="mb-3">
+							<label class="form-label">Tramo *</label>
+							<input type="text" class="form-control" name="tramo" value="<?= $tramo ?>">
+						</div>
+					</div>
+
+					<!-- <div class="row"> -->
+
+					<div class="col-xl-3">
+						<label class="form-label">Compactación*</label>
+						<input type="number" class="form-control" name="comproyecto" value="<?= $comproyecto ?>">
+					</div>
+					<div class="col-xl-3">
+						<label class="form-label">M.V.S.M.</label>
+						<input type="number" class="form-control" name="mvsm" value="<?= $mvsm ?>">
+					</div>
+					<div class="col-xl-3">
+						<label class="form-label">Humedad Óptima</label>
+						<input type="text" class="form-control" name="humoptima" value="<?= $humoptima ?>">
+					</div>
+
+
+					<div class="col-xl-4">
+						<label class="form-label">Subtramo *</label>
+						<input type="text" class="form-control" name="subtramo" value="<?= $subtramo ?>">
+					</div>
+
+
+
+
+
+
+
+					<div class="col-xl-6">
+						<label class="form-label">Personal *</label>
+						<select class="form-select" name="personal" data-live-search="true">
+							<option value="<?= $personal ?>" selected><?= $personal ?></option>
+							<?php foreach ($personalLista as $p): ?>
+								<option value="<?= $p['Nombre'] ?>"><?= $p['Nombre'] ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+
+
+
+
+
+					<div class="col-xl-12">
+						<label class="form-label">Observaciones *</label>
+						<input type="text" class="form-control" name="observaciones" value="<?= $observaciones ?>">
+					</div>
+
+				</div>
+
+
+
+			</div>
+		</div>
+
+
+		<div class="card">
+			<div class="card-header with-btn">
+				ENSAYE A LA COMPRESIÓN DE ESPECÍMENES CILÍNDRICOS DE CONCRETO
+				<div class="card-header-btn">
+					<a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
+					<a href="#" data-toggle="card-expand" class="btn"><iconify-icon icon="material-symbols-light:fullscreen"></iconify-icon></a>
+					<a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a>
+				</div>
+			</div>
+
+			<div class="card-body">
+
+				<?php
+				$sql = "SELECT * FROM compactaciones 
+                WHERE id_reporte_compactacion = '$id'
+                ORDER BY cala ASC";
+				$resultado = $conexion->query($sql);
+
+				if ($resultado->num_rows > 0) {
+
+					$clientes = $resultado->fetch_all(MYSQLI_ASSOC);
+
+					echo '<div class="table-responsive">';
+					echo '<table class="table table-bordered table-striped table-hover wide-table">';
+					echo '
+            <thead class="table-dark">
+            <tr>
+                <th>Cala</th>
+                <th>Estación</th>
+                <th>Profundidad</th>
+                <th>Humedad de lugar</th>
+                <th>MVSM</th>
+                <th>Compactación</th>
+                <th>Eliminar</th>
+            </tr>
+            </thead>';
+
+					echo '<tbody>';
+
+					foreach ($clientes as $fila) {
+
+						$idFila = $fila['id'];
+
+						echo "
+    <tr>
+        <td>
+            <input type='hidden' name='item[]' value='{$idFila}'>
+            {$idFila}
+        </td>
+
+        <td>
+            <input type='text' class='form-control'
+                   name='estacion[{$idFila}]'
+                   value='{$fila['estacion']}'>
+        </td>
+
+        <td>
+            <input type='text' class='form-control'
+                   name='prof[{$idFila}]'
+                   value='{$fila['prof']}'>
+        </td>
+
+        <td>
+            <input type='text' class='form-control'
+                   name='humedad[{$idFila}]'
+                   value='{$fila['humedad']}'>
+        </td>
+
+        <!-- MVSL -->
+        <td>
+            <input type='text'
+                   class='form-control mvsl'
+                   data-id='{$idFila}'
+                   name='mvsl[{$idFila}]'
+                   value='{$fila['mvsl']}'>
+        </td>
+
+        <!-- COMPACTACIÓN -->
+        <td>
+            <input type='text'
+                   class='form-control'
+                   name='compactacion[{$idFila}]'
+                   value='{$fila['compactacion']}'
+                   readonly>
+        </td>
+    </tr>";
+					}
+
+
+					echo "</tbody></table></div>";
+				} else {
+					echo "No se encontraron registros.";
+				}
+
+				?>
+			</div>
+		</div>
+
+
+
+
+		<button type="submit" class="btn btn-outline-theme btn-sm w-180px">
+			Guardar cambios
+		</button>
+
+</form> <!-- AQUÍ SE CIERRA EL FORMULARIO -->
+
+</div>
+</div>
+<!-- END #content -->
+
+
+
+<?php include("pie.php"); ?>
+
+<script>
+	function calcularCompactacion(id) {
+
+		// MVSM del proyecto
+		let mvsmProyecto = parseFloat(
+			document.querySelector("input[name='mvsm']").value
+		);
+
+		// MVSM de la cala
+		let mvslInput = document.querySelector(
+			"input[name='mvsl[" + id + "]']"
+		);
+		let mvsl = parseFloat(mvslInput.value);
+
+		// Campo donde se escribe la compactación
+		let compactacionInput = document.querySelector(
+			"input[name='compactacion[" + id + "]']"
+		);
+
+		if (isNaN(mvsmProyecto) || mvsmProyecto <= 0 || isNaN(mvsl)) {
+			compactacionInput.value = "";
+			return;
+		}
+
+		let compactacion = (mvsl / mvsmProyecto) * 100;
+		compactacionInput.value = compactacion.toFixed(2);
+	}
+
+	// Detectar cambios en MVSM de cada fila
+	document.addEventListener("input", function(e) {
+		if (e.target.classList.contains("mvsl")) {
+			let id = e.target.dataset.id;
+			calcularCompactacion(id);
+		}
+	});
+
+	// Recalcular todo si cambia el MVSM del proyecto
+	document.querySelector("input[name='mvsm']")
+		.addEventListener("input", function() {
+
+			document.querySelectorAll(".mvsl").forEach(input => {
+				let id = input.dataset.id;
+				calcularCompactacion(id);
+			});
+		});
+</script>

@@ -85,6 +85,11 @@ include("conexion.php");
 									>
                                         Lista Cilindros
                                     </a>
+									<a class='dropdown-item' 
+									href='lista_reportes_compactaciones.php?expediente={$fila['expediente']}&obra={$fila['obra']}'
+									>
+                                        Lista Compactaciones
+                                    </a>
                                 </li>
                                 <li><hr class='dropdown-divider'></li>
                             </ul>
