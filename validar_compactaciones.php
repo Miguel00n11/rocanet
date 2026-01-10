@@ -92,6 +92,7 @@ function firebaseDelete($ruta)
 // $usuario = $_GET['usuario'];
 $usuario = $_GET['usuario']; // NO urldecode
 $llave   = $_GET['llave'] ?? '';
+$atencion   = $_GET['atencion'] ?? '';
 
 $ruta = "Compactaciones/Reportes/$usuario/$llave";
 $reporte = firebaseGet($ruta);
@@ -120,7 +121,7 @@ $subtramo = $reporte['subTramo'] ?? 'SIN Subtramo';
 // $fc = $reporte['fc'] ?? 'SIN fc';
 $humedad_optima = $reporte['humedad'] ?? 'SIN humedad';
 $fecha = $reporte['fecha'] ?? 'SIN FECHA';
-$compactacion_proyecto = $reporte['compactacion_proyecto'] ?? 'SIN compactacion_proyecto';
+$compactacion_proyecto = $reporte['compactacion'] ?? 'SIN compactacion_proyecto';
 $mvsm = $reporte['mvsm'] ?? 'SIN mvsm';
 
 $muestreo = $reporte['personal'] ?? 'SIN personal';
@@ -180,8 +181,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['cala'])) {
             )
         ";
 
-		$stmt = $conexion->prepare($sqlInsertReporte);
-		$stmt->bind_param(
+		$stmtReporte  = $conexion->prepare($sqlInsertReporte);
+		$stmtReporte->bind_param(
 			"sissssssss",
 			$expediente,
 			$reporte,
@@ -194,9 +195,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['cala'])) {
 			$_POST['subtramo'],
 			$_POST['humedad_optima']
 		);
-
-		$stmt->execute();
+		$stmtReporte->execute();
+		// 👉 ESTE es el ID que usarás para las calas
 		$id_reporte_compactacion = $conexion->insert_id;
+
+		$sqlInsertCampo = "
+    INSERT INTO registros_compactacion_campo (
+        exp, reporte, fecha, localizacion, capa,
+        comproyecto, tramo, mvsm, subtramo, humoptima,
+		obra, cliente, atencion, id_reporte_compactacion,
+		personal, observaciones
+    ) VALUES (
+        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+    )
+";
+
+		$stmtCampo = $conexion->prepare($sqlInsertCampo);
+		$stmtCampo->bind_param(
+			"sissssssssssssss",
+			$expediente,
+			$reporte,
+			$_POST['fecha'],
+			$_POST['localizacion'],
+			$_POST['capa'],
+			$_POST['compactacion_proyecto'],
+			$_POST['tramo'],
+			$_POST['mvsm'],
+			$_POST['subtramo'],
+			$_POST['humedad_optima'],
+			$_POST['obra'],
+			$_POST['cliente'],
+			$atencion,
+			$_POST['id_reporte_compactacion'],
+			$_POST['muestreo'],
+			$_POST['observacion']
+		);
+
+		$stmtCampo->execute();
 
 		// =========================
 		// 2️⃣ INSERT calas
@@ -229,6 +264,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['cala'])) {
 			);
 
 			$stmtItem->execute();
+		}
+		// =========================
+		// 2️⃣ INSERT calas
+		// =========================
+		$sqlInsertItem = "
+            INSERT INTO registros_calas_campo (
+                id_reporte_compactacion,
+                cala, estacion, profundidad,
+                mvsl, humedad_lugar, compactacion_cala
+            ) VALUES (
+                ?,?,?,?,?,?,?
+            )
+        ";
+
+		$stmtItem_calas = $conexion->prepare($sqlInsertItem);
+
+		foreach ($_POST['cala'] as $index => $valor) {
+
+			$stmtItem_calas->bind_param(
+				"iisssss",
+				$id_reporte_compactacion,
+				$_POST['cala'][$index],
+				$_POST['estacion'][$index],
+				$_POST['prof'][$index],
+				$_POST['mvsl'][$index],       // ✅ bien escrito
+				$_POST['humedad'][$index],
+				$_POST['compactacion'][$index]
+			);
+
+			$stmtItem_calas->execute();
 		}
 
 
