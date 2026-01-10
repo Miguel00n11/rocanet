@@ -137,7 +137,7 @@
 							<span class="menu-icon">
 								<iconify-icon icon="ph:chart-bar-duotone"></iconify-icon>
 							</span>
-							<span class="menu-text">OBRAS</span>
+							<span class="menu-text">OBRAS / EXPEDIENTES</span>
 						</a>
 					</div>
 					<div class="menu-item ">
