@@ -72,7 +72,7 @@ if ($usuarios) {
 										<a href="#"
 											class="btn btn-success btn-sm"
 											onclick="
-		window.open('validar_compactaciones.php?usuario=<?= urlencode($r['usuario']) ?>&llave=<?= urlencode($r['llave']) ?>&tipo=Compactaciones', '_blank');
+		window.open('validar_compactaciones.php?usuario=<?= urlencode($r['usuario']) ?>&llave=<?= urlencode($r['llave']) ?>&atencion=<?= urlencode($r['atencion']) ?>&tipo=Compactaciones', '_blank');
 		return false;
    ">
 											Validar

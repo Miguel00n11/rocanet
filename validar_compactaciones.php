@@ -92,7 +92,10 @@ function firebaseDelete($ruta)
 // $usuario = $_GET['usuario'];
 $usuario = $_GET['usuario']; // NO urldecode
 $llave   = $_GET['llave'] ?? '';
-$atencion   = $_GET['atencion'] ?? '';
+$atencion = $_POST['atencion']
+	?? $_GET['atencion']
+	?? '';
+
 
 $ruta = "Compactaciones/Reportes/$usuario/$llave";
 $reporte = firebaseGet($ruta);
@@ -169,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['cala'])) {
 	try {
 
 		// =========================
-		// 1️⃣ INSERT REPORTE (MASTER)
+		// 1️⃣ INSERT REPORTE reportes
 		// =========================
 		$sqlInsertReporte = "
             INSERT INTO reportes (
@@ -199,6 +202,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['cala'])) {
 		// 👉 ESTE es el ID que usarás para las calas
 		$id_reporte_compactacion = $conexion->insert_id;
 
+		// =========================
+		// 1️⃣ INSERT REPORTE registros_compactacion_campo
+		// =========================
 		$sqlInsertCampo = "
     INSERT INTO registros_compactacion_campo (
         exp, reporte, fecha, localizacion, capa,
@@ -226,7 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['cala'])) {
 			$_POST['obra'],
 			$_POST['cliente'],
 			$atencion,
-			$_POST['id_reporte_compactacion'],
+			$id_reporte_compactacion,
 			$_POST['muestreo'],
 			$_POST['observacion']
 		);
@@ -234,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['cala'])) {
 		$stmtCampo->execute();
 
 		// =========================
-		// 2️⃣ INSERT calas
+		// 2️⃣ INSERT calas compactaciones
 		// =========================
 		$sqlInsertItem = "
             INSERT INTO compactaciones (
@@ -266,7 +272,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['cala'])) {
 			$stmtItem->execute();
 		}
 		// =========================
-		// 2️⃣ INSERT calas
+		// 2️⃣ INSERT registros calas campo
 		// =========================
 		$sqlInsertItem = "
             INSERT INTO registros_calas_campo (
@@ -362,10 +368,6 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 		// Llenar variables
 		$cliente       = $data['cliente'];
-		// $id_cliente    = $data['id_cliente'];
-		// $obra          = $data['obra'];
-		// $expediente    = $data['expediente'];
-		// $localizacion  = $data['localizacion'];
 	}
 }
 ?>
@@ -376,6 +378,8 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 <form method="POST">
 
 	<input type="hidden" name="id_reporte_compactacion" value="<?= $id_reporte_compactacion ?>">
+
+
 
 	<div id="content" class="app-content">
 		<ul class="breadcrumb">
@@ -411,9 +415,6 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 							<label class="form-label">Id cliente <span class="text-danger"></label>
 							<input type="number" id="id_cliente" class="form-control" name="id_cliente" value="<?= $id_cliente ?>" readonly
 								placeholder="Id cliente">
-							<!-- <div class="input-group">
-								<label class="input-group-text" for="datepicker-component"><i class="fa fa-calendar"></i></label>
-							</div> -->
 						</div>
 					</div>
 					<div class="col-xl-6">
@@ -458,10 +459,6 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 						</select>
 
 					</div>
-
-
-
-
 
 				</div>
 			</div>
@@ -555,14 +552,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 
 		<div class="card">
-			<!-- <div class="card-header with-btn">
-				ENSAYE A LA COMPRESIÓN DE ESPECÍMENES CILÍNDRICOS DE CONCRETO
-				<div class="card-header-btn">
-					<a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
-					<a href="#" data-toggle="card-expand" class="btn"><iconify-icon icon="material-symbols-light:fullscreen"></iconify-icon></a>
-					<a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a>
-				</div>
-			</div> -->
+
 
 			<div class="card-body">
 
@@ -586,23 +576,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 										<th>Humedad de lugar</th>
 										<th>MVSL</th>
 										<th>Compactación</th>
-										<!-- <th>Diametro 1 [cm]</th>
-										<th>Diametro 2 [cm]</th>
-										<th>Altura 1 [cm]</th>
-										<th>Altura 2 [cm]</th>
-										<th>Condición</th>
-										<th>Flexómetro</th>
-										<th>Escuadra</th>
-										<th>Compás</th>
-										<th>Prensa</th>
-										<th>Hora ensaye</th>
-										<th>Carga</th>
-										<th>f´c %</th>
-										<th>Tiempo [s]</th>
-										<th>Falla</th>
-										<th>Observaciones</th>
-										<th>Ensayó</th>
-										<th>Capturó</th> -->
+
 									</tr>
 								</thead>
 								<tbody>
@@ -727,7 +701,6 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 				document.getElementById("reporte").value = data.siguiente_reporte;
 
 				// 2️⃣ Consultar último item REAL
-				// return fetch(`ajax_get_ultimo_compactacion.php?expediente=${expediente}`);
 			})
 			.then(r => r.json())
 			.then(data => {
@@ -737,7 +710,6 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					return;
 				}
 
-				// reconstruirCilindros(data.ultimo_item);
 			})
 			.catch(err => console.error(err));
 	});

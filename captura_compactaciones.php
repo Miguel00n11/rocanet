@@ -48,6 +48,7 @@ $id = $_POST['id']
 	?? $_GET['id']
 	?? null;
 
+$idReporte = $id; // ← este es el id_reporte_compactacion
 
 if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
@@ -119,23 +120,25 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		$mvsm = $_POST['mvsm'];
 		$humoptima = $_POST['humoptima'];
 		$subtramo = $_POST['subtramo'];
-
 		$personal = $_POST['personal'] ?? '';
 		$observaciones = $_POST['observaciones'] ?? '';
 
 		$sqlUpdateCampo = "
         UPDATE registros_compactacion_campo SET
-			fecha = '$fecha',
-			capa = '$capa',
-			tramo = '$tramo',
-			comproyecto = '$comproyecto',
-			mvsm = '$mvsm',
-			humoptima = '$humoptima',
-			subtramo = '$subtramo',
-            personal = '$personal',
-            observaciones = '$observaciones'
-        WHERE exp = '$exp' AND reporte = '$rep'
-    ";
+
+			id_reporte_compactacion='$idReporte',
+            fecha='$fecha',
+            capa='$capa',
+            tramo='$tramo',
+            comproyecto='$comproyecto',
+            mvsm='$mvsm',
+            humoptima='$humoptima',
+            subtramo='$subtramo',
+            personal='$personal',
+            observaciones='$observaciones'
+        WHERE exp='$exp'
+          AND reporte='$rep'
+          AND id_reporte_compactacion=" . (int)$idReporte;
 
 		if (!$conexion->query($sqlUpdateCampo)) {
 			echo "Error registros_compactacion_campo: " . $conexion->error;
@@ -145,70 +148,77 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 
 
+
 	if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 
-		$idReporte = $_POST['id']; // id_reporte_compactacion
+		foreach ($_POST['item'] as $idItem) {
 
-		foreach ($_POST['item'] as $idFila) {
+			$cala = $_POST['cala'][$idItem] ?? '';
+			$estacion = $_POST['estacion'][$idItem] ?? '';
+			$prof = $_POST['prof'][$idItem] ?? '';
+			$humedad = $_POST['humedad'][$idItem] ?? '';
+			$mvsl = $_POST['mvsl'][$idItem] ?? 0;
+			$compactacion = $_POST['compactacion'][$idItem] ?? 0;
 
-			$cala      = $_POST['cala'][$idFila] ?? '';
-			$estacion      = $_POST['estacion'][$idFila] ?? '';
-			$prof          = $_POST['prof'][$idFila] ?? '';
-			$humedad       = $_POST['humedad'][$idFila] ?? '';
-			$mvsl          = $_POST['mvsl'][$idFila] ?? 0;
-			$compactacion  = $_POST['compactacion'][$idFila] ?? 0;
+			/* ---------- TABLA compactaciones ---------- */
+			$sql1 = "
+        UPDATE compactaciones SET
+            estacion='$estacion',
+            prof='$prof',
+            humedad='$humedad',
+            mvsl=" . (float)$mvsl . ",
+            compactacion=" . (float)$compactacion . "
+        WHERE id=" . (int)$idItem . "
+          AND id_reporte_compactacion=" . (int)$idReporte;
 
-			$sqlUpdateCala = "
-            UPDATE compactaciones SET
-                estacion = '$estacion',
-                prof = '$prof',
-                humedad = '$humedad',
-                mvsl = '$mvsl',
-                compactacion = '$compactacion'
-            WHERE id_reporte_compactacion = '$idReporte'
-              AND id = '$idFila'
-        ";
+			if (!$conexion->query($sql1)) {
+				echo "Error compactaciones: " . $conexion->error;
+			}
 
-			if (!$conexion->query($sqlUpdateCala)) {
-				echo "Error compactaciones (ID $idFila): " . $conexion->error;
+			/* ---------- TABLA registros_calas_campo ---------- */
+			$sql2 = "
+        UPDATE registros_calas_campo SET
+            estacion='$estacion',
+            profundidad='$prof',
+            humedad_lugar='$humedad',
+            mvsl=" . (float)$mvsl . ",
+            compactacion_cala=" . (float)$compactacion . "
+        WHERE id_reporte_compactacion=" . (int)$idReporte . "
+          AND cala=" . (int)$cala;
+
+			if (!$conexion->query($sql2)) {
+				echo "Error registros_calas_campo: " . $conexion->error;
 			}
 		}
 	}
 
 
 
+
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-		$fecha = $_POST['fecha'];
-		$capa = $_POST['capa'];
-		$tramo = $_POST['tramo'];
-		$comproyecto = $_POST['comproyecto'];
-		$mvsm = $_POST['mvsm'];
-		$humoptima = $_POST['humoptima'];
-		$subtramo = $_POST['subtramo'];
-		// $personal = $_POST['personal'];
-		// $observaciones = $_POST['observaciones'];
+    $sqlUpdate = "
+    UPDATE reportes SET
+        fecha='$fecha',
+        capa='$capa',
+        tramo='$tramo',
+        comproyecto='$comproyecto',
+        mvsm='$mvsm',
+        humoptima='$humoptima',
+        subtramo='$subtramo'
+    WHERE expediente='$exp'
+      AND reporte='$rep'";
 
-		$sqlUpdate = "UPDATE reportes SET
-		fecha = '$fecha',
-		capa = '$capa',
-		tramo = '$tramo',
-		comproyecto = '$comproyecto',
-		mvsm = '$mvsm',
-		humoptima = '$humoptima',
-		subtramo = '$subtramo'
-		-- personal = '$personal',
-		-- observaciones = '$observaciones'
-	WHERE expediente = '$exp' AND reporte = '$rep'";
+    if ($conexion->query($sqlUpdate)) {
+        echo "<script>
+            alert('Datos actualizados correctamente');
+            window.close();
+        </script>";
+    } else {
+        echo "Error reportes: " . $conexion->error;
+    }
+}
 
-		if ($conexion->query($sqlUpdate)) {
-				echo "<script>alert('Datos de muestreo actualizados correctamente'); 
-				window.close();
-			// window.location.href='captura_cilindros.php?expediente=$exp&reporte=$rep';</script>";
-		} else {
-			echo "Error: " . $conexion->error;
-		}
-	}
 }
 // ---------- ACTUALIZAR CALAS ----------
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
