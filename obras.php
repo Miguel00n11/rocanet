@@ -60,7 +60,7 @@ include("conexion.php");
 							<th>Obras</th>
 							<th>Localización</th>
 							<th>Cliente</th>
-							<th>Acción</th>
+							<th>Editar</th>
 						</tr>
 					</thead>';
 					echo '<tbody>';
@@ -84,6 +84,11 @@ include("conexion.php");
 									href='lista_reportes_cilindros.php?expediente={$fila['expediente']}&obra={$fila['obra']}'
 									>
                                         Lista Cilindros
+                                    </a>
+									 <a class='dropdown-item' 
+									href='lista_reportes_vigas.php?expediente={$fila['expediente']}&obra={$fila['obra']}'
+									>
+                                        Lista vigas
                                     </a>
 									<a class='dropdown-item' 
 									href='lista_reportes_compactaciones.php?expediente={$fila['expediente']}&obra={$fila['obra']}'
