@@ -116,11 +116,11 @@ $localizacion = $reporte['localizacion'] ?? 'SIN LOCALIZACION';
 
 $capa = $reporte['capa'] ?? 'SIN Capa';
 $tramo = $reporte['tramo'] ?? 'SIN Tramo';
-$subtramo = $reporte['subtramo'] ?? 'SIN Subtramo';
+$subtramo = $reporte['subTramo'] ?? 'SIN Subtramo';
 // $fc = $reporte['fc'] ?? 'SIN fc';
-$humedad = $reporte['humedad'] ?? 'SIN humedad';
+$humedad_optima = $reporte['humedad'] ?? 'SIN humedad';
 $fecha = $reporte['fecha'] ?? 'SIN FECHA';
-$compactacion = $reporte['compactacion'] ?? 'SIN compactacion';
+$compactacion_proyecto = $reporte['compactacion_proyecto'] ?? 'SIN compactacion_proyecto';
 $mvsm = $reporte['mvsm'] ?? 'SIN mvsm';
 
 $muestreo = $reporte['personal'] ?? 'SIN personal';
@@ -142,127 +142,95 @@ $fecha_recepcion = $fechaObj->format('Y-m-d');
 // </script>";
 
 
-$id_reporte_concreto = $_POST['id_reporte_concreto']
-	?? $_GET['id_reporte_concreto']
+$id_reporte_compactacion = $_POST['id_reporte_compactacion']
+	?? $_GET['id_reporte_compactacion']
 	?? null;
 
 
 
-// ---------- agregar ENSAYE DE ESPECÍMENES ----------
+// ---------- agregar reporte compactacion ----------
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['cala'])) {
+
 
 	$expediente = $_POST['expediente'];
 	$reporte    = $_POST['reporte'];
 
-	if (empty($_POST['item'])) {
-		die("No hay cilindros para guardar");
+	if (empty($_POST['cala'])) {
+		die("No hay calas para guardar");
 	}
 
 	$conexion->begin_transaction();
 
-	echo "<script>
-	alert('CLIENTE: ' + " . $elemento . ");
-</script>";
+	// 	echo "<script>
+	// 	alert('CLIENTE: ' + " . $elemento . ");
+	// </script>";
 	try {
 
 		// =========================
 		// 1️⃣ INSERT REPORTE (MASTER)
 		// =========================
 		$sqlInsertReporte = "
-            INSERT INTO reporte_concreto (
-                expediente, reporte, elemento, ubicacion, fc,
-                revenimientop, revenimientor, concretera, remision,
-                fecha, edad, volumen, temperatura, agregado,
-                hora_muestreo, hora_desmoldeo, recibio, muestreo,
-                fecha_recepcion, meta_lab, observacion
+            INSERT INTO reportes (
+                expediente, reporte, fecha, localizacion, capa,
+                comproyecto, tramo, mvsm, subtramo,
+                humoptima
             ) VALUES (
-                ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?
+                ?,?,?,?,?,?,?,?,?,?
             )
         ";
 
 		$stmt = $conexion->prepare($sqlInsertReporte);
 		$stmt->bind_param(
-			"sissssssssssssssssss",
+			"sissssssss",
 			$expediente,
 			$reporte,
-			$_POST['elemento'],
-			$_POST['ubicacion'],
-			$_POST['fc'],
-			$_POST['revenimientop'],
-			$_POST['revenimientor'],
-			$_POST['concretera'],
-			$_POST['remision'],
 			$_POST['fecha'],
-			$_POST['edad'],
-			$_POST['volumen'],
-			$_POST['temperatura'],
-			$_POST['agregado'],
-			$_POST['hora_muestreo'],
-			$_POST['hora_desmoldeo'],
-			$_POST['recibio'],
-			$_POST['muestreo'],
-			$_POST['fecha_recepcion'],
-			$_POST['observacion']
+			$_POST['localizacion'],
+			$_POST['capa'],
+			$_POST['compactacion_proyecto'],
+			$_POST['tramo'],
+			$_POST['mvsm'],
+			$_POST['subtramo'],
+			$_POST['humedad_optima']
 		);
 
 		$stmt->execute();
-		$id_reporte_concreto = $conexion->insert_id;
+		$id_reporte_compactacion = $conexion->insert_id;
 
 		// =========================
-		// 2️⃣ INSERT CILINDROS (DETAIL)
+		// 2️⃣ INSERT calas
 		// =========================
 		$sqlInsertItem = "
-            INSERT INTO item (
-                id_reporte_concreto, item, reporte,
-                fecha_ensaye, edad_item, tolerancia,
-                diametro1, diametro2, altura1, altura2,
-                carga, falla, meta_lab,
-                condicion_especimen, observaciones,
-                tiempo_ensaye, hora_ensaye,
-                persona_ensayo, flexometro, compas,
-                escuadra, prensa, persona_capturo
+            INSERT INTO compactaciones (
+                id_reporte_compactacion, expediente, reporte,
+                cala, estacion, prof,
+                mvsl, humedad, compactacion
             ) VALUES (
-                ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+                ?,?,?,?,?,?,?,?,?
             )
         ";
 
 		$stmtItem = $conexion->prepare($sqlInsertItem);
 
-		foreach ($_POST['item'] as $idItem) {
-
-			$meta_lab = 1;
+		foreach ($_POST['cala'] as $index => $valor) {
 
 			$stmtItem->bind_param(
-				"iiisssddddssissssssssss",
-				$id_reporte_concreto,                 // i
-				$idItem,                              // i
-				$reporte,                             // i
-				$_POST['fecha_ensaye'][$idItem],      // s
-				$_POST['edad_item'][$idItem],         // s
-				$_POST['tolerancia'][$idItem],        // s
-				$_POST['diametro1'][$idItem],         // d
-				$_POST['diametro2'][$idItem],         // d
-				$_POST['altura1'][$idItem],           // d
-				$_POST['altura2'][$idItem],           // d
-				$_POST['carga'][$idItem],              // d
-				$_POST['falla'][$idItem],              // s
-				$meta_lab,                             // i
-				$_POST['condicion_especimen'][$idItem], // s
-				$_POST['observaciones'][$idItem],      // s
-				$_POST['tiempo_ensaye'][$idItem],      // s
-				$_POST['hora_ensaye'][$idItem],        // s
-				$_POST['persona_ensayo'][$idItem],     // s
-				$_POST['flexometro'][$idItem],          // s
-				$_POST['compas'][$idItem],              // s
-				$_POST['escuadra'][$idItem],            // s
-				$_POST['prensa'][$idItem],              // s
-				$_POST['persona_capturo'][$idItem]      // s
+				"iisssssss",
+				$id_reporte_compactacion,
+				$expediente,                  // ✅ string, no array
+				$reporte,
+				$_POST['cala'][$index],
+				$_POST['estacion'][$index],
+				$_POST['prof'][$index],
+				$_POST['mvsl'][$index],       // ✅ bien escrito
+				$_POST['humedad'][$index],
+				$_POST['compactacion'][$index]
 			);
-
 
 			$stmtItem->execute();
 		}
+
 
 		// =========================
 		// 3️⃣ COMMIT
@@ -272,10 +240,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 		// =========================
 		// 4️⃣ BORRAR REPORTE EN FIREBASE
 		// =========================
-		firebaseDelete($ruta);
+		// firebaseDelete($ruta);
 
 		echo "<script>
-            alert('Reporte y cilindros guardados correctamente $elemento');
+            alert('Reporte y calas guardados correctamente $elemento');
             window.close();
         </script>";
 		exit;
@@ -293,7 +261,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 	$exp = $_GET['expediente'];
 	$rep = $_GET['reporte'];
-	$id_reporte_concreto = $_GET['id_reporte_concreto'];
+	$id_reporte_compactacion = $_GET['id_reporte_compactacion'];
 
 
 	// Consulta del registro
@@ -342,7 +310,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 <!-- BEGIN #content -->
 <form method="POST">
 
-	<input type="hidden" name="id_reporte_concreto" value="<?= $id_reporte_concreto ?>">
+	<input type="hidden" name="id_reporte_compactacion" value="<?= $id_reporte_compactacion ?>">
 
 	<div id="content" class="app-content">
 		<ul class="breadcrumb">
@@ -473,7 +441,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					<div class="col-xl-3">
 						<div class="mb-3">
 							<label class="form-label">Compactación *</label>
-							<input type="text" class="form-control" name="compactacion" value="<?= $compactacion ?>">
+							<input type="text" class="form-control" name="compactacion_proyecto" value="<?= $compactacion_proyecto ?>">
 						</div>
 					</div>
 					<div class="col-xl-3">
@@ -485,7 +453,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					<div class="col-xl-3">
 						<div class="mb-3">
 							<label class="form-label">Humedad óptima *</label>
-							<input type="text" class="form-control" name="humedad" value="<?= $humedad ?>">
+							<input type="text" class="form-control" name="humedad_optima" value="<?= $humedad_optima ?>">
 						</div>
 					</div>
 					<div class="col-xl-3">
