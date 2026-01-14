@@ -754,7 +754,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 										<th>Fecha ensaye</th>
 										<th>Edad [d]</th>
 										<th>Tolerancia [h]</th>
-										<th>Diametro 1 [cm]</th>
+										<!-- <th>Diametro 1 [cm]</th>
 										<th>Diametro 2 [cm]</th>
 										<th>Altura 1 [cm]</th>
 										<th>Altura 2 [cm]</th>
@@ -770,7 +770,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 										<th>Falla</th>
 										<th>Observaciones</th>
 										<th>Ensayó</th>
-										<th>Capturó</th>
+										<th>Capturó</th> -->
 									</tr>
 								</thead>
 								<tbody>
@@ -1056,35 +1056,35 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
                 <td><input type="text" class="form-control" name="edad_item[${id}]"></td>
                 <td><input type="text" class="form-control" name="tolerancia[${id}]"></td>
 
-                <td><input type="text" class="form-control diametro1" data-id="${id}" name="diametro1[${id}]"></td>
-                <td><input type="text" class="form-control diametro2" data-id="${id}" name="diametro2[${id}]"></td>
+                <td><input type="text" class="form-control diametro1" data-id="${id}" name="diametro1[${id}]" hidden></td>
+                <td><input type="text" class="form-control diametro2" data-id="${id}" name="diametro2[${id}]" hidden></td>
 
-                <td><input type="text" class="form-control" name="altura1[${id}]"></td>
-                <td><input type="text" class="form-control" name="altura2[${id}]"></td>
+                <td><input type="text" class="form-control" name="altura1[${id}]" hidden></td>
+                <td><input type="text" class="form-control" name="altura2[${id}]" hidden></td>
 
                 <td>
-                    <select class="form-select" name="condicion_especimen[${id}]">
+                    <select class="form-select" name="condicion_especimen[${id}]" hidden>
                         <option></option>
                         <option>Bien</option>
                         <option>Mal</option>
                     </select> 
                 </td>
 
-                <td><input type="text" class="form-control" name="flexometro[${id}]" value="9"></td>
-                <td><input type="text" class="form-control" name="escuadra[${id}]" value="4"></td>
-                <td><input type="text" class="form-control" name="compas[${id}]" value="1"></td>
+                <td><input type="text" class="form-control" name="flexometro[${id}]" value="9" hidden></td>
+                <td><input type="text" class="form-control" name="escuadra[${id}]" value="4" hidden></td>
+                <td><input type="text" class="form-control" name="compas[${id}]" value="1" hidden></td>
 
-                <td><input type="text" class="form-control" name="prensa[${id}]"></td>
-                <td><input type="time" class="form-control" name="hora_ensaye[${id}]"></td>
+                <td><input type="text" class="form-control" name="prensa[${id}]" hidden></td>
+                <td><input type="time" class="form-control" name="hora_ensaye[${id}]" hidden></td>
 
-                <td><input type="text" class="form-control carga" data-id="${id}" name="carga[${id}]"></td>
+                <td><input type="text" class="form-control carga" data-id="${id}" name="carga[${id}]" hidden></td>
 
-                <td><span class="fc_res" id="fc_res_${id}">—</span></td>
+                <td><span class="fc_res" id="fc_res_${id}" hidden>—</span></td>
 
-                <td><input type="text" class="form-control" name="tiempo_ensaye[${id}]"></td>
+                <td><input type="text" class="form-control" name="tiempo_ensaye[${id}]" hidden></td>
 
                 <td>
-                    <select class="form-select" name="falla[${id}]">
+                    <select class="form-select" name="falla[${id}]" hidden>
                         <option></option>
                         <option>1</option>
                         <option>2</option>
@@ -1093,15 +1093,15 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
                     </select>
                 </td>
 
-                <td><input type="text" class="form-control" name="observaciones[${id}]"></td>
+                <td><input type="text" class="form-control" name="observaciones[${id}]" hidden></td>
 <td>
-    <select class="form-select" name="persona_ensayo[${id}]">
+    <select class="form-select" name="persona_ensayo[${id}]" hidden>
         ${opcionesPersonal}
     </select>
 </td>
 
 <td>
-    <select class="form-select" name="persona_capturo[${id}]">
+    <select class="form-select" name="persona_capturo[${id}]" hidden>
         ${opcionesPersonal}
     </select>
 </td>
