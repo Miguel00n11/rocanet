@@ -60,7 +60,8 @@ include("conexion.php");
 							<th>Obras</th>
 							<th>Localización</th>
 							<th>Cliente</th>
-							<th>Editar</th>
+							<th class="text-center">Editar</th>
+							<th class="text-center">Nuevo</th>
 						</tr>
 					</thead>';
 					echo '<tbody>';
@@ -71,7 +72,7 @@ include("conexion.php");
 							<td>{$fila['expediente']}</td>
 							<td>{$fila['obra']}</td>
 							<td>{$fila['localizacion']}</td>
-							<td>{$fila['cliente']}</td>
+							<td class='text-center'>{$fila['cliente']}</td>
 							<td class='text-center'>
                         <div class='dropdown'>
                             <button class='btn btn-outline-theme dropdown-toggle' type='button' data-bs-toggle='dropdown'>
@@ -81,19 +82,47 @@ include("conexion.php");
                             <ul class='dropdown-menu'>
                                 <li>
                                     <a class='dropdown-item' 
-									href='lista_reportes_cilindros.php?expediente={$fila['expediente']}&obra={$fila['obra']}'
+									href='lista_reportes_cilindros.php?expediente={$fila['expediente']}&obra={$fila['obra']}' target='_blank'
 									>
                                         Lista Cilindros
                                     </a>
 									 <a class='dropdown-item' 
-									href='lista_reportes_vigas.php?expediente={$fila['expediente']}&obra={$fila['obra']}'
+									href='lista_reportes_vigas.php?expediente={$fila['expediente']}&obra={$fila['obra']}' target='_blank'
 									>
                                         Lista vigas
                                     </a>
 									<a class='dropdown-item' 
-									href='lista_reportes_compactaciones.php?expediente={$fila['expediente']}&obra={$fila['obra']}'
+									href='lista_reportes_compactaciones.php?expediente={$fila['expediente']}&obra={$fila['obra']}' target='_blank'
 									>
                                         Lista Compactaciones
+                                    </a>
+                                </li>
+                                <li><hr class='dropdown-divider'></li>
+                            </ul>
+                        </div>
+                    </td>
+					<td class='text-center'>
+                        <div class='dropdown'>
+                            <button class='btn btn-outline-theme dropdown-toggle' type='button' data-bs-toggle='dropdown'>
+                                <iconify-icon icon='mdi:check-circle'></iconify-icon> Seleccionar
+                            </button>
+
+                            <ul class='dropdown-menu'>
+                                <li>
+                                    <a class='dropdown-item' 
+									href='nuevos_cilindros.php?expediente={$fila['expediente']}' target='_blank'
+									>
+                                        Nuevo cilindro
+                                    </a>
+									<a class='dropdown-item' 
+									href='nuevos_vigas.php?expediente={$fila['expediente']}' target='_blank'
+									>
+										Nueva viga
+                                    </a>
+									<a class='dropdown-item' 
+									href='nuevos_compactaciones.php?expediente={$fila['expediente']}&obra={$fila['obra']}' target='_blank'
+									>
+                                        Nueva compactación
                                     </a>
                                 </li>
                                 <li><hr class='dropdown-divider'></li>

@@ -78,9 +78,9 @@ include("conexion.php");
 						echo "<tr>
 							<td class='text-center'>{$fila['reporte']}</td>
 							<td class='text-center'>{$fila['elemento']}</td>
-							<td class='text-center'>{$fila['ubicacion']}</td>
-							<td class='text-center'>{$fila['fecha']}</td>
-							<td class='text-center'>{$fila['fc']}</td>
+							<td class='text-center'>{$fila['ubicacion_viga']}</td>
+							<td class='text-center'>{$fila['fecha_viga']}</td>
+							<td class='text-center'>{$fila['fc_viga']}</td>
 							<td class='text-center'>{$fila['edad']}</td>
 							<td class='text-center'>
 								<a href='#modalEdit' data-bs-toggle='modal' class='btn btn-outline-theme btn-sm w-80px'>
