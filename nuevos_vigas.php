@@ -191,10 +191,12 @@ $id_reporte_concreto = $_POST['id_reporte_concreto']
 
 // ---------- agregar ENSAYE DE ESPECÍMENES ----------
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
 	$expediente = $_POST['expediente'];
 	$reporte    = $_POST['reporte'];
+
+	
 
 	if (empty($_POST['item'])) {
 		die("No hay vigas para guardar");
@@ -363,19 +365,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 			$expediente,
 			$id_cliente,
 			$reporte,
-			$elemento,
-			$ubicacion,
-			$fc,
-			$revenimiento_dis,
-			$revenimiento_r1,
-			$concretera,
-			$remision,
+			$_POST['elemento_colado'],
+			$_POST['ubicacion'],
+			$_POST['fc'],
+			$_POST['revenimiento_dis'],
+			$_POST['revenimiento_r1'],
+			$_POST['concretera'],
+			$_POST['remision'],
 			$fecha,
-			$edad_muestreo,
-			$volumen,
-			$temperatura,
-			$tma,
-			$tma,
+			$_POST['edad_muestreo'],
+			$_POST['volumen'],
+			$_POST['temperatura'],
+			$_POST['tma'],
+			$_POST['tma'],
 
 			$item[0],
 			$item[1],
@@ -393,10 +395,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 			$falla[1],
 			$falla[2],
 
-			$muestreo,
+			$_POST['muestreo'],
 			$_POST['recibio'],
-			$observacion,
-			$fecha_recepcion,
+			$_POST['observacion'],
+			$_POST['fecha_recepcion'],
 			$_POST['hora_desmoldeo']
 		);
 
