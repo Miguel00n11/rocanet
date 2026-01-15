@@ -452,7 +452,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					</div>
 					<div class="col-xl-6">
 						<label class="form-label">Seleccionar expediente *</label>
-						<select class="form-select" id="seleccionar_exp" name="seleccionar_exp">
+						<select class="form-select" id="seleccionar_exp" name="seleccionar_exp" disabled>
 							<option value="">Seleccionar expediente</option>
 							<?php foreach ($expLista as $p): ?>
 								<option value="<?= $p['expediente'] ?>"

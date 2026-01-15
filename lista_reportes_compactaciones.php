@@ -79,21 +79,26 @@ include("conexion.php");
 							<td class='text-center'>{$fila['tramo']}</td>
 							<td class='text-center'>{$fila['fecha']}</td>
 							<td class='text-center'>
-								<a href='#modalEdit' data-bs-toggle='modal' class='btn btn-outline-theme btn-sm w-80px'>
+								<a href='#modalEdit' data-bs-toggle='modal' class='btn btn-outline-danger btn-sm w-80px'>
+								<i class='far fa-lg fa-fw me-2 fa-trash-alt'></i>
 									Elimiar
 								</a>
 							</td>
 								<td class='text-center'>
 								<a href='captura_compactaciones.php?expediente={$fila['expediente']}&reporte={$fila['reporte']}&id={$fila['id']}'
-  	 								class='btn btn-outline-theme btn-sm w-80px'
+  	 								class='btn btn-outline-success btn-sm w-80px'
 									target='_blank'>
+
+									<i class='far fa-lg fa-fw me-2 fa-edit'></i>
    									Editar
 								</a>
 
 
 							</td>
 								<td class='text-center'>
-								<a href='#modalEdit' data-bs-toggle='modal' class='btn btn-outline-theme btn-sm w-80px'>
+								<a href='#modalEdit' data-bs-toggle='modal' class='btn btn-outline-info btn-sm w-80px'
+								target='_blank'>
+								<i class='far fa-lg fa-fw me-2 fa-file-pdf'></i>
 									Reporte
 								</a>
 							</td>

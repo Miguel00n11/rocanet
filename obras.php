@@ -76,7 +76,8 @@ include("conexion.php");
 							<td class='text-center'>
                         <div class='dropdown'>
                             <button class='btn btn-outline-theme dropdown-toggle' type='button' data-bs-toggle='dropdown'>
-                                <iconify-icon icon='mdi:check-circle'></iconify-icon> Seleccionar
+									<i class='far fa-lg fa-fw me-2 fa-edit'></i>
+								Actualizar
                             </button>
 
                             <ul class='dropdown-menu'>
@@ -104,7 +105,7 @@ include("conexion.php");
 					<td class='text-center'>
                         <div class='dropdown'>
                             <button class='btn btn-outline-theme dropdown-toggle' type='button' data-bs-toggle='dropdown'>
-                                <iconify-icon icon='mdi:check-circle'></iconify-icon> Seleccionar
+								<i class='fas fa-lg fa-fw me-2 fa-plus'></i> Agregar
                             </button>
 
                             <ul class='dropdown-menu'>
