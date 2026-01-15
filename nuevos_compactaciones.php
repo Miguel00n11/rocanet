@@ -545,6 +545,16 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					</div>
 					<!-- <div class="row"> -->
 
+					<div class="col-xl-12 d-flex gap-2 mt-2">
+						<button type="button" class="btn btn-outline-success btn-sm" id="btnAgregarCala">
+							➕ Agregar cala
+						</button>
+
+						<button type="button" class="btn btn-outline-danger btn-sm" id="btnEliminarCala">
+							➖ Eliminar última cala
+						</button>
+					</div>
+
 
 
 
@@ -613,11 +623,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 				if (!calasFirebase.length) {
 					tbody.innerHTML = `
-            <tr>
-                <td colspan="6" class="text-center text-muted">
-                    No hay calas registradas
-                </td>
-            </tr>`;
+          `;
 					return;
 				}
 
@@ -766,12 +772,65 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		});
 </script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const selectExp = document.getElementById("seleccionar_exp");
+	document.addEventListener("DOMContentLoaded", function() {
+		const selectExp = document.getElementById("seleccionar_exp");
 
-    if (selectExp && selectExp.value) {
-        // Simula que el usuario cambió el select
-        selectExp.dispatchEvent(new Event("change"));
-    }
-});
+		if (selectExp && selectExp.value) {
+			// Simula que el usuario cambió el select
+			selectExp.dispatchEvent(new Event("change"));
+		}
+	});
+</script>
+<script>
+	function agregarCala() {
+		const tbody = document.querySelector("table tbody");
+		if (!tbody) return;
+
+		const index = tbody.querySelectorAll("tr").length;
+
+		const fila = document.createElement("tr");
+
+		fila.innerHTML = `
+
+        <td><input type="text" class="form-control" name="cala[]" value="${index + 1}"></td>
+        <td><input type="text" class="form-control" name="estacion[]"></td>
+        <td><input type="text" class="form-control text-center" name="prof[]"></td>
+        <td><input type="text" class="form-control text-center" name="humedad[]"></td>
+
+        <td>
+            <input type="text"
+                   class="form-control mvsl text-center"
+                   data-index="${index}"
+                   name="mvsl[]">
+        </td>
+
+        <td>
+            <input type="text"
+                   class="form-control text-center compactacion"
+                   name="compactacion[]"
+                   readonly>
+        </td>
+    `;
+
+		tbody.appendChild(fila);
+	}
+</script>
+<script>
+	function eliminarUltimaCala() {
+		const tbody = document.querySelector("table tbody");
+		if (!tbody) return;
+
+		const filas = tbody.querySelectorAll("tr");
+
+		if (filas.length === 0) return;
+
+		tbody.removeChild(filas[filas.length - 1]);
+	}
+</script>
+<script>
+	document.getElementById("btnAgregarCala")
+		.addEventListener("click", agregarCala);
+
+	document.getElementById("btnEliminarCala")
+		.addEventListener("click", eliminarUltimaCala);
 </script>
