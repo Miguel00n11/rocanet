@@ -120,7 +120,7 @@ include("conexion.php");
 										Nueva viga
                                     </a>
 									<a class='dropdown-item' 
-									href='nuevos_compactaciones.php?expediente={$fila['expediente']}&obra={$fila['obra']}' target='_blank'
+									href='nuevos_compactaciones.php?expediente={$fila['expediente']}' target='_blank'
 									>
                                         Nueva compactación
                                     </a>
