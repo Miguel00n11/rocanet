@@ -171,12 +171,12 @@
 								</a>
 							</div>
 							<div class="menu-item ">
-								<a href="lista_reportes_vigas_general.php" class="menu-link">
+								<a href="lista_reportes_cilindros_validar.php" class="menu-link">
 									<span class="menu-text">Ver actulalizados</span>
 								</a>
 							</div>
 							<div class="menu-item ">
-								<a href="lista_reportes_vigas_general.php" class="menu-link">
+								<a href="lista_reportes_cilindros_validar.php" class="menu-link">
 									<span class="menu-text">Ver originales</span>
 								</a>
 							</div>
@@ -196,12 +196,12 @@
 								</a>
 							</div>
 							<div class="menu-item ">
-								<a href="lista_reportes_vigas_general.php" class="menu-link">
+								<a href="lista_reportes_vigas_validar.php" class="menu-link">
 									<span class="menu-text">Ver actulalizados</span>
 								</a>
 							</div>
 							<div class="menu-item ">
-								<a href="lista_reportes_vigas_general.php" class="menu-link">
+								<a href="lista_reportes_vigas_validar.php" class="menu-link">
 									<span class="menu-text">Ver originales</span>
 								</a>
 							</div>
@@ -221,12 +221,12 @@
 								</a>
 							</div>
 							<div class="menu-item ">
-								<a href="lista_reportes_vigas_general.php" class="menu-link">
+								<a href="lista_reportes_compactaciones_validar.php" class="menu-link">
 									<span class="menu-text">Ver actulalizados</span>
 								</a>
 							</div>
 							<div class="menu-item ">
-								<a href="lista_reportes_vigas_general.php" class="menu-link">
+								<a href="lista_reportes_compactaciones_validar.php" class="menu-link">
 									<span class="menu-text">Ver originales</span>
 								</a>
 							</div>

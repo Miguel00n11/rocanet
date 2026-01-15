@@ -51,8 +51,8 @@ if ($usuarios) {
 				<table class="table table-bordered table-striped">
 					<thead class="table-dark">
 						<tr>
-							<th>Expediente</th>
-							<th>Reporte</th>
+							<th>Personal</th>
+							<th>Cliente</th>
 							<th>Obra</th>
 							<th>Fecha</th>
 							<th>Cliente</th>
@@ -63,8 +63,8 @@ if ($usuarios) {
 						<?php if ($reportesPendientes): ?>
 							<?php foreach ($reportesPendientes as $r): ?>
 								<tr>
-									<td><?= $r['expediente'] ?? '' ?></td>
-									<td><?= $r['reporte'] ?? '' ?></td>
+									<td><?= $r['usuario'] ?? '' ?></td>
+									<td><?= $r['cliente'] ?? '' ?></td>
 									<td><?= $r['obra'] ?? '' ?></td>
 									<td><?= $r['fecha'] ?? '' ?></td>
 									<td><?= $r['cliente'] ?? '' ?></td>

@@ -332,7 +332,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 		</ul>
 
 		<h1 class="page-header">
-			Captura de cilindros <small></small>
+			Captura de compactaciones <small></small>
 		</h1>
 
 
@@ -340,9 +340,9 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 			<div class="card-header with-btn">
 				DATOS GENERALES
 				<div class="card-header-btn">
-					<a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
+					<!-- <a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
 					<a href="#" data-toggle="card-expand" class="btn"><iconify-icon icon="material-symbols-light:fullscreen"></iconify-icon></a>
-					<a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a>
+					<a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a> -->
 				</div>
 			</div>
 			<div class="card-body pb-2">
@@ -421,9 +421,9 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 			<div class="card-header with-btn">
 				DATOS DE LA COMPACTACIÓN
 				<div class="card-header-btn">
-					<a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
+					<!-- <a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
 					<a href="#" data-toggle="card-expand" class="btn"><iconify-icon icon="material-symbols-light:fullscreen"></iconify-icon></a>
-					<a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a>
+					<a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a> -->
 				</div>
 			</div>
 			<div class="card-body pb-2">
@@ -501,9 +501,9 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 			<div class="card-header with-btn">
 				RESULTADOS DE LAS CALAS DE COMPACTACIÓN
 				<div class="card-header-btn">
-					<a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
+					<!-- <a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
 					<a href="#" data-toggle="card-expand" class="btn"><iconify-icon icon="material-symbols-light:fullscreen"></iconify-icon></a>
-					<a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a>
+					<a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a> -->
 				</div>
 			</div>
 
