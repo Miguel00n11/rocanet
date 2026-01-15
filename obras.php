@@ -77,7 +77,7 @@ include("conexion.php");
                         <div class='dropdown'>
                             <button class='btn btn-outline-theme dropdown-toggle' type='button' data-bs-toggle='dropdown'>
 									<i class='far fa-lg fa-fw me-2 fa-edit'></i>
-								Actualizar
+								LISTA
                             </button>
 
                             <ul class='dropdown-menu'>
