@@ -83,11 +83,13 @@ include("conexion.php");
 							<td class='text-center'>{$fila['fc']}</td>
 							<td class='text-center'>{$fila['edad']}</td>
 							<td class='text-center'>
-								<a href='#modalEdit' data-bs-toggle='modal' class='btn btn-outline-danger btn-sm w-80px'>
+							<a href='eliminar_reporte.php?id_reporte_concreto={$fila['id_reporte_concreto']}&expediente={$fila['expediente']}'
+							   class='btn btn-outline-danger btn-sm w-80px'
+							   onclick='return eliminarReporte(this.href);'>
 								<i class='far fa-lg fa-fw me-2 fa-trash-alt'></i>
-								Elimiar
-								</a>
-							</td>
+								Eliminar								
+							</a>
+						</td>
 								<td class='text-center'>
 								<a href='captura_cilindros.php?expediente={$fila['expediente']}&reporte={$fila['reporte']}&id_reporte_concreto={$fila['id_reporte_concreto']}'
   	 								class='btn btn-outline-success btn-sm w-80px'
@@ -127,3 +129,23 @@ include("conexion.php");
 
 
 <?php include("pie.php"); ?>
+<script>
+	function eliminarReporte(url) {
+		if (!confirm('¿Seguro que deseas eliminar este reporte?')) {
+			return false;
+		}
+
+		window.open(
+			url,
+			'eliminar',
+			'width=10,height=10,left=-1000,top=-1000'
+		);
+
+		// Recargar la lista después de eliminar
+		setTimeout(() => {
+			location.reload();
+		}, 500);
+
+		return false;
+	}
+</script>

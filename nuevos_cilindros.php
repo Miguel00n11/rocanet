@@ -94,6 +94,18 @@ $usuario = $_GET['usuario'] ?? ''; // NO urldecode
 $llave   = $_GET['llave'] ?? '';
 $expediente   = $_GET['expediente'] ?? '';
 
+$aditivo   = $_GET['aditivo'] ?? null;
+$validado   = 1;
+$carretilla   = $_GET['carretilla'] ?? null;
+$cono   = $_GET['cono'] ?? null;
+$cucharon   = $_GET['cucharon'] ?? null;
+$flexometro   = $_GET['flexometro'] ?? null;
+$mazo   = $_GET['mazo'] ?? null;
+$termometro   = $_GET['termometro'] ?? null;
+$varilla   = $_GET['varilla'] ?? null;
+$placa   = $_GET['placa'] ?? null;
+$enrasador   = $_GET['enrasador'] ?? null;
+
 $ruta = '';
 // $reporte = firebaseGet($ruta);
 
@@ -261,8 +273,103 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 			);
 
 
+
+
 			$stmtItem->execute();
 		}
+
+
+
+		// =========================
+		$sqlCampo = "
+			INSERT INTO registros_concreto_campo_actualizado (
+				id_reporte_concreto, obra, fecha, aditivo, carretilla, cliente, concretera, cono, cucharon, edad,
+				elemento_colado, enrasador, estado_molde1, estado_molde2, estado_molde3, estado_molde4, exp, fc, flexometro, hora_llegada,
+				hora_muestreo, hora_salida, id_especimen1, id_especimen2, id_especimen3, id_especimen4, localizacion, mazo, molde1, molde2,
+				molde3, molde4, muestra, numero_reporte, observaciones, personal, placa, proporciones, remision, revenimiento_dis,
+				revenimiento_r1, revenimiento_r2, revisado, temperatura, termometro, tipo_muestreo, tipo_resistencia, tma, ubicacion, validado,
+				varilla, volumen_total, volumen_muestra, olla
+			) VALUES (
+				?,?,?,?,?,?,?,?,?,?,
+				?,?,?,?,?,?,?,?,?,?,
+				?,?,?,?,?,?,?,?,?,?,
+				?,?,?,?,?,?,?,?,?,?,
+				?,?,?,?,?,?,?,?,?,?,
+				?,?,?,?
+			)";
+
+
+
+
+		$stmtCampo = $conexion->prepare($sqlCampo);
+
+		echo "<script>
+	alert('CLIENTE: ' + " . json_encode($carretilla) . ");
+</script>";
+
+		$validado = 1;
+		$stmtCampo->bind_param(
+			"isssssssssssssssssssiiiiisssssssssssssssssssssisiissss",
+			$id_reporte_concreto,
+			$_POST['obra'], //
+			$_POST['fecha'], //
+			$aditivo, //
+			$carretilla, //
+			$_POST['cliente'],
+			$_POST['concretera'],
+			$cono,
+			$cucharon,
+			$_POST['edad'], //10
+			$_POST['elemento'],
+			$enrasador,
+			$_POST['estado_molde1'],
+			$_POST['estado_molde2'],
+			$_POST['estado_molde3'],
+			$_POST['estado_molde4'],
+			$_POST['expediente'],
+			$_POST['fc'],
+			$flexometro,
+			$_POST['hora_llegada'], //20
+			$_POST['hora_muestreo'],
+			$_POST['hora_salida'],
+			$_POST['id_especimen1'],
+			$_POST['id_especimen2'],
+			$_POST['id_especimen3'],
+			$_POST['id_especimen4'],
+			$_POST['localizacion'],
+			$mazo,
+			$_POST['molde1'],
+			$_POST['molde2'], //30
+			$_POST['molde3'],
+			$_POST['molde4'],
+			$_POST['muestra'],
+			$_POST['reporte'],
+			$_POST['observaciones'],
+			$_POST['personal'],
+			$placa,
+			$_POST['proporciones'],
+			$_POST['remision'],
+			$_POST['revenimiento_dis'], //40
+			$_POST['revenimiento_r1'],
+			$_POST['revenimiento_r2'],
+			$_POST['revisado'],
+			$_POST['temperatura'],
+			$termometro,
+			$_POST['tipo_muestreo'],
+			$_POST['tipo_resistencia'],
+			$_POST['agregado'],
+			$_POST['ubicacion'],
+			$validado, // validado 50
+			$varilla,
+			$_POST['volumen'],
+			$_POST['volumen_muestra'],
+			$_POST['olla']
+		);
+
+		$stmtCampo->execute();
+
+
+
 
 		// =========================
 		// 3️⃣ COMMIT
