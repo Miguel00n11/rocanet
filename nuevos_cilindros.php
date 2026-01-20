@@ -130,6 +130,7 @@ $edad = "";
 $revenimientop = "";
 $revenimientor = "";
 $tma = "";
+$revisado = "Cristina Andrea Rodríguez Ortega";
 $concretera = "";
 $temperatura = "";
 $remision = "";
@@ -307,9 +308,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 	alert('CLIENTE: ' + " . json_encode($carretilla) . ");
 </script>";
 
-		$validado = 1;
+		$validado = 0;
 		$stmtCampo->bind_param(
-			"isssssssssssssssssssiiiiisssssssssssssssssssssisiissss",
+			"isssssssssssssssssssssiiisssssssssssssssssssssississss",
 			$id_reporte_concreto,
 			$_POST['obra'], //
 			$_POST['fecha'], //
@@ -321,7 +322,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 			$cucharon,
 			$_POST['edad'], //10
 			$_POST['elemento'],
-			$enrasador,
+			$enrasador,//12
 			$_POST['estado_molde1'],
 			$_POST['estado_molde2'],
 			$_POST['estado_molde3'],
@@ -344,15 +345,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 			$_POST['molde4'],
 			$_POST['muestra'],
 			$_POST['reporte'],
-			$_POST['observaciones'],
-			$_POST['personal'],
+			$_POST['observacion'],
+			$_POST['muestreo'],
 			$placa,
 			$_POST['proporciones'],
 			$_POST['remision'],
-			$_POST['revenimiento_dis'], //40
-			$_POST['revenimiento_r1'],
-			$_POST['revenimiento_r2'],
-			$_POST['revisado'],
+			$_POST['revenimientop'], //40
+			$_POST['revenimientor'],
+			$_POST['revenimientor'],
+			$revisado, //
+			// "Cristina Andrea Rodríguez Ortega", // revisado
 			$_POST['temperatura'],
 			$termometro,
 			$_POST['tipo_muestreo'],
