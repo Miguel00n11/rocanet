@@ -10,8 +10,8 @@ include("conexion.php");
 <!-- BEGIN #content -->
 <div id="content" class="app-content">
 	<ul class="breadcrumb">
-		<li class="breadcrumb-item"><a href="#">LAYOUT</a></li>
-		<li class="breadcrumb-item active">STARTER PAGE</li>
+		<li class="breadcrumb-item"><a href="obras.php">Obras / Expedientes</a></li>
+		<li class="breadcrumb-item active">Lista de reportes de compactaciones</li>
 	</ul>
 	<?php $obra = $_GET['obra']; ?>
 	<h1 class="page-header">
@@ -21,19 +21,17 @@ include("conexion.php");
 
 	<div class="card">
 
-		<div class="card-header with-btn">
+		<!-- <div class="card-header with-btn">
 			CARD HEADER
 			<div class="card-header-btn">
-				<!-- <a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
+				<a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
 				<a href="#" data-toggle="card-expand" class="btn"><iconify-icon icon="material-symbols-light:fullscreen"></iconify-icon></a>
-				<a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a> -->
+				<a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a>
 			</div>
-		</div>
+		</div> -->
 		<div class="card-body">
 			<p>
-				Start build your page here
-
-				Selecciona un cliente.
+				Selecciona un reporte de compactación.
 
 				<?php
 
@@ -79,10 +77,12 @@ include("conexion.php");
 							<td class='text-center'>{$fila['tramo']}</td>
 							<td class='text-center'>{$fila['fecha']}</td>
 							<td class='text-center'>
-								<a href='#modalEdit' data-bs-toggle='modal' class='btn btn-outline-danger btn-sm w-80px'>
+								<a href='eliminar_reporte_compactacion.php?id={$fila['id']}&reporte={$fila['reporte']}'
+							   class='btn btn-outline-danger btn-sm w-80px'
+							   onclick='return eliminarReporte(this.href);'>
 								<i class='far fa-lg fa-fw me-2 fa-trash-alt'></i>
-									Elimiar
-								</a>
+								Eliminar
+							</a>
 							</td>
 								<td class='text-center'>
 								<a href='captura_compactaciones.php?expediente={$fila['expediente']}&reporte={$fila['reporte']}&id={$fila['id']}'
@@ -125,3 +125,23 @@ include("conexion.php");
 
 
 <?php include("pie.php"); ?>
+<script>
+	function eliminarReporte(url) {
+		if (!confirm('¿Seguro que deseas eliminar este reporte?')) {
+			return false;
+		}
+
+		window.open(
+			url,
+			'eliminar',
+			'width=10,height=10,left=-1000,top=-1000'
+		);
+
+		// Recargar la lista después de eliminar
+		setTimeout(() => {
+			location.reload();
+		}, 500);
+
+		return false;
+	}
+</script>

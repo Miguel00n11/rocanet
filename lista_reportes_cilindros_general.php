@@ -13,7 +13,8 @@ include("conexion.php");
 		<li class="breadcrumb-item"><a href="#">LAYOUT</a></li>
 		<li class="breadcrumb-item active">STARTER PAGE</li>
 	</ul>
-	<?php $obra = $_GET['obra']; ?>
+	<?php $obra = $_GET['obra'] ?? '';
+	?>
 	<h1 class="page-header">
 		Lista de reporte de los cilindros.
 		<small><?= $obra ?></small>
