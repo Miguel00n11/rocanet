@@ -12,6 +12,13 @@
 	<link href="assets/css/vendor.min.css" rel="stylesheet" />
 	<link href="assets/css/app.min.css" rel="stylesheet" />
 	<!-- ================== END core-css ================== -->
+	<link rel="stylesheet"
+		href="https://cdn.datatables.net/2.3.6/css/dataTables.bootstrap5.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/2.3.6/css/dataTables.bootstrap5.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/columncontrol/1.2.0/css/columnControl.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.7/css/responsive.dataTables.min.css">
+
+
 
 </head>
 
@@ -262,8 +269,8 @@
 							</div>
 						</div>
 					</div>
-					
-					
+
+
 				</div>
 				<!-- END menu -->
 				<div class="mt-auto p-15px w-100">

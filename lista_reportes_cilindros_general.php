@@ -5,6 +5,13 @@ include("conexion.php");
 
 
 ?>
+<div class="row mb-3">
+	<div class="col-md-6">
+		<input type="text" id="buscadorPersonalizado"
+			   class="form-control"
+			   placeholder="Buscar por expediente, reporte, obra, cliente...">
+	</div>
+</div>
 
 
 <!-- BEGIN #content -->
@@ -57,7 +64,7 @@ include("conexion.php");
 
 
 					echo '<div class="table-responsive">';
-					echo '<table class="table table-bordered table-striped table-hover">';
+					echo '<table id="datatableDefault" class="table table-striped table-bordered nowrap w-100">';
 					echo '<thead class="table-dark">
 
 
