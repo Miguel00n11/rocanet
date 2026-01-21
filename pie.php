@@ -73,6 +73,12 @@
 		document.addEventListener('DOMContentLoaded', function() {
 
 			const tableEl = document.querySelector('#datatableDefault');
+
+			// 🔒 Si la tabla NO existe, salir sin error
+			if (!tableEl) {
+				return;
+			}
+
 			tableEl.classList.add('nowrap');
 
 			new DataTable(tableEl, {
@@ -82,12 +88,20 @@
 				],
 
 				columnDefs: [{
-					targets: [0, 1, 2, 3, 4], // columnas clave
-					columnControl: [
-						'order',
-						['search', 'spacer', 'orderAsc', 'orderDesc']
-					]
-				}],
+						targets: [0, 1, 2, 3, 4, 5, 6, 12],
+						columnControl: [
+							'order',
+							['search', 'spacer', 'orderAsc', 'orderDesc']
+						]
+					},
+					{
+						targets: [13, 14],
+						orderable: false,
+						searchable: false,
+						responsivePriority: 1,
+						className: 'dt-body-center'
+					}
+				],
 
 				ordering: {
 					indicators: false
@@ -97,8 +111,8 @@
 
 				language: {
 					search: "Buscar:",
-					info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
 					lengthMenu: "Mostrar _MENU_ registros",
+					info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
 					paginate: {
 						next: "Siguiente",
 						previous: "Anterior"
@@ -108,6 +122,8 @@
 
 		});
 	</script>
+
+
 
 
 
