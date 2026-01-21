@@ -87,7 +87,7 @@ include("conexion.php");
 							   class='btn btn-outline-danger btn-sm w-80px'
 							   onclick='return eliminarReporte(this.href);'>
 								<i class='far fa-lg fa-fw me-2 fa-trash-alt'></i>
-								Eliminar								
+								Eliminar
 							</a>
 						</td>
 								<td class='text-center'>

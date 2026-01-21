@@ -15,7 +15,7 @@ SELECT
     o.localizacion,
     c.idcliente,
     c.cliente,
-    COUNT(rc.id_reporte_concreto) + 1 AS siguiente_reporte
+    COALESCE(MAX(rc.reporte), 0) + 1 AS siguiente_reporte
 FROM obras o
 JOIN clientes c ON o.cliente = c.idcliente
 LEFT JOIN reporte_concreto rc ON rc.expediente = o.expediente
