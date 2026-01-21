@@ -82,6 +82,10 @@
 			tableEl.classList.add('nowrap');
 
 			new DataTable(tableEl, {
+				// ✅ SEGUNDA COLUMNA EN ORDEN DESCENDENTE
+				order: [
+					[1, 'desc']
+				],
 				columnControl: [
 					'order',
 					['search', 'spacer', 'orderAsc', 'orderDesc', 'orderClear']
@@ -122,7 +126,185 @@
 
 		});
 	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
 
+			const tableEl = document.querySelector('#datatableObras');
+
+			// 🔒 Si no existe la tabla, salir
+			if (!tableEl) {
+				return;
+			}
+
+			tableEl.classList.add('nowrap');
+
+			new DataTable(tableEl, {
+				// ✅ PRIMERA COLUMNA EN ORDEN DESCENDENTE
+				order: [
+					[0, 'desc']
+				],
+				columnControl: [
+					'order',
+					['search', 'spacer', 'orderAsc', 'orderDesc', 'orderClear']
+				],
+
+				columnDefs: [
+					// 🔹 Columnas con búsqueda / orden
+					{
+						targets: [0, 1, 2, 3],
+						columnControl: [
+							'order',
+							['search', 'spacer', 'orderAsc', 'orderDesc']
+						]
+					},
+
+					// 🔴 Dropdowns: Editar / Nuevo
+					{
+						targets: [4, 5],
+						orderable: false,
+						searchable: false,
+						responsivePriority: 1,
+						className: 'dt-body-center'
+					}
+				],
+
+				ordering: {
+					indicators: false
+				},
+
+				responsive: true,
+
+				language: {
+					search: "Buscar:",
+					lengthMenu: "Mostrar _MENU_ registros",
+					info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+					paginate: {
+						next: "Siguiente",
+						previous: "Anterior"
+					}
+				}
+			});
+
+		});
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+
+			const tableEl = document.querySelector('#datatableClientes');
+
+			// 🔒 Si no existe la tabla, no hacer nada
+			if (!tableEl) {
+				return;
+			}
+
+			tableEl.classList.add('nowrap');
+
+			new DataTable(tableEl, {
+				// ✅ PRIMERA COLUMNA EN ORDEN DESCENDENTE
+				order: [
+					[0, 'desc']
+				],
+				columnControl: [
+					'order',
+					['search', 'spacer', 'orderAsc', 'orderDesc', 'orderClear']
+				],
+
+				columnDefs: [
+					// 🔹 Columnas normales (datos)
+					{
+						targets: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+						columnControl: [
+							'order',
+							['search', 'spacer', 'orderAsc', 'orderDesc']
+						]
+					},
+
+					// 🔴 Botón Seleccionar
+					{
+						targets: [9],
+						orderable: false,
+						searchable: false,
+						responsivePriority: 1,
+						className: 'dt-body-center'
+					}
+				],
+
+				ordering: {
+					indicators: false
+				},
+
+				responsive: true,
+
+				language: {
+					search: "Buscar:",
+					lengthMenu: "Mostrar _MENU_ registros",
+					info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+					paginate: {
+						next: "Siguiente",
+						previous: "Anterior"
+					}
+				}
+			});
+
+		});
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+
+			const tableEl = document.querySelector('#datatableVigasGeneral');
+
+			// 🔒 Si la tabla NO existe, salir sin error
+			if (!tableEl) {
+				return;
+			}
+
+			tableEl.classList.add('nowrap');
+
+			new DataTable(tableEl, {
+				// ✅ PRIMERA COLUMNA EN ORDEN DESCENDENTE
+				order: [
+					[0, 'desc']
+				],
+				columnControl: [
+					'order',
+					['search', 'spacer', 'orderAsc', 'orderDesc', 'orderClear']
+				],
+
+				columnDefs: [{
+						targets: [0, 1, 2, 4, 5, 12],
+						columnControl: [
+							'order',
+							['search', 'spacer', 'orderAsc', 'orderDesc']
+						]
+					},
+					{
+						targets: [3, 6, 17, 18],
+						orderable: false,
+						searchable: false,
+						responsivePriority: 1,
+						className: 'dt-body-center'
+					}
+				],
+
+				ordering: {
+					indicators: false
+				},
+
+				responsive: true,
+
+				language: {
+					search: "Buscar:",
+					lengthMenu: "Mostrar _MENU_ registros",
+					info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+					paginate: {
+						next: "Siguiente",
+						previous: "Anterior"
+					}
+				}
+			});
+
+		});
+	</script>
 
 
 

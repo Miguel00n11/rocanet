@@ -48,7 +48,7 @@ include("conexion.php");
 
 
 					echo '<div class="table-responsive">';
-					echo '<table class="table table-bordered table-striped table-hover">';
+					echo '<table id="datatableVigasGeneral" class="table table-bordered table-striped table-hover nowrap w-100">';
 					echo '<thead class="table-dark">
 
 

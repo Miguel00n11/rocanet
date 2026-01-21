@@ -53,7 +53,7 @@ include("conexion.php");
 					// 	echo "<hr>";
 					// }
 					echo '<div class="table-responsive">';
-					echo '<table class="table table-bordered table-striped table-hover">';
+					echo '<table id="datatableClientes" class="table table-bordered table-striped table-hover nowrap w-100">';
 					echo '<thead class="table-dark">
 						<tr>
 							<th>ID Cliente</th>
