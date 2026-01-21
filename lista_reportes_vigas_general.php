@@ -38,7 +38,7 @@ include("conexion.php");
 				// $expediente = $_GET['expediente'];
 				$sql = "SELECT *
 				 FROM vista_vigas_completa AS i 
-				ORDER BY id_viga DESC LIMIT 500";
+				ORDER BY id_viga DESC LIMIT 1000";
 				$resultado = $conexion->query($sql);
 
 				// 3️⃣ Verificar resultados

@@ -47,7 +47,7 @@ include("conexion.php");
 				JOIN reporte_concreto AS r ON i.id_reporte_concreto=r.id_reporte_concreto 
 				JOIN obras AS o ON r.expediente=o.expediente 
 				JOIN clientes AS c ON o.cliente=c.idcliente 
-				ORDER BY id_item DESC LIMIT 500";
+				ORDER BY id_item DESC LIMIT 1000";
 				$resultado = $conexion->query($sql);
 
 				// 3️⃣ Verificar resultados
