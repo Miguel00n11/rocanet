@@ -5,6 +5,22 @@ include("conexion.php");
 
 
 ?>
+<style>
+	.col-obra {
+		/* width: 220px; */
+		min-width: 220px;
+		max-width: 1000px;
+		white-space: normal !important;
+		word-break: break-word;
+		overflow-wrap: anywhere;
+		vertical-align: top;
+	}
+
+	/* Centrar verticalmente SOLO las columnas Editar y Ver */
+	#datatableDefault tbody td.dt-body-center {
+		vertical-align: middle;
+	}
+</style>
 
 
 <!-- BEGIN #content -->
@@ -48,6 +64,7 @@ include("conexion.php");
 				JOIN obras AS o ON r.expediente=o.expediente 
 				JOIN clientes AS c ON o.cliente=c.idcliente 
 				ORDER BY id_item DESC LIMIT 1000";
+				// ORDER BY id_item DESC LIMIT 1000";
 				$resultado = $conexion->query($sql);
 
 				// 3️⃣ Verificar resultados
@@ -57,7 +74,7 @@ include("conexion.php");
 
 
 					echo '<div class="table-responsive">';
-					echo '<table id="datatableDefault" class="table table-striped table-bordered nowrap w-100">';
+					echo '<table id="datatableDefault" class="table table-striped table-bordered w-100">';
 					echo '<thead class="table-dark">
 
 
@@ -66,16 +83,16 @@ include("conexion.php");
 							<th class="text-center">Item</th>
 							<th class="text-center">Expediente</th>
 							<th class="text-center">Reporte</th>
-							<th class="text-center">Obra</th>
+							<th class="text-center col-obra">Obra</th>
 							<th class="text-center">Edad [d]</th>
 							<th class="text-center">Fecha de muestreo</th>
 							<th class="text-center">Fecha de ensaye</th>
 							<th class="text-center">Hora de ensaye</th>
 							<th class="text-center">Hora de muestreo</th>
-							<th class="text-center">Hora de desmoldeo</th>
-							<th class="text-center">Condición del especimen</th>
-							<th class="text-center">Carga</th>
-							<th class="text-center">Cliente</th>
+							<th class="text-center ">Hora de desmoldeo</th>
+							<th class="text-center none">Condición del especimen</th>
+							<th class="text-center none">Carga</th>
+							<th class="text-center none">Cliente</th>
 							<th class="text-center">Editar</th>
 							<th class="text-center">Ver</th>
 						</tr>
@@ -88,7 +105,7 @@ include("conexion.php");
 							<td class='text-center'>{$fila['item']}</td>
 							<td class='text-center'>{$fila['expediente']}</td>
 							<td class='text-center'>{$fila['reporte']}</td>
-							<td class='text-center'>{$fila['obra']}</td>
+							<td class='text-center col-obra'>{$fila['obra']}</td>
 							<td class='text-center'>{$fila['edad_item']}</td>
 							<td class='text-center'>{$fila['fecha']}</td>
 							<td class='text-center'>{$fila['fecha_ensaye']}</td>

@@ -73,16 +73,12 @@
 		document.addEventListener('DOMContentLoaded', function() {
 
 			const tableEl = document.querySelector('#datatableDefault');
+			if (!tableEl) return;
 
-			// 🔒 Si la tabla NO existe, salir sin error
-			if (!tableEl) {
-				return;
-			}
+			const dt = new DataTable(tableEl, {
+				autoWidth: false,
+				responsive: true,
 
-			tableEl.classList.add('nowrap');
-
-			new DataTable(tableEl, {
-				// ✅ SEGUNDA COLUMNA EN ORDEN DESCENDENTE
 				order: [
 					[1, 'desc']
 				],
@@ -95,7 +91,7 @@
 						targets: [0, 1, 2, 3, 4, 5, 6, 12],
 						columnControl: [
 							'order',
-							['search', 'spacer', 'orderAsc', 'orderDesc']
+							['search', 'spacer', 'orderAsc', 'orderDesc', 'orderClear']
 						]
 					},
 					{
@@ -123,6 +119,11 @@
 					}
 				}
 			});
+
+			// 🔒 Evita ResizeObserver loop
+			setTimeout(() => {
+				dt.columns.adjust();
+			}, 100);
 
 		});
 	</script>
