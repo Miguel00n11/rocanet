@@ -5,7 +5,22 @@ include("conexion.php");
 
 
 ?>
+<style>
+	.col-vigas {
+		/* width: 220px; */
+		min-width: 220px;
+		max-width: 1000px;
+		white-space: normal !important;
+		word-break: break-word;
+		overflow-wrap: anywhere;
+		vertical-align: top;
+	}
 
+	/* Centrar verticalmente SOLO las columnas Editar y Ver */
+	#datatableDefault tbody td.dt-body-center {
+		vertical-align: middle;
+	}
+</style>
 
 <!-- BEGIN #content -->
 <div id="content" class="app-content">
@@ -60,7 +75,7 @@ include("conexion.php");
 							<th class="text-center">Localización</th>
 							<th class="text-center">Reporte</th>
 							<th class="text-center">Edad [d]</th>
-							<th class="text-center">Remisión</th>
+							<th class="text-center none">Remisión</th>
 							<th class="text-center">Fecha de muestreo</th>
 
 							<th class="text-center">Id item 1</th>
@@ -87,12 +102,12 @@ include("conexion.php");
 
 						echo "<tr>
 							<td class='text-center'>{$fila['exp_registro']}</td>
-							<td class='text-center'>{$fila['cliente']}</td>
-							<td class='text-center'>{$fila['obra']}</td>
-							<td class='text-center'>{$fila['localizacion']}</td>
+							<td class='text-center col-vigas'>{$fila['cliente']}</td>
+							<td class='text-center col-vigas'>{$fila['obra']}</td>
+							<td class='text-center col-vigas'>{$fila['localizacion']}</td>
 							<td class='text-center'>{$fila['reporte']}</td>
 							<td class='text-center'>{$fila['edad']}</td>
-							<td class='text-center'>{$fila['remision_viga']}</td>
+							<td class='text-center col-vigas' none>{$fila['remision_viga']}</td>
 							<td class='text-center'>{$fila['fecha_viga']}</td>
 							<td class='text-center'>{$fila['item1']}</td>
 							<td class='text-center'>{$fila['ensaye1']}</td>

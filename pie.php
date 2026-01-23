@@ -137,7 +137,7 @@
 				return;
 			}
 
-			tableEl.classList.add('nowrap');
+			// tableEl.classList.add('nowrap');
 
 			new DataTable(tableEl, {
 				// ✅ PRIMERA COLUMNA EN ORDEN DESCENDENTE
@@ -198,7 +198,7 @@
 				return;
 			}
 
-			tableEl.classList.add('nowrap');
+			// tableEl.classList.add('nowrap');
 
 			new DataTable(tableEl, {
 				// ✅ PRIMERA COLUMNA EN ORDEN DESCENDENTE
@@ -259,7 +259,7 @@
 				return;
 			}
 
-			tableEl.classList.add('nowrap');
+			// tableEl.classList.add('nowrap');
 
 			new DataTable(tableEl, {
 				// ✅ PRIMERA COLUMNA EN ORDEN DESCENDENTE
@@ -279,7 +279,7 @@
 						]
 					},
 					{
-						targets: [3, 6, 17, 18],
+						targets: [3, 17, 18],
 						orderable: false,
 						searchable: false,
 						responsivePriority: 1,

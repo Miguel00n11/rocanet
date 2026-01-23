@@ -4,6 +4,23 @@ include("cabeza.php");
 include("conexion.php");
 
 ?>
+<style>
+	.col-clientes {
+		/* width: 220px; */
+		min-width: 220px;
+		max-width: 1000px;
+		white-space: normal !important;
+		word-break: break-word;
+		overflow-wrap: anywhere;
+		vertical-align: top;
+	}
+
+	/* Centrar verticalmente SOLO las columnas Editar y Ver */
+	#datatableDefault tbody td.dt-body-center {
+		vertical-align: middle;
+	}
+</style>
+
 
 
 <!-- BEGIN #content -->
@@ -71,15 +88,15 @@ include("conexion.php");
 					echo '<tbody>';
 
 					foreach ($clientes as $fila) {
-						
+
 						echo "<tr>
 							<td>{$fila['idcliente']}</td>
-							<td>{$fila['cliente']}</td>
-							<td>{$fila['representante']}</td>
-							<td>{$fila['email']}</td>
-							<td>{$fila['telefono']}</td>
-							<td>{$fila['nextel']}</td>
-							<td>{$fila['direccion']}</td>
+							<td class='text-center col-clientes'>{$fila['cliente']}</td>
+							<td class='text-center col-clientes'>{$fila['representante']}</td>
+							<td class='text-center col-clientes'>{$fila['email']}</td>
+							<td class='text-center col-clientes'>{$fila['telefono']}</td>
+							<td class='text-center col-clientes'>{$fila['nextel']}</td>
+							<td class='text-center col-clientes'>{$fila['direccion']}</td>
 							<td>{$fila['RFC']}</td>
 							<td>{$fila['estatus']}</td>
 							<td class='text-center'>

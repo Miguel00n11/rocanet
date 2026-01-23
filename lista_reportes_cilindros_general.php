@@ -57,8 +57,7 @@ include("conexion.php");
 
 
 				// $expediente = $_GET['expediente'];
-				$sql = "SELECT item, i.id_reporte_concreto, i.reporte, edad_item, carga, fc, fecha_ensaye, r.expediente, r.fecha, c.cliente, o.obra, o.localizacion,
-				 c.idcliente, hora_desmoldeo,hora_muestreo,hora_ensaye, fecha_recepcion, condicion_especimen,observaciones,escuadra 
+				$sql = "SELECT * 
 				 FROM item AS i 
 				JOIN reporte_concreto AS r ON i.id_reporte_concreto=r.id_reporte_concreto 
 				JOIN obras AS o ON r.expediente=o.expediente 
@@ -93,6 +92,8 @@ include("conexion.php");
 							<th class="text-center none">Condición del especimen</th>
 							<th class="text-center none">Carga</th>
 							<th class="text-center none">Cliente</th>
+							<th class="text-center none">Muestreó</th>
+							<th class="text-center none">Recibió</th>
 							<th class="text-center">Editar</th>
 							<th class="text-center">Ver</th>
 						</tr>
@@ -115,6 +116,8 @@ include("conexion.php");
 							<td class='text-center'>{$fila['condicion_especimen']}</td>
 							<td class='text-center'>{$fila['carga']}</td>
 							<td class='text-center'>{$fila['cliente']}</td>
+							<td class='text-center'>{$fila['muestreo']}</td>
+							<td class='text-center'>{$fila['recibio']}</td>
 								<td class='text-center'>
 								<a href='captura_cilindros.php?expediente={$fila['expediente']}&reporte={$fila['reporte']}&id_reporte_concreto={$fila['id_reporte_concreto']}'
   	 								class='btn btn-outline-theme btn-sm w-80px'

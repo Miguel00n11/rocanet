@@ -5,7 +5,22 @@ include("conexion.php");
 
 ?>
 
+<style>
+	.col-obras {
+		/* width: 220px; */
+		min-width: 220px;
+		max-width: 1000px;
+		white-space: normal !important;
+		word-break: break-word;
+		overflow-wrap: anywhere;
+		vertical-align: top;
+	}
 
+	/* Centrar verticalmente SOLO las columnas Editar y Ver */
+	#datatableDefault tbody td.dt-body-center {
+		vertical-align: middle;
+	}
+</style>
 <!-- BEGIN #content -->
 <div id="content" class="app-content">
 	<ul class="breadcrumb">
@@ -56,10 +71,10 @@ include("conexion.php");
 					echo '<table id="datatableObras" class="table table-bordered table-striped table-hover nowrap w-100">';
 					echo '<thead class="table-dark">
 						<tr>
-							<th>Expediente</th>
-							<th>Obras</th>
-							<th>Localización</th>
-							<th>Cliente</th>
+							<th class="text-center col-obras">Expediente</th>
+							<th class="text-center col-obras">Obras</th>
+							<th class="text-center col-obras">Localización</th>
+							<th class="text-center col-obras">Cliente</th>
 							<th class="text-center">Editar</th>
 							<th class="text-center">Nuevo</th>
 						</tr>
@@ -69,10 +84,10 @@ include("conexion.php");
 					foreach ($clientes as $fila) {
 
 						echo "<tr>
-							<td>{$fila['expediente']}</td>
-							<td>{$fila['obra']}</td>
-							<td>{$fila['localizacion']}</td>
-							<td class='text-center'>{$fila['cliente']}</td>
+							<td class='text-center col-obras'>{$fila['expediente']}</td>
+							<td class='text-center col-obras'>{$fila['obra']}</td>
+							<td class='text-center col-obras'>{$fila['localizacion']}</td>
+							<td class='text-center col-obras'>{$fila['cliente']}</td>
 							<td class='text-center'>
                         <div class='dropdown'>
                             <button class='btn btn-outline-theme dropdown-toggle' type='button' data-bs-toggle='dropdown'>
