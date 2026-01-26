@@ -1,0 +1,20 @@
+# Firebase credentials
+config/*.json
+
+# Composer
+vendor/
+
+# Environment files
+.env
+.env.local
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Debug files
+debug_session.txt
