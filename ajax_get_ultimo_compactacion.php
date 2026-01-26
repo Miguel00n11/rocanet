@@ -1,4 +1,5 @@
 <?php
+
 include("conexion.php");
 $expediente = $_GET['expediente'] ?? '';
 $sql = "SELECT IFNULL(MAX(reporte),0) FROM `reportes` WHERE expediente=$expediente;";

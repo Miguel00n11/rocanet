@@ -1,4 +1,5 @@
 <?php
+
 include("conexion.php");
 
 $sql = "SELECT IFNULL(MAX(item3),0) AS ultimo_item FROM vigas";

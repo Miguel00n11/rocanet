@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . '/auth.php';
+// var_dump($_SESSION);
+// exit;
 
 include("cabeza.php");
 include("conexion.php");

@@ -1,4 +1,5 @@
 <?php
+
 include("conexion.php");
 
 if (!isset($_GET['id_reporte_concreto'])) {

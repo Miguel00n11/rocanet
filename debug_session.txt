@@ -1,0 +1,5 @@
+Array
+(
+    [test] => ok
+    [firebase_uid] => GTidgNxx6qg63upSPiBUrt1McVz2
+)
