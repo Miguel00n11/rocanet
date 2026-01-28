@@ -30,15 +30,34 @@ try {
 
     $claims = $verifiedIdToken->claims();
     $uid = $claims->get('sub');
+    $email = $claims->get('email');
+    $name = $claims->get('name');
 
     $_SESSION['firebase_uid'] = $uid;
-
-
-    // // 🔍 DEBUG TEMPORAL (AQUÍ SÍ SE EJECUTA)
-    // file_put_contents(
-    //     __DIR__ . '/debug_session.txt',
-    //     print_r($_SESSION, true)
-    // );
+    $_SESSION['user_email'] = $email ?? '';
+    
+    // Buscar el usuario en la base de datos remota fortastudio_roca
+    require __DIR__ . '/conexion_forta.php';
+    
+    $user_display_name = $email ?? 'Usuario';
+    $user_puesto = 'No asignado';
+    
+    if ($email && $conexion_forta) {
+        $stmt = $conexion_forta->prepare("SELECT Nombre, Puesto FROM personal WHERE mail = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($row = $result->fetch_assoc()) {
+            $user_display_name = $row['Nombre'];
+            $user_puesto = $row['Puesto'];
+        }
+        
+        $stmt->close();
+    }
+    
+    $_SESSION['user_name'] = $user_display_name;
+    $_SESSION['user_puesto'] = $user_puesto;
 
     echo json_encode(['status' => 'ok']);
     exit;

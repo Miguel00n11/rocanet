@@ -1,6 +1,9 @@
 <?php 
-// require_once __DIR__ . '/auth.php';
-
+// La sesión ya se inició en auth.php
+// Solo aseguramos que esté disponible
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,14 +72,6 @@
 
 			<!-- BEGIN menu -->
 			<div class="menu">
-				<div class="menu-item dropdown d-lg-flex d-none">
-					<a href="#" class="menu-link">
-						<span>$1,859,050.12</span>
-					</a>
-				</div>
-
-
-
 				<div class="menu-item dropdown">
 					<a href="#" data-toggle="theme-panel-expand" class="menu-link menu-link-icon">
 						<iconify-icon icon="ph:gear-duotone" class="menu-icon"></iconify-icon>
@@ -96,17 +91,20 @@
 					<a href="#" data-bs-toggle="dropdown" data-bs-display="static" class="menu-link d-flex align-items-center">
 
 						<div class="menu-text d-sm-block d-none">
-							<span class="d-block"><span>USERNAME@GMAIL.COM</span></span>
+							<span class="d-block fw-600"><?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'Usuario'; ?></span>
 						</div>
 					</a>
 					<div class="dropdown-menu dropdown-menu-end me-lg-3 fs-10px fade">
 						<h6 class="dropdown-header">USER OPTIONS</h6>
-						<a class="dropdown-item" href="profile.html">VIEW PROFILE</a>
-						<a class="dropdown-item" href="settings.html">ACCOUNT SETTINGS</a>
-						<a class="dropdown-item" href="calendar.html">CALENDER SETTINGS</a>
+						<div class="dropdown-item-text" style="white-space: normal;">
+							<div class="mb-1"><strong>Email:</strong> <?php echo isset($_SESSION['user_email']) ? htmlspecialchars($_SESSION['user_email']) : 'No disponible'; ?></div>
+							<div><strong>Puesto:</strong> <?php echo isset($_SESSION['user_puesto']) ? htmlspecialchars($_SESSION['user_puesto']) : 'No asignado'; ?></div>
+						</div>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="helper.html">HELP & SUPPORT</a>
-						<a class="dropdown-item" href="page_login.html">LOG OUT</a>
+						<a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>VER PERFIL</a>
+						<a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>CONFIGURACIÓN</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i>CERRAR SESIÓN</a>
 					</div>
 				</div>
 			</div>
@@ -269,6 +267,32 @@
 							<div class="menu-item ">
 								<a href="lista_reportes_vigas_general.php" class="menu-link">
 									<span class="menu-text">Vigas</span>
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="menu-item has-sub ">
+						<a href="#" class="menu-link">
+							<span class="fas fa-lg fa-fw me-2 fa-road menu-icon">
+							</span>
+							<span class="menu-text">DISEÑO DE PAVIMENTOS</span>
+							<span class="menu-caret"><b class="caret"></b></span>
+						</a>
+						<div class="menu-submenu">
+							<div class="menu-item ">
+								<a href="pavimento_rigido.php" class="menu-link">
+									<span class="menu-text">Diseño de pavimento rígido</span>
+								</a>
+							</div>
+							<div class="menu-item ">
+								<a href="pavimento_rigido_piedra.php" class="menu-link">
+									<span class="menu-text">Diseño de pavimento rígido con piedra ahogada</span>
+								</a>
+							</div>
+							<div class="menu-item ">
+								<a href="pavimento_flexible.php" class="menu-link">
+									<span class="menu-text">Pavimento flexible</span>
 								</a>
 							</div>
 						</div>
