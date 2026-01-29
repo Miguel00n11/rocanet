@@ -33,14 +33,15 @@ include("conexion.php");
 		<small>Lista de diseños registrados</small>
 	</h1>
 
+	<div class="mb-3">
+		<a href="nuevo_pavimento_rigido.php" class="btn btn-theme" target="_blank">
+			<i class="fas fa-plus me-1"></i> Nuevo Diseño
+		</a>
+	</div>
+
 	<div class="card">
-		<div class="card-header with-btn">
+		<div class="card-header">
 			LISTA DE DISEÑOS DE PAVIMENTO RÍGIDO
-			<div class="card-header-btn">
-				<a href="nuevo_pavimento_rigido.php" class="btn btn-success btn-sm" target="_blank">
-					<i class="fas fa-plus me-1"></i> Nuevo Diseño
-				</a>
-			</div>
 		</div>
 		<div class="card-body">
 			<?php
@@ -64,6 +65,7 @@ include("conexion.php");
 				echo '<table id="tablaPavimentos" class="table table-striped table-bordered w-100">';
 				echo '<thead class="table-dark">';
 				echo '<tr>
+						<th class="text-center" style="width: 30px;"></th>
 						<th class="text-center">ID</th>
 						<th class="text-center col-obra">OBRA / EXPEDIENTE</th>
 						<th class="text-center">ESPESOR CONCRETO</th>
@@ -79,7 +81,8 @@ include("conexion.php");
 				echo '<tbody>';
 
 				while ($fila = $resultado->fetch_assoc()) {
-					echo "<tr>
+					echo "<tr data-id='{$fila['id_pavimento_rigido']}'>
+							<td class='text-center details-control' style='cursor: pointer;'><i class='fas fa-plus-circle text-theme'></i></td>
 							<td class='text-center'>{$fila['id_pavimento_rigido']}</td>
 							<td class='text-center col-obra'>{$fila['expediente']}</td>
 							<td class='text-center'>{$fila['espesor_concreto']}</td>
@@ -127,20 +130,109 @@ include("conexion.php");
 </div>
 <!-- END #content -->
 
+<?php include("pie.php"); ?>
+
 <script>
+	let table;
+
 	$(document).ready(function() {
-		$('#tablaPavimentos').DataTable({
+		table = $('#tablaPavimentos').DataTable({
 			responsive: true,
 			language: {
-				url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+				url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
 			},
-			order: [[0, 'desc']],
+			order: [[1, 'desc']],
 			columnDefs: [
-				{ orderable: false, targets: [7, 8, 9] } // Deshabilitar orden en columnas de acción
+				{ orderable: false, targets: [0, 8, 9, 10] }
 			],
 			pageLength: 25
 		});
+
+		// Manejar clic en la columna de detalles
+		$('#tablaPavimentos tbody').on('click', 'td.details-control', function () {
+			const tr = $(this).closest('tr');
+			const row = table.row(tr);
+			const icon = $(this).find('i');
+			const idPavimento = tr.data('id');
+
+			if (row.child.isShown()) {
+				// Cerrar la fila
+				row.child.hide();
+				tr.removeClass('shown');
+				icon.removeClass('fa-minus-circle').addClass('fa-plus-circle');
+			} else {
+				// Abrir la fila y cargar datos
+				icon.removeClass('fa-plus-circle').addClass('fa-spinner fa-spin');
+				
+				$.ajax({
+					url: 'ajax_get_sondeos_estratos.php',
+					type: 'GET',
+					data: { id: idPavimento },
+					dataType: 'json',
+					success: function(sondeos) {
+						const content = formatSondeosEstratos(sondeos);
+						row.child(content).show();
+						tr.addClass('shown');
+						icon.removeClass('fa-spinner fa-spin').addClass('fa-minus-circle');
+					},
+					error: function() {
+						alert('Error al cargar los datos');
+						icon.removeClass('fa-spinner fa-spin').addClass('fa-plus-circle');
+					}
+				});
+			}
+		});
 	});
+
+	function formatSondeosEstratos(sondeos) {
+		if (!sondeos || sondeos.length === 0) {
+			return '<div class="p-3 text-center text-muted">No hay sondeos registrados</div>';
+		}
+
+		let html = '<div class="p-3" style="background-color: #f8f9fa;">';
+		
+		sondeos.forEach(sondeo => {
+			html += `
+				<div class="card mb-3">
+					<div class="card-header" style="background-color: #2d353c; color: white;">
+						<strong>Sondeo #${sondeo.numero_sondeo}</strong>
+					</div>
+					<div class="card-body">`;
+			
+			if (sondeo.estratos && sondeo.estratos.length > 0) {
+				html += `
+					<table class="table table-sm table-bordered mb-0">
+						<thead style="background-color: #2d353c; color: white;">
+							<tr>
+								<th style="width: 25%;">Espesores</th>
+								<th style="width: 75%;">Descripción</th>
+							</tr>
+						</thead>
+						<tbody>`;
+				
+				sondeo.estratos.forEach(estrato => {
+					html += `
+						<tr>
+							<td style="color: #000;">${estrato.espesores || '-'}</td>
+							<td style="color: #000;">${estrato.descripcion || '-'}</td>
+						</tr>`;
+				});
+				
+				html += `
+						</tbody>
+					</table>`;
+			} else {
+				html += '<p class="text-muted mb-0">No hay estratos registrados</p>';
+			}
+			
+			html += `
+					</div>
+				</div>`;
+		});
+		
+		html += '</div>';
+		return html;
+	}
 
 	function eliminarDiseño(id) {
 		if (confirm('¿Está seguro de que desea eliminar este diseño de pavimento? Esta acción no se puede deshacer.')) {
@@ -148,5 +240,3 @@ include("conexion.php");
 		}
 	}
 </script>
-
-<?php include("pie.php"); ?>
