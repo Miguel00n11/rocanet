@@ -45,8 +45,8 @@ include("conexion.php");
 		</div>
 		<div class="card-body">
 			<?php
-			// Consulta para obtener los diseños de pavimento rígido sin duplicados
-			$sql = "SELECT DISTINCT
+			// Consulta para obtener los diseños de pavimento rígido
+			$sql = "SELECT 
 						pr.id_pavimento_rigido,
 						pr.obra,
 						pr.ubicacion,
@@ -82,6 +82,7 @@ include("conexion.php");
 						<th class="text-center none">CLIENTE</th>
 						<th class="text-center none">EXPEDIENTE</th>
 						<th class="text-center none">FECHA ESTUDIO</th>
+						<th class="text-center none">SONDEOS</th>
 						<th class="text-center">Editar</th>
 						<th class="text-center">Ver</th>
 						<th class="text-center">Eliminar</th>
@@ -90,6 +91,35 @@ include("conexion.php");
 				echo '<tbody>';
 
 				while ($fila = $resultado->fetch_assoc()) {
+					// Obtener sondeos para este pavimento
+					$id_pav = $fila['id_pavimento_rigido'];
+					$sql_sondeos = "SELECT * FROM sondeos WHERE id_pavimento_rigido = $id_pav ORDER BY numero_sondeo";
+					$res_sondeos = $conexion->query($sql_sondeos);
+					
+					$sondeos_html = '';
+					if ($res_sondeos && $res_sondeos->num_rows > 0) {
+						while ($sondeo = $res_sondeos->fetch_assoc()) {
+							$sondeos_html .= "<div style='margin-bottom: 15px;'><strong>Sondeo #{$sondeo['numero_sondeo']}</strong><table style='width:100%; margin-top:5px; border:1px solid #ddd;'><thead style='background-color: #2d353c; color: white;'><tr><th style='padding:5px; width:25%;'>Espesores</th><th style='padding:5px; width:75%;'>Descripción</th></tr></thead><tbody>";
+							
+							// Obtener estratos
+							$id_sondeo = $sondeo['id_sondeo'];
+							$sql_estratos = "SELECT * FROM estratos WHERE id_sondeo = $id_sondeo ORDER BY id_estrato";
+							$res_estratos = $conexion->query($sql_estratos);
+							
+							if ($res_estratos && $res_estratos->num_rows > 0) {
+								while ($estrato = $res_estratos->fetch_assoc()) {
+									$sondeos_html .= "<tr><td style='padding:5px; border:1px solid #ddd;'>" . htmlspecialchars($estrato['espesores']) . "</td><td style='padding:5px; border:1px solid #ddd;'>" . htmlspecialchars($estrato['descripcion']) . "</td></tr>";
+								}
+							} else {
+								$sondeos_html .= "<tr><td colspan='2' style='padding:5px; text-align:center;'>No hay estratos</td></tr>";
+							}
+							
+							$sondeos_html .= "</tbody></table></div>";
+						}
+					} else {
+						$sondeos_html = 'No hay sondeos registrados';
+					}
+					
 					echo "<tr data-id='{$fila['id_pavimento_rigido']}'>
 							<td class='text-center details-control' style='cursor: pointer;'><i class='fas fa-plus-circle text-theme'></i></td>
 							<td class='text-center'>{$fila['id_pavimento_rigido']}</td>
@@ -103,6 +133,7 @@ include("conexion.php");
 							<td class='text-center'>{$fila['cliente']}</td>
 							<td class='text-center'>{$fila['expediente']}</td>
 							<td class='text-center'>{$fila['fecha_estudio']}</td>
+							<td>$sondeos_html</td>
 							<td class='text-center'>
 								<a href='editar_pavimento_rigido.php?id={$fila['id_pavimento_rigido']}' 
 								   class='btn btn-outline-theme btn-sm w-80px' 
@@ -156,98 +187,11 @@ include("conexion.php");
 			},
 			order: [[1, 'desc']],
 			columnDefs: [
-				{ orderable: false, targets: [0, 12, 13, 14] }
+				{ orderable: false, targets: [0, 13, 14, 15] }
 			],
 			pageLength: 25
 		});
-
-		// Listener adicional para cargar sondeos cuando se expande una fila
-		table.on('responsive-display', function (e, datatable, row, showHide, update) {
-			if (showHide) {
-				const tr = $(row.node());
-				const idPavimento = tr.data('id');
-				
-				// Verificar si ya se cargaron los sondeos
-				if (!tr.data('sondeos-loaded')) {
-					// Cargar sondeos vía AJAX
-					$.ajax({
-						url: 'ajax_get_sondeos_estratos.php',
-						type: 'GET',
-						data: { id: idPavimento },
-						dataType: 'json',
-						success: function(data) {
-							const sondeosHtml = formatSondeos(data.sondeos);
-							// Insertar los sondeos después del contenido responsive
-							const childRow = row.child();
-							if (childRow && childRow.length > 0) {
-								childRow.after('<tr class="child sondeos-row"><td colspan="100%">' + sondeosHtml + '</td></tr>');
-								tr.data('sondeos-loaded', true);
-							}
-						},
-						error: function() {
-							console.error('Error al cargar los sondeos');
-						}
-					});
-				}
-			} else {
-				// Limpiar bandera cuando se cierra
-				const tr = $(row.node());
-				tr.removeData('sondeos-loaded');
-				// Eliminar fila de sondeos
-				tr.next('.sondeos-row').remove();
-			}
-		});
 	});
-
-	function formatSondeos(sondeos) {
-		if (!sondeos || sondeos.length === 0) {
-			return '<div class="p-3 text-center text-muted">No hay sondeos registrados</div>';
-		}
-
-		let html = '<div class="p-3" style="background-color: #f8f9fa;">';
-		
-		sondeos.forEach(sondeo => {
-			html += `
-				<div class="card mb-3">
-					<div class="card-header" style="background-color: #2d353c; color: white;">
-						<strong>Sondeo #${sondeo.numero_sondeo}</strong>
-					</div>
-					<div class="card-body">`;
-			
-			if (sondeo.estratos && sondeo.estratos.length > 0) {
-				html += `
-					<table class="table table-sm table-bordered mb-0">
-						<thead style="background-color: #2d353c; color: white;">
-							<tr>
-								<th style="width: 25%;">Espesores</th>
-								<th style="width: 75%;">Descripción</th>
-							</tr>
-						</thead>
-						<tbody>`;
-				
-				sondeo.estratos.forEach(estrato => {
-					html += `
-						<tr>
-							<td style="color: #000;">${estrato.espesores || '-'}</td>
-							<td style="color: #000;">${estrato.descripcion || '-'}</td>
-						</tr>`;
-				});
-				
-				html += `
-						</tbody>
-					</table>`;
-			} else {
-				html += '<p class="text-muted mb-0">No hay estratos registrados</p>';
-			}
-			
-			html += `
-					</div>
-				</div>`;
-		});
-		
-		html += '</div>';
-		return html;
-	}
 
 	function eliminarDiseño(id) {
 		if (confirm('¿Está seguro de que desea eliminar este diseño de pavimento? Esta acción no se puede deshacer.')) {
