@@ -113,11 +113,20 @@ unset($sondeo);
 			</div>
 			<div class="card-body">
 				<div class="row mb-3">
-					<div class="col-md-12">
+					<div class="col-md-8">
 						<label for="expediente" class="form-label">Obra / Expediente *</label>
 						<input type="text" class="form-control" id="expediente" name="expediente" 
 							   value="<?= htmlspecialchars($pavimento['expediente'] ?? '') ?>"
 							   placeholder="Ingrese el nombre de la obra o expediente" required>
+					</div>
+					<div class="col-md-4">
+						<label for="tipo_pavimento" class="form-label">Tipo de Pavimento *</label>
+						<select class="form-select" id="tipo_pavimento" name="tipo_pavimento" required>
+							<option value="">Seleccione...</option>
+							<option value="CONCRETO RÍGIDO" <?= ($pavimento['tipo_pavimento'] ?? '') == 'CONCRETO RÍGIDO' ? 'selected' : '' ?>>CONCRETO RÍGIDO</option>
+							<option value="CONCRETO RIGIDO CON PIEDRA AHOGADA" <?= ($pavimento['tipo_pavimento'] ?? '') == 'CONCRETO RIGIDO CON PIEDRA AHOGADA' ? 'selected' : '' ?>>CONCRETO RIGIDO CON PIEDRA AHOGADA</option>
+							<option value="PAVIMENTO FLEXIBLE" <?= ($pavimento['tipo_pavimento'] ?? '') == 'PAVIMENTO FLEXIBLE' ? 'selected' : '' ?>>PAVIMENTO FLEXIBLE</option>
+						</select>
 					</div>
 				</div>
 
@@ -188,7 +197,7 @@ unset($sondeo);
 															<td><input type="text" class="form-control form-control-sm" name="sondeo[<?= $sondeo['numero_sondeo'] ?>][espesores][]" 
 																	   value="<?= htmlspecialchars($estrato['espesores'] ?? '') ?>" placeholder="20 cm"></td>
 															<td><input type="text" class="form-control form-control-sm" name="sondeo[<?= $sondeo['numero_sondeo'] ?>][descripcion][]" 
-																	   value="<?= htmlspecialchars($estrato['descripcion'] ?? '') ?>" placeholder="Descripción del estrato"></td>
+															   value="<?= htmlspecialchars($estrato['descripcion'] ?? '') ?>" list="listaMateriales" placeholder="Seleccione o escriba la descripción"></td>
 															<td class="text-center">
 																<button type="button" class="btn btn-sm btn-danger btn-remove-estrato" onclick="eliminarEstrato(this, <?= $sondeo['numero_sondeo'] ?>)">
 																	<i class="fas fa-trash"></i>
@@ -199,7 +208,7 @@ unset($sondeo);
 												<?php else: ?>
 													<tr>
 														<td><input type="text" class="form-control form-control-sm" name="sondeo[<?= $sondeo['numero_sondeo'] ?>][espesores][]" placeholder="20 cm"></td>
-														<td><input type="text" class="form-control form-control-sm" name="sondeo[<?= $sondeo['numero_sondeo'] ?>][descripcion][]" placeholder="Descripción del estrato"></td>
+															<td><input type="text" class="form-control form-control-sm" name="sondeo[<?= $sondeo['numero_sondeo'] ?>][descripcion][]" list="listaMateriales" placeholder="Seleccione o escriba la descripción"></td>
 														<td class="text-center">
 															<button type="button" class="btn btn-sm btn-danger btn-remove-estrato" onclick="eliminarEstrato(this, <?= $sondeo['numero_sondeo'] ?>)" disabled>
 																<i class="fas fa-trash"></i>
@@ -241,7 +250,7 @@ unset($sondeo);
 										<tbody class="estratos-list" data-sondeo="1">
 											<tr>
 												<td><input type="text" class="form-control form-control-sm" name="sondeo[1][espesores][]" placeholder="20 cm"></td>
-												<td><input type="text" class="form-control form-control-sm" name="sondeo[1][descripcion][]" placeholder="Descripción del estrato"></td>
+															<td><input type="text" class="form-control form-control-sm" name="sondeo[1][descripcion][]" list="listaMateriales" placeholder="Seleccione o escriba la descripción"></td>
 												<td class="text-center">
 													<button type="button" class="btn btn-sm btn-danger btn-remove-estrato" onclick="eliminarEstrato(this, 1)" disabled>
 														<i class="fas fa-trash"></i>
@@ -257,6 +266,29 @@ unset($sondeo);
 				<?php endif; ?>
 			</div>
 		</div>
+
+		<!-- Datalist con opciones predefinidas -->
+		<datalist id="listaMateriales">
+			<option value="BOLEO">
+			<option value="PIEDRA">
+			<option value="ROCA">
+			<option value="ROCA EMPACADA">
+			<option value="CAPA VEGETAL">
+			<option value="RELLENO NO CONTROLADO">
+			<option value="MATERIAL DE BANCO">
+			<option value="ARCILLA DE ALTA PLASTICIDAD">
+			<option value="ARCILLA DE MEDIA PLASTICIDAD">
+			<option value="ARCILLA DE BAJA PLASTICIDAD">
+			<option value="LIMO DE ALTA PLASTICIDAD">
+			<option value="LIMO DE MEDIA PLASTICIDAD">
+			<option value="LIMO DE BAJA PLASTICIDAD">
+			<option value="ARENA ARCILLOSA">
+			<option value="ARENA LIMOSA">
+			<option value="ARENA BIEN GRADUADA">
+			<option value="GRAVA ARCILLOSA">
+			<option value="GRAVA ARENOSA">
+			<option value="GRAVA MAL GRADUADA">
+		</datalist>
 
 		<div class="card mt-3">
 			<div class="card-body text-end">
@@ -307,7 +339,7 @@ unset($sondeo);
 							<tbody class="estratos-list" data-sondeo="${contadorSondeos}">
 								<tr>
 									<td><input type="text" class="form-control form-control-sm" name="sondeo[${contadorSondeos}][espesores][]" placeholder="20 cm"></td>
-									<td><input type="text" class="form-control form-control-sm" name="sondeo[${contadorSondeos}][descripcion][]" placeholder="Descripción del estrato"></td>
+										<td><input type="text" class="form-control form-control-sm" name="sondeo[${contadorSondeos}][descripcion][]" list="listaMateriales" placeholder="Seleccione o escriba la descripción"></td>
 									<td class="text-center">
 										<button type="button" class="btn btn-sm btn-danger btn-remove-estrato" onclick="eliminarEstrato(this, ${contadorSondeos})" disabled>
 											<i class="fas fa-trash"></i>
@@ -386,7 +418,7 @@ unset($sondeo);
 		const nuevaFila = document.createElement('tr');
 		nuevaFila.innerHTML = `
 			<td><input type="text" class="form-control form-control-sm" name="sondeo[${numeroSondeo}][espesores][]" placeholder="20 cm"></td>
-			<td><input type="text" class="form-control form-control-sm" name="sondeo[${numeroSondeo}][descripcion][]" placeholder="Descripción del estrato"></td>
+			<td><input type="text" class="form-control form-control-sm" name="sondeo[${numeroSondeo}][descripcion][]" list="listaMateriales" placeholder="Seleccione o escriba la descripción"></td>
 			<td class="text-center">
 				<button type="button" class="btn btn-sm btn-danger btn-remove-estrato" onclick="eliminarEstrato(this, ${numeroSondeo})">
 					<i class="fas fa-trash"></i>

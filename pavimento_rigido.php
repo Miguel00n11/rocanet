@@ -34,7 +34,7 @@ include("conexion.php");
 	</h1>
 
 	<div class="mb-3">
-		<a href="nuevo_pavimento_rigido.php" class="btn btn-theme" target="_blank">
+		<a href="nuevo_pavimento_rigido.php" class="btn btn-theme">
 			<i class="fas fa-plus me-1"></i> Nuevo Diseño
 		</a>
 	</div>
@@ -49,6 +49,7 @@ include("conexion.php");
 			$sql = "SELECT DISTINCT
 						pr.id_pavimento_rigido,
 						pr.expediente,
+						pr.tipo_pavimento,
 						pr.espesor_concreto,
 						pr.base,
 						pr.subrasante,
@@ -68,11 +69,12 @@ include("conexion.php");
 						<th class="text-center" style="width: 30px;"></th>
 						<th class="text-center">ID</th>
 						<th class="text-center col-obra">OBRA / EXPEDIENTE</th>
+						<th class="text-center">TIPO PAVIMENTO</th>
 						<th class="text-center">ESPESOR CONCRETO</th>
 						<th class="text-center">BASE</th>
 						<th class="text-center">SUBRASANTE</th>
 						<th class="text-center">PEDRAPLEN</th>
-						<th class="text-center">FECHA REGISTRO</th>
+
 						<th class="text-center">Editar</th>
 						<th class="text-center">Ver</th>
 						<th class="text-center">Eliminar</th>
@@ -85,11 +87,12 @@ include("conexion.php");
 							<td class='text-center details-control' style='cursor: pointer;'><i class='fas fa-plus-circle text-theme'></i></td>
 							<td class='text-center'>{$fila['id_pavimento_rigido']}</td>
 							<td class='text-center col-obra'>{$fila['expediente']}</td>
+							<td class='text-center'>{$fila['tipo_pavimento']}</td>
 							<td class='text-center'>{$fila['espesor_concreto']}</td>
 							<td class='text-center'>{$fila['base']}</td>
 							<td class='text-center'>{$fila['subrasante']}</td>
 							<td class='text-center'>{$fila['pedraplen']}</td>
-							<td class='text-center'>{$fila['fecha_registro']}</td>
+
 							<td class='text-center'>
 								<a href='editar_pavimento_rigido.php?id={$fila['id_pavimento_rigido']}' 
 								   class='btn btn-outline-theme btn-sm w-80px' 

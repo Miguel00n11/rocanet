@@ -5,14 +5,15 @@ include("conexion.php");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtener datos del formulario
     $expediente = $_POST['expediente'] ?? null;
+    $tipo_pavimento = $_POST['tipo_pavimento'] ?? null;
     $espesor_concreto = $_POST['espesor_concreto'] ?? '';
     $base = $_POST['base'] ?? '';
     $subrasante = $_POST['subrasante'] ?? '';
     $pedraplen = $_POST['pedraplen'] ?? '';
 
-    // Validar que se haya ingresado una obra
-    if (!$expediente) {
-        echo "<script>alert('Debe ingresar el nombre de la obra'); window.history.back();</script>";
+    // Validar que se haya ingresado una obra y tipo
+    if (!$expediente || !$tipo_pavimento) {
+        echo "<script>alert('Debe ingresar el nombre de la obra y seleccionar el tipo de pavimento'); window.history.back();</script>";
         exit;
     }
 
@@ -22,11 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Insertar el diseño de pavimento rígido
         $stmt = $conexion->prepare("INSERT INTO pavimento_rigido 
-            (expediente, espesor_concreto, base, subrasante, pedraplen) 
-            VALUES (?, ?, ?, ?, ?)");
+            (expediente, tipo_pavimento, espesor_concreto, base, subrasante, pedraplen) 
+            VALUES (?, ?, ?, ?, ?, ?)");
         
-        $stmt->bind_param("sssss", 
-            $expediente, 
+        $stmt->bind_param("ssssss", 
+            $expediente,
+            $tipo_pavimento, 
             $espesor_concreto, 
             $base, 
             $subrasante, 
