@@ -73,16 +73,11 @@ include("conexion.php");
 						<th class="text-center" style="width: 30px;"></th>
 						<th class="text-center">ID</th>
 						<th class="text-center col-obra">OBRA</th>
-						<th class="text-center">UBICACIÓN</th>
-						<th class="text-center">CLIENTE</th>
-						<th class="text-center">EXPEDIENTE</th>
-						<th class="text-center">FECHA ESTUDIO</th>
 						<th class="text-center">TIPO PAVIMENTO</th>
 						<th class="text-center">ESPESOR CONCRETO</th>
 						<th class="text-center">BASE</th>
 						<th class="text-center">SUBRASANTE</th>
 						<th class="text-center">PEDRAPLEN</th>
-
 						<th class="text-center">Editar</th>
 						<th class="text-center">Ver</th>
 						<th class="text-center">Eliminar</th>
@@ -94,17 +89,12 @@ include("conexion.php");
 					echo "<tr data-id='{$fila['id_pavimento_rigido']}'>
 							<td class='text-center details-control' style='cursor: pointer;'><i class='fas fa-plus-circle text-theme'></i></td>
 							<td class='text-center'>{$fila['id_pavimento_rigido']}</td>
-						<td class='text-center col-obra'>{$fila['obra']}</td>
-						<td class='text-center'>{$fila['ubicacion']}</td>
-						<td class='text-center'>{$fila['cliente']}</td>
-						<td class='text-center'>{$fila['expediente']}</td>
-						<td class='text-center'>{$fila['fecha_estudio']}</td>
-						<td class='text-center'>{$fila['tipo_pavimento']}</td>
-						<td class='text-center'>{$fila['espesor_concreto']}</td>
-						<td class='text-center'>{$fila['base']}</td>
-						<td class='text-center'>{$fila['subrasante']}</td>
+							<td class='text-center col-obra'>{$fila['obra']}</td>
+							<td class='text-center'>{$fila['tipo_pavimento']}</td>
+							<td class='text-center'>{$fila['espesor_concreto']}</td>
+							<td class='text-center'>{$fila['base']}</td>
+							<td class='text-center'>{$fila['subrasante']}</td>
 							<td class='text-center'>{$fila['pedraplen']}</td>
-
 							<td class='text-center'>
 								<a href='editar_pavimento_rigido.php?id={$fila['id_pavimento_rigido']}' 
 								   class='btn btn-outline-theme btn-sm w-80px' 
@@ -160,12 +150,12 @@ include("conexion.php");
 			},
 			order: [[1, 'desc']],
 			columnDefs: [
-				{ orderable: false, targets: [0, 12, 13, 14] }
+				{ orderable: false, targets: [0, 8, 9, 10] }
 			],
 			pageLength: 25
 		});
 
-		// Manejar clic en la columna de detalles
+		// Manejar clic en la columna de de8, 9, 10
 		$('#tablaPavimentos tbody').on('click', 'td.details-control', function () {
 			const tr = $(this).closest('tr');
 			const row = table.row(tr);
