@@ -114,10 +114,10 @@ unset($sondeo);
 			<div class="card-body">
 				<div class="row mb-3">
 					<div class="col-md-8">
-						<label for="expediente" class="form-label">Obra / Expediente *</label>
-						<input type="text" class="form-control" id="expediente" name="expediente" 
-							   value="<?= htmlspecialchars($pavimento['expediente'] ?? '') ?>"
-							   placeholder="Ingrese el nombre de la obra o expediente" required>
+						<label for="obra" class="form-label">Proyecto *</label>
+						<input type="text" class="form-control" id="obra" name="obra" 
+							   value="<?= htmlspecialchars($pavimento['obra'] ?? '') ?>"
+							   placeholder="Ingrese el nombre del proyecto" required>
 					</div>
 					<div class="col-md-4">
 						<label for="tipo_pavimento" class="form-label">Tipo de Pavimento *</label>

@@ -5,15 +5,15 @@ include("conexion.php");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtener datos del formulario
     $id_pavimento_rigido = $_POST['id_pavimento_rigido'] ?? 0;
-    $expediente = $_POST['expediente'] ?? '';
+    $obra = $_POST['obra'] ?? '';
     $tipo_pavimento = $_POST['tipo_pavimento'] ?? '';
     $espesor_concreto = $_POST['espesor_concreto'] ?? '';
     $base = $_POST['base'] ?? '';
     $subrasante = $_POST['subrasante'] ?? '';
     $pedraplen = $_POST['pedraplen'] ?? '';
 
-    // Validar que se haya ingresado un expediente y tipo
-    if (empty($expediente) || empty($tipo_pavimento) || $id_pavimento_rigido == 0) {
+    // Validar que se haya ingresado una obra y tipo
+    if (empty($obra) || empty($tipo_pavimento) || $id_pavimento_rigido == 0) {
         echo "<script>alert('Datos inválidos'); window.history.back();</script>";
         exit;
     }
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Actualizar el diseño de pavimento rígido
         $stmt = $conexion->prepare("UPDATE pavimento_rigido 
-            SET expediente = ?,
+            SET obra = ?,
                 tipo_pavimento = ?, 
                 espesor_concreto = ?, 
                 base = ?, 
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             WHERE id_pavimento_rigido = ?");
         
         $stmt->bind_param("ssssssi", 
-            $expediente,
+            $obra,
             $tipo_pavimento, 
             $espesor_concreto, 
             $base, 
