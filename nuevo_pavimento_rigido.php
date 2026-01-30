@@ -84,6 +84,38 @@ include("conexion.php");
 				</div>
 
 				<div class="row mb-3">
+					<div class="col-md-6">
+						<label for="ubicacion" class="form-label">Ubicación</label>
+						<input type="text" class="form-control" id="ubicacion" name="ubicacion" 
+							   placeholder="Ingrese la ubicación">
+					</div>
+					<div class="col-md-6">
+						<label for="cliente" class="form-label">Cliente</label>
+						<input type="text" class="form-control" id="cliente" name="cliente" 
+							   placeholder="Ingrese el nombre del cliente">
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<div class="col-md-6">
+						<label for="expediente" class="form-label">Expediente</label>
+						<input type="text" class="form-control" id="expediente" name="expediente" 
+							   placeholder="Ingrese el número de expediente">
+					</div>
+					<div class="col-md-6">
+						<label for="fecha_estudio" class="form-label">Fecha de Realización</label>
+						<input type="date" class="form-control" id="fecha_estudio" name="fecha_estudio">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="card mt-3">
+			<div class="card-header">
+				<h5 class="mb-0">CARACTERÍSTICAS DEL PAVIMENTO</h5>
+			</div>
+			<div class="card-body">
+				<div class="row mb-3">
 					<div class="col-md-3">
 						<label for="espesor_concreto" class="form-label">Espesor Concreto</label>
 						<input type="text" class="form-control" id="espesor_concreto" name="espesor_concreto" placeholder="Ej: 20 cm">

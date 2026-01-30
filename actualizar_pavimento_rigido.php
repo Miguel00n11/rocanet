@@ -7,6 +7,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_pavimento_rigido = $_POST['id_pavimento_rigido'] ?? 0;
     $obra = $_POST['obra'] ?? '';
     $tipo_pavimento = $_POST['tipo_pavimento'] ?? '';
+    $ubicacion = $_POST['ubicacion'] ?? '';
+    $cliente = $_POST['cliente'] ?? '';
+    $expediente = $_POST['expediente'] ?? '';
+    $fecha_estudio = $_POST['fecha_estudio'] ?? '';
     $espesor_concreto = $_POST['espesor_concreto'] ?? '';
     $base = $_POST['base'] ?? '';
     $subrasante = $_POST['subrasante'] ?? '';
@@ -25,16 +29,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Actualizar el diseño de pavimento rígido
         $stmt = $conexion->prepare("UPDATE pavimento_rigido 
             SET obra = ?,
-                tipo_pavimento = ?, 
+                tipo_pavimento = ?,
+                ubicacion = ?,
+                cliente = ?,
+                expediente = ?,
+                fecha_estudio = ?,
                 espesor_concreto = ?, 
                 base = ?, 
                 subrasante = ?, 
                 pedraplen = ? 
             WHERE id_pavimento_rigido = ?");
         
-        $stmt->bind_param("ssssssi", 
+        $stmt->bind_param("ssssssssssi", 
             $obra,
-            $tipo_pavimento, 
+            $tipo_pavimento,
+            $ubicacion,
+            $cliente,
+            $expediente,
+            $fecha_estudio,
             $espesor_concreto, 
             $base, 
             $subrasante, 
