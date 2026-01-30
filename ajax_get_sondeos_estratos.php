@@ -11,6 +11,15 @@ if ($id_pavimento == 0) {
     exit;
 }
 
+// Primero obtener información del pavimento
+$sql_pavimento = "SELECT cliente, ubicacion, expediente, fecha_estudio FROM pavimento_rigido WHERE id_pavimento_rigido = ?";
+$stmt_pav = $conexion->prepare($sql_pavimento);
+$stmt_pav->bind_param("i", $id_pavimento);
+$stmt_pav->execute();
+$resultado_pav = $stmt_pav->get_result();
+$info_pavimento = $resultado_pav->fetch_assoc();
+$stmt_pav->close();
+
 // Consultar sondeos y estratos
 $sql_sondeos = "SELECT * FROM sondeos WHERE id_pavimento_rigido = ? ORDER BY numero_sondeo";
 $stmt = $conexion->prepare($sql_sondeos);
@@ -40,5 +49,9 @@ while ($sondeo = $resultado->fetch_assoc()) {
 $stmt->close();
 $conexion->close();
 
-echo json_encode($sondeos);
+// Devolver datos con información del pavimento
+echo json_encode([
+    'pavimento' => $info_pavimento,
+    'sondeos' => $sondeos
+]);
 ?>

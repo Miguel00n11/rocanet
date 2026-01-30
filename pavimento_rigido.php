@@ -78,6 +78,10 @@ include("conexion.php");
 						<th class="text-center">BASE</th>
 						<th class="text-center">SUBRASANTE</th>
 						<th class="text-center">PEDRAPLEN</th>
+						<th class="text-center none">UBICACIÓN</th>
+						<th class="text-center none">CLIENTE</th>
+						<th class="text-center none">EXPEDIENTE</th>
+						<th class="text-center none">FECHA ESTUDIO</th>
 						<th class="text-center">Editar</th>
 						<th class="text-center">Ver</th>
 						<th class="text-center">Eliminar</th>
@@ -95,6 +99,10 @@ include("conexion.php");
 							<td class='text-center'>{$fila['base']}</td>
 							<td class='text-center'>{$fila['subrasante']}</td>
 							<td class='text-center'>{$fila['pedraplen']}</td>
+							<td class='text-center'>{$fila['ubicacion']}</td>
+							<td class='text-center'>{$fila['cliente']}</td>
+							<td class='text-center'>{$fila['expediente']}</td>
+							<td class='text-center'>{$fila['fecha_estudio']}</td>
 							<td class='text-center'>
 								<a href='editar_pavimento_rigido.php?id={$fila['id_pavimento_rigido']}' 
 								   class='btn btn-outline-theme btn-sm w-80px' 
@@ -142,56 +150,56 @@ include("conexion.php");
 
 	$(document).ready(function() {
 		table = $('#tablaPavimentos').DataTable({
-			responsive: {
-				details: false
-			},
+			responsive: true,
 			language: {
 				url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
 			},
 			order: [[1, 'desc']],
 			columnDefs: [
-				{ orderable: false, targets: [0, 8, 9, 10] }
+				{ orderable: false, targets: [0, 12, 13, 14] }
 			],
 			pageLength: 25
 		});
 
-		// Manejar clic en la columna de de8, 9, 10
-		$('#tablaPavimentos tbody').on('click', 'td.details-control', function () {
-			const tr = $(this).closest('tr');
-			const row = table.row(tr);
-			const icon = $(this).find('i');
-			const idPavimento = tr.data('id');
-
-			if (row.child.isShown()) {
-				// Cerrar la fila
-				row.child.hide();
-				tr.removeClass('shown');
-				icon.removeClass('fa-minus-circle').addClass('fa-plus-circle');
-			} else {
-				// Abrir la fila y cargar datos
-				icon.removeClass('fa-plus-circle').addClass('fa-spinner fa-spin');
+		// Listener adicional para cargar sondeos cuando se expande una fila
+		table.on('responsive-display', function (e, datatable, row, showHide, update) {
+			if (showHide) {
+				const tr = $(row.node());
+				const idPavimento = tr.data('id');
 				
-				$.ajax({
-					url: 'ajax_get_sondeos_estratos.php',
-					type: 'GET',
-					data: { id: idPavimento },
-					dataType: 'json',
-					success: function(sondeos) {
-						const content = formatSondeosEstratos(sondeos);
-						row.child(content).show();
-						tr.addClass('shown');
-						icon.removeClass('fa-spinner fa-spin').addClass('fa-minus-circle');
-					},
-					error: function() {
-						alert('Error al cargar los datos');
-						icon.removeClass('fa-spinner fa-spin').addClass('fa-plus-circle');
-					}
-				});
+				// Verificar si ya se cargaron los sondeos
+				if (!tr.data('sondeos-loaded')) {
+					// Cargar sondeos vía AJAX
+					$.ajax({
+						url: 'ajax_get_sondeos_estratos.php',
+						type: 'GET',
+						data: { id: idPavimento },
+						dataType: 'json',
+						success: function(data) {
+							const sondeosHtml = formatSondeos(data.sondeos);
+							// Insertar los sondeos después del contenido responsive
+							const childRow = row.child();
+							if (childRow && childRow.length > 0) {
+								childRow.after('<tr class="child sondeos-row"><td colspan="100%">' + sondeosHtml + '</td></tr>');
+								tr.data('sondeos-loaded', true);
+							}
+						},
+						error: function() {
+							console.error('Error al cargar los sondeos');
+						}
+					});
+				}
+			} else {
+				// Limpiar bandera cuando se cierra
+				const tr = $(row.node());
+				tr.removeData('sondeos-loaded');
+				// Eliminar fila de sondeos
+				tr.next('.sondeos-row').remove();
 			}
 		});
 	});
 
-	function formatSondeosEstratos(sondeos) {
+	function formatSondeos(sondeos) {
 		if (!sondeos || sondeos.length === 0) {
 			return '<div class="p-3 text-center text-muted">No hay sondeos registrados</div>';
 		}
