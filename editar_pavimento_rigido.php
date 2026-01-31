@@ -188,6 +188,62 @@ unset($sondeo);
 							   value="<?= htmlspecialchars($pavimento['pedraplen'] ?? '') ?>" placeholder="Ej: 30 cm">
 					</div>
 				</div>
+
+				<div class="row mb-3">
+					<div class="col-md-3">
+						<label for="municipio" class="form-label">Municipio</label>
+						<input type="text" class="form-control" id="municipio" name="municipio" 
+							   value="<?= htmlspecialchars($pavimento['municipio'] ?? '') ?>" placeholder="Ingrese municipio">
+					</div>
+					<div class="col-md-3">
+						<label for="po" class="form-label">Po</label>
+						<input type="number" step="0.0001" class="form-control" id="po" name="po" 
+							   value="<?= htmlspecialchars($pavimento['po'] ?? '') ?>" placeholder="Ej: 4.5">
+					</div>
+					<div class="col-md-3">
+						<label for="pt" class="form-label">Pt</label>
+						<input type="number" step="0.0001" class="form-control" id="pt" name="pt" 
+							   value="<?= htmlspecialchars($pavimento['pt'] ?? '') ?>" placeholder="Ej: 2.5">
+					</div>
+					<div class="col-md-3">
+						<label for="zr" class="form-label">Zr (Confiabilidad)</label>
+						<select class="form-select" id="zr" name="zr">
+							<option value="">Seleccione...</option>
+							<option value="95" <?= ($pavimento['zr'] ?? '') == '95' ? 'selected' : '' ?>>95% - Autopistas</option>
+							<option value="90" <?= ($pavimento['zr'] ?? '') == '90' ? 'selected' : '' ?>>90%</option>
+							<option value="85" <?= ($pavimento['zr'] ?? '') == '85' ? 'selected' : '' ?>>85%</option>
+							<option value="80" <?= ($pavimento['zr'] ?? '') == '80' ? 'selected' : '' ?>>80% - Carreteras</option>
+							<option value="75" <?= ($pavimento['zr'] ?? '') == '75' ? 'selected' : '' ?>>75%</option>
+							<option value="70" <?= ($pavimento['zr'] ?? '') == '70' ? 'selected' : '' ?>>70% - Rurales / Industriales</option>
+							<option value="65" <?= ($pavimento['zr'] ?? '') == '65' ? 'selected' : '' ?>>65% - Industriales</option>
+							<option value="60" <?= ($pavimento['zr'] ?? '') == '60' ? 'selected' : '' ?>>60% - Urbanas principales</option>
+							<option value="50" <?= ($pavimento['zr'] ?? '') == '50' ? 'selected' : '' ?>>50% - Urbanas Secundarias</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<div class="col-md-3">
+						<label for="so" class="form-label">So</label>
+						<input type="number" step="0.0001" class="form-control" id="so" name="so" 
+							   value="<?= htmlspecialchars($pavimento['so'] ?? '') ?>" placeholder="Ej: 0.35">
+					</div>
+					<div class="col-md-3">
+						<label for="esals" class="form-label">Esal's</label>
+						<input type="number" step="0.0001" class="form-control" id="esals" name="esals" 
+							   value="<?= htmlspecialchars($pavimento['esals'] ?? '') ?>" placeholder="Ej: 1500000">
+					</div>
+					<div class="col-md-3">
+						<label for="coeficiente_carga" class="form-label">Coeficiente de Carga</label>
+						<input type="number" step="0.0001" class="form-control" id="coeficiente_carga" name="coeficiente_carga" 
+							   value="<?= htmlspecialchars($pavimento['coeficiente_carga'] ?? '') ?>" placeholder="Ej: 0.75">
+					</div>
+					<div class="col-md-3">
+						<label for="mr" class="form-label">MR</label>
+						<input type="number" step="0.0001" class="form-control" id="mr" name="mr" 
+							   value="<?= htmlspecialchars($pavimento['mr'] ?? '') ?>" placeholder="Ej: 700">
+					</div>
+				</div>
 			</div>
 		</div>
 

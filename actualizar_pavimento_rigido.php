@@ -15,6 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $base = $_POST['base'] ?? '';
     $subrasante = $_POST['subrasante'] ?? '';
     $pedraplen = $_POST['pedraplen'] ?? '';
+    $municipio = $_POST['municipio'] ?? '';
+    $po = $_POST['po'] ?? null;
+    $pt = $_POST['pt'] ?? null;
+    $zr = $_POST['zr'] ?? null;
+    $so = $_POST['so'] ?? null;
+    $esals = $_POST['esals'] ?? null;
+    $coeficiente_carga = $_POST['coeficiente_carga'] ?? null;
+    $mr = $_POST['mr'] ?? null;
 
     // Validar que se haya ingresado una obra y tipo
     if (empty($obra) || empty($tipo_pavimento) || $id_pavimento_rigido == 0) {
@@ -37,10 +45,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 espesor_concreto = ?, 
                 base = ?, 
                 subrasante = ?, 
-                pedraplen = ? 
+                pedraplen = ?,
+                municipio = ?,
+                po = ?,
+                pt = ?,
+                zr = ?,
+                so = ?,
+                esals = ?,
+                coeficiente_carga = ?,
+                mr = ?
             WHERE id_pavimento_rigido = ?");
         
-        $stmt->bind_param("ssssssssssi", 
+        $stmt->bind_param("sssssssssssdddddddi", 
             $obra,
             $tipo_pavimento,
             $ubicacion,
@@ -51,6 +67,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $base, 
             $subrasante, 
             $pedraplen,
+            $municipio,
+            $po,
+            $pt,
+            $zr,
+            $so,
+            $esals,
+            $coeficiente_carga,
+            $mr,
             $id_pavimento_rigido
         );
 
