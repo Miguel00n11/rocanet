@@ -22,6 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $esals = $_POST['esals'] ?? null;
     $coeficiente_carga = $_POST['coeficiente_carga'] ?? null;
     $mr = $_POST['mr'] ?? null;
+    $cd = $_POST['cd'] ?? null;
+    $k_infinito = $_POST['k_infinito'] ?? null;
+    $k_tabla = $_POST['k_tabla'] ?? null;
+    $ancho_vialidad = $_POST['ancho_vialidad'] ?? null;
+    $numero_franjas = $_POST['numero_franjas'] ?? null;
+    $dimension_x = $_POST['dimension_x'] ?? null;
+    $dimension_y = $_POST['dimension_y'] ?? null;
+    $diametro_pasajuntas = $_POST['diametro_pasajuntas'] ?? null;
+    $diametro_barras_amarre = $_POST['diametro_barras_amarre'] ?? null;
 
     // Validar que se haya ingresado una obra y tipo
     if (!$obra || !$tipo_pavimento) {
@@ -35,10 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Insertar el diseño de pavimento rígido
         $stmt = $conexion->prepare("INSERT INTO pavimento_rigido 
-            (obra, tipo_pavimento, ubicacion, cliente, expediente, fecha_estudio, espesor_concreto, base, subrasante, pedraplen, municipio, po, pt, zr, so, esals, coeficiente_carga, mr) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            (obra, tipo_pavimento, ubicacion, cliente, expediente, fecha_estudio, espesor_concreto, base, subrasante, pedraplen, municipio, po, pt, zr, so, esals, coeficiente_carga, mr, cd, k_infinito, k_tabla, ancho_vialidad, numero_franjas, dimension_x, dimension_y, diametro_pasajuntas, diametro_barras_amarre) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        $stmt->bind_param("sssssssssssddddddd", 
+        $stmt->bind_param("sssssssssssdddddddddddiddd", 
             $obra,
             $tipo_pavimento,
             $ubicacion,
@@ -56,7 +65,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $so,
             $esals,
             $coeficiente_carga,
-            $mr
+            $mr,
+            $cd,
+            $k_infinito,
+            $k_tabla,
+            $ancho_vialidad,
+            $numero_franjas,
+            $dimension_x,
+            $dimension_y,
+            $diametro_pasajuntas,
+            $diametro_barras_amarre
         );
 
         if (!$stmt->execute()) {

@@ -144,8 +144,15 @@ include("conexion.php");
 						<input type="number" step="0.0001" class="form-control" id="po" name="po" placeholder="Ej: 4.5">
 					</div>
 					<div class="col-md-3">
-						<label for="pt" class="form-label">Pt</label>
-						<input type="number" step="0.0001" class="form-control" id="pt" name="pt" placeholder="Ej: 2.5">
+						<label for="pt" class="form-label">Pt (Clasificación)</label>
+						<select class="form-select" id="pt" name="pt">
+							<option value="">Seleccione...</option>
+							<option value="2.5">2.5 - Autopistas</option>
+							<option value="2.0">2.0 - Carreteras</option>
+							<option value="2.0">2.0 - Zona industrial</option>
+							<option value="1.8">1.8 - Urbana principal</option>
+							<option value="1.5">1.5 - Urbana secundaria</option>
+						</select>
 					</div>
 					<div class="col-md-3">
 						<label for="zr" class="form-label">Zr (Confiabilidad)</label>
@@ -174,12 +181,97 @@ include("conexion.php");
 						<input type="number" step="0.0001" class="form-control" id="esals" name="esals" placeholder="Ej: 1500000">
 					</div>
 					<div class="col-md-3">
-						<label for="coeficiente_carga" class="form-label">Coeficiente de Carga</label>
-						<input type="number" step="0.0001" class="form-control" id="coeficiente_carga" name="coeficiente_carga" placeholder="Ej: 0.75">
+						<label for="coeficiente_carga" class="form-label">
+							Coeficiente de Carga
+							<i class="fas fa-question-circle text-info ms-1" 
+							   data-bs-toggle="modal" 
+							   data-bs-target="#modalCoeficiente"
+							   style="cursor: pointer;">
+							</i>
+						</label>
+						<input type="number" step="0.1" class="form-control" id="coeficiente_carga" name="coeficiente_carga" placeholder="Ej: 3.2">
 					</div>
 					<div class="col-md-3">
-						<label for="mr" class="form-label">MR</label>
+						<label for="mr" class="form-label">
+							MR
+							<i class="fas fa-question-circle text-info ms-1" 
+							   data-bs-toggle="modal" 
+							   data-bs-target="#modalMR"
+							   style="cursor: pointer;">
+							</i>
+						</label>
 						<input type="number" step="0.0001" class="form-control" id="mr" name="mr" placeholder="Ej: 700">
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<div class="col-md-3">
+						<label for="cd" class="form-label">
+							Cd
+							<i class="fas fa-question-circle text-info ms-1" 
+							   data-bs-toggle="modal" 
+							   data-bs-target="#modalCd"
+							   style="cursor: pointer;">
+							</i>
+						</label>
+						<input type="number" step="0.01" class="form-control" id="cd" name="cd" placeholder="Ej: 1.0">
+					</div>
+					<div class="col-md-3">
+						<label for="k_infinito" class="form-label">K infinito</label>
+						<input type="number" step="0.0001" class="form-control" id="k_infinito" name="k_infinito" placeholder="Ej: 150">
+					</div>
+					<div class="col-md-3">
+						<label for="k_tabla" class="form-label">K tabla</label>
+						<input type="number" step="0.0001" class="form-control" id="k_tabla" name="k_tabla" placeholder="Ej: 100">
+					</div>
+					<div class="col-md-3">
+						<label for="ancho_vialidad" class="form-label">Ancho de Vialidad</label>
+						<input type="number" step="0.01" class="form-control" id="ancho_vialidad" name="ancho_vialidad" placeholder="Ej: 7.5">
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<div class="col-md-3">
+						<label for="numero_franjas" class="form-label">Número de Franjas</label>
+						<input type="number" class="form-control" id="numero_franjas" name="numero_franjas" placeholder="Ej: 2">
+					</div>
+					<div class="col-md-3">
+						<label for="dimension_x" class="form-label">Dimensión en X</label>
+						<input type="number" step="0.01" class="form-control" id="dimension_x" name="dimension_x" placeholder="Ej: 4.0">
+					</div>
+					<div class="col-md-3">
+						<label for="dimension_y" class="form-label">Dimensión en Y</label>
+						<input type="number" step="0.01" class="form-control" id="dimension_y" name="dimension_y" placeholder="Ej: 4.5">
+					</div>
+					<div class="col-md-3">
+						<label for="diametro_pasajuntas" class="form-label">
+							Diámetro de Pasajuntas
+							<i class="fas fa-question-circle text-info ms-1" 
+							   data-bs-toggle="modal" 
+							   data-bs-target="#modalPasajuntas"
+							   style="cursor: pointer;">
+							</i>
+						</label>
+						<select class="form-select" id="diametro_pasajuntas" name="diametro_pasajuntas">
+							<option value="">Seleccione...</option>
+							<option value="0.75">3/4" (19 mm)</option>
+							<option value="1">1" (25 mm)</option>
+							<option value="1.25">1 1/4" (32 mm)</option>
+							<option value="1.5">1 1/2" (38 mm)</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<div class="col-md-3">
+						<label for="diametro_barras_amarre" class="form-label">Diámetro de Barras de Amarre</label>
+						<select class="form-select" id="diametro_barras_amarre" name="diametro_barras_amarre">
+							<option value="">Seleccione...</option>
+							<option value="0.5">1/2"</option>
+							<option value="0.75">3/4"</option>
+							<option value="1">1"</option>
+							<option value="1.25">1 1/4"</option>
+						</select>
 					</div>
 				</div>
 			</div>
@@ -274,11 +366,298 @@ include("conexion.php");
 			</div>
 		</div>
 	</form>
+
+	<!-- Modal para Tabla de Coeficiente de Carga -->
+	<div class="modal fade" id="modalCoeficiente" tabindex="-1">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Tabla de Referencia - Coeficiente de Carga</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table table-bordered table-hover">
+						<thead class="table-dark">
+							<tr>
+								<th rowspan="2" class="text-center align-middle">Millones de ESAL's</th>
+								<th colspan="2" class="text-center">Trabazón de Agregados</th>
+								<th colspan="2" class="text-center">Con Pasajuntas</th>
+							</tr>
+							<tr>
+								<th class="text-center">Con soporte Lateral</th>
+								<th class="text-center">Sin soporte Lateral</th>
+								<th class="text-center">Con soporte Lateral</th>
+								<th class="text-center">Sin soporte Lateral</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Menos de 0.3</td>
+								<td class="text-center">2.8</td>
+								<td class="text-center">3.2</td>
+								<td class="text-center" rowspan="6">2.7</td>
+								<td class="text-center" rowspan="6">3.2</td>
+							</tr>
+							<tr>
+								<td>0.3 a 1.0</td>
+								<td class="text-center">3.0</td>
+								<td class="text-center">3.4</td>
+							</tr>
+							<tr>
+								<td>1.0 a 3.0</td>
+								<td class="text-center">3.1</td>
+								<td class="text-center">3.6</td>
+							</tr>
+							<tr>
+								<td>3 a 10</td>
+								<td class="text-center">3.2</td>
+								<td class="text-center">3.8</td>
+							</tr>
+							<tr>
+								<td>10 a 30</td>
+								<td class="text-center">3.4</td>
+								<td class="text-center">4.1</td>
+							</tr>
+							<tr>
+								<td>Más de 30</td>
+								<td class="text-center">3.6</td>
+								<td class="text-center">4.3</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal para Tabla de MR -->
+	<div class="modal fade" id="modalMR" tabindex="-1">
+		<div class="modal-dialog modal-md">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Tabla de Referencia - Módulo de Ruptura (MR)</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table table-bordered table-hover">
+						<thead class="table-dark">
+							<tr>
+								<th class="text-center">Pavimento</th>
+								<th colspan="2" class="text-center">Módulo de Ruptura</th>
+							</tr>
+							<tr>
+								<th></th>
+								<th class="text-center">Kg/cm²</th>
+								<th class="text-center">psi</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Autopistas</td>
+								<td class="text-center">48.00</td>
+								<td class="text-center">682.7</td>
+							</tr>
+							<tr>
+								<td>Carreteras</td>
+								<td class="text-center">48.00</td>
+								<td class="text-center">682.7</td>
+							</tr>
+							<tr>
+								<td>Zonas industriales</td>
+								<td class="text-center">45.00</td>
+								<td class="text-center">640.1</td>
+							</tr>
+							<tr>
+								<td>Urbanas principales</td>
+								<td class="text-center">45.00</td>
+								<td class="text-center">640.1</td>
+							</tr>
+							<tr>
+								<td>Urbanas secundarias</td>
+								<td class="text-center">42.00</td>
+								<td class="text-center">597.4</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal para Tabla de Cd -->
+	<div class="modal fade" id="modalCd" tabindex="-1">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Tabla de Referencia - Coeficiente de Drenaje (Cd)</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table table-bordered table-hover">
+						<thead class="table-dark">
+							<tr>
+								<th class="text-center">Calidad del Drenaje</th>
+								<th class="text-center">Menos de 1 %</th>
+								<th class="text-center">1 - 5 %</th>
+								<th class="text-center">5 - 25 %</th>
+								<th class="text-center">Más de 25 %</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><strong>Excelente</strong></td>
+								<td class="text-center">1.25 - 1.20</td>
+								<td class="text-center">1.20 - 1.15</td>
+								<td class="text-center">1.10</td>
+								<td class="text-center">1.10</td>
+							</tr>
+							<tr>
+								<td><strong>Bueno</strong></td>
+								<td class="text-center">1.20 - 1.15</td>
+								<td class="text-center">1.10</td>
+								<td class="text-center">1.05</td>
+								<td class="text-center">1.00</td>
+							</tr>
+							<tr>
+								<td><strong>Regular</strong></td>
+								<td class="text-center">1.10</td>
+								<td class="text-center">1.05</td>
+								<td class="text-center">1.00</td>
+								<td class="text-center">0.90</td>
+							</tr>
+							<tr>
+								<td><strong>Pobre</strong></td>
+								<td class="text-center">1.05</td>
+								<td class="text-center">1.00</td>
+								<td class="text-center">0.90 - 0.80</td>
+								<td class="text-center">0.80</td>
+							</tr>
+							<tr>
+								<td><strong>Muy Pobre</strong></td>
+								<td class="text-center">1.00</td>
+								<td class="text-center">0.90 - 0.80</td>
+								<td class="text-center">0.80 - 0.70</td>
+								<td class="text-center">0.70</td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="text-muted small mb-0"><em>Nota: Los valores corresponden al porcentaje de tiempo que el pavimento está expuesto a niveles de humedad próximos a saturación.</em></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal para Tabla de Pasajuntas -->
+	<div class="modal fade" id="modalPasajuntas" tabindex="-1">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Tabla de Referencia - Especificaciones de Pasajuntas y Barras</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table table-bordered table-hover table-sm">
+						<thead class="table-dark">
+							<tr>
+								<th rowspan="2" class="text-center align-middle">Espesor de Losa (cm)</th>
+								<th rowspan="2" class="text-center align-middle">Espesor de Losa (in)</th>
+								<th rowspan="2" class="text-center align-middle">Diámetro (mm)</th>
+								<th rowspan="2" class="text-center align-middle">Diámetro (in)</th>
+								<th colspan="2" class="text-center">Barras Pasajuntas</th>
+								<th colspan="2" class="text-center">Barras Pasajuntas Separación</th>
+							</tr>
+							<tr>
+								<th class="text-center">Longitud (cm)</th>
+								<th class="text-center">Longitud (in)</th>
+								<th class="text-center">(cm)</th>
+								<th class="text-center">(in)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-center">13 a 15</td>
+								<td class="text-center">5 a 6</td>
+								<td class="text-center">19</td>
+								<td class="text-center">3/4"</td>
+								<td class="text-center">41</td>
+								<td class="text-center">16</td>
+								<td class="text-center">30</td>
+								<td class="text-center">12</td>
+							</tr>
+							<tr>
+								<td class="text-center">15 a 20</td>
+								<td class="text-center">6 a 8</td>
+								<td class="text-center">25</td>
+								<td class="text-center">1"</td>
+								<td class="text-center">45</td>
+								<td class="text-center">18</td>
+								<td class="text-center">30</td>
+								<td class="text-center">12</td>
+							</tr>
+							<tr class="table-success">
+								<td class="text-center"><strong>20 a 30</strong></td>
+								<td class="text-center"><strong>8 a 12</strong></td>
+								<td class="text-center"><strong>32</strong></td>
+								<td class="text-center"><strong>1 1/4"</strong></td>
+								<td class="text-center"><strong>45</strong></td>
+								<td class="text-center"><strong>18</strong></td>
+								<td class="text-center"><strong>30</strong></td>
+								<td class="text-center"><strong>12</strong></td>
+							</tr>
+							<tr>
+								<td class="text-center">30 a 43</td>
+								<td class="text-center">12 a 17</td>
+								<td class="text-center">38</td>
+								<td class="text-center">1 1/2"</td>
+								<td class="text-center">51</td>
+								<td class="text-center">20</td>
+								<td class="text-center">38</td>
+								<td class="text-center">15</td>
+							</tr>
+							<tr>
+								<td class="text-center">43 a 50</td>
+								<td class="text-center">17 a 20</td>
+								<td class="text-center">45</td>
+								<td class="text-center">1 3/4"</td>
+								<td class="text-center">56</td>
+								<td class="text-center">22</td>
+								<td class="text-center">46</td>
+								<td class="text-center">18</td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="text-muted small mb-0"><em>Nota: La fila resaltada (20 a 30 cm) es la configuración más común para pavimentos rígidos.</em></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <!-- END #content -->
 
 <script>
 	let contadorSondeos = 1;
+
+	// Inicializar popovers
+	$(document).ready(function() {
+		var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+		var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+			return new bootstrap.Popover(popoverTriggerEl, {
+				container: 'body'
+			});
+		});
+	});
 
 	function agregarSondeo() {
 		contadorSondeos++;
