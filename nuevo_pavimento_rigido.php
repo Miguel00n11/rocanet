@@ -97,12 +97,17 @@ include("conexion.php");
 				</div>
 
 				<div class="row mb-3">
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<label for="expediente" class="form-label">Expediente</label>
 						<input type="text" class="form-control" id="expediente" name="expediente" 
 							   placeholder="Ingrese el número de expediente">
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-4">
+						<label for="revision" class="form-label">Revisión</label>
+						<input type="text" class="form-control" id="revision" name="revision" 
+							   placeholder="Ingrese la revisión">
+					</div>
+					<div class="col-md-4">
 						<label for="fecha_estudio" class="form-label">Fecha de Realización</label>
 						<input type="date" class="form-control" id="fecha_estudio" name="fecha_estudio">
 					</div>

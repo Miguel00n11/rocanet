@@ -84,7 +84,7 @@ include("conexion.php");
 						<th class="text-center none">FECHA ESTUDIO</th>
 						<th class="text-center none">SONDEOS</th>
 						<th class="text-center">Editar</th>
-						<th class="text-center">Ver</th>
+						<th class="text-center">Exportar</th>
 						<th class="text-center">Eliminar</th>
 					</tr>';
 				echo '</thead>';
@@ -142,10 +142,10 @@ include("conexion.php");
 								</a>
 							</td>
 							<td class='text-center'>
-								<a href='#modalVer' 
-								   data-bs-toggle='modal' 
-								   class='btn btn-outline-theme btn-sm w-80px'>
-									Ver
+								<a href='exportar_pavimento_excel.php?id={$fila['id_pavimento_rigido']}' 
+								   class='btn btn-outline-success btn-sm w-80px'
+								   onclick='return confirm(\"¿Está seguro de que desea descargar este diseño de pavimento en formato Excel?\");'>
+									<i class='fas fa-file-excel me-1'></i>Exportar
 								</a>
 							</td>
 							<td class='text-center'>

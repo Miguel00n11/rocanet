@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ubicacion = $_POST['ubicacion'] ?? '';
     $cliente = $_POST['cliente'] ?? '';
     $expediente = $_POST['expediente'] ?? '';
+    $revision = $_POST['revision'] ?? '';
     $fecha_estudio = $_POST['fecha_estudio'] ?? '';
     $espesor_concreto = $_POST['espesor_concreto'] ?? '';
     $base = $_POST['base'] ?? '';
@@ -44,15 +45,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Insertar el diseño de pavimento rígido
         $stmt = $conexion->prepare("INSERT INTO pavimento_rigido 
-            (obra, tipo_pavimento, ubicacion, cliente, expediente, fecha_estudio, espesor_concreto, base, subrasante, pedraplen, municipio, po, pt, zr, so, esals, coeficiente_carga, mr, cd, k_infinito, k_tabla, ancho_vialidad, numero_franjas, dimension_x, dimension_y, diametro_pasajuntas, diametro_barras_amarre) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            (obra, tipo_pavimento, ubicacion, cliente, expediente, revision, fecha_estudio, espesor_concreto, base, subrasante, pedraplen, municipio, po, pt, zr, so, esals, coeficiente_carga, mr, cd, k_infinito, k_tabla, ancho_vialidad, numero_franjas, dimension_x, dimension_y, diametro_pasajuntas, diametro_barras_amarre) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        $stmt->bind_param("sssssssssssdddddddddddiddd", 
+        $stmt->bind_param("ssssssssssssdddddddddddiddd", 
             $obra,
             $tipo_pavimento,
             $ubicacion,
             $cliente,
             $expediente,
+            $revision,
             $fecha_estudio,
             $espesor_concreto, 
             $base, 

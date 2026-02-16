@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ubicacion = $_POST['ubicacion'] ?? '';
     $cliente = $_POST['cliente'] ?? '';
     $expediente = $_POST['expediente'] ?? '';
+    $revision = $_POST['revision'] ?? '';
     $fecha_estudio = $_POST['fecha_estudio'] ?? '';
     $espesor_concreto = $_POST['espesor_concreto'] ?? '';
     $base = $_POST['base'] ?? '';
@@ -50,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ubicacion = ?,
                 cliente = ?,
                 expediente = ?,
+                revision = ?,
                 fecha_estudio = ?,
                 espesor_concreto = ?, 
                 base = ?, 
@@ -74,12 +76,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 diametro_barras_amarre = ?
             WHERE id_pavimento_rigido = ?");
         
-        $stmt->bind_param("sssssssssssdddddddddddiddddi", 
+        $stmt->bind_param("ssssssssssssdddddddddddiddddi", 
             $obra,
             $tipo_pavimento,
             $ubicacion,
             $cliente,
             $expediente,
+            $revision,
             $fecha_estudio,
             $espesor_concreto, 
             $base, 
