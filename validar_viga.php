@@ -411,7 +411,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
 		$conexion->commit();
 
 		// =========================
-		// 4️⃣ BORRAR REPORTE EN FIREBASE
+		// 4️⃣ REGISTRAR EN TABLA ENSAYES
+		// =========================
+		try {
+			// Crear conexión a base de datos ali3d_rocanet
+			$conexion_rocanet = new mysqli("localhost", "root", "", "ali3d_rocanet");
+			
+			if ($conexion_rocanet->connect_error) {
+				throw new Exception("Error de conexión a ali3d_rocanet: " . $conexion_rocanet->connect_error);
+			}
+			
+			$conexion_rocanet->set_charset("utf8");
+			
+			// Obtener datos de la obra para el registro de ensaye
+			$sqlObra = "SELECT o.obra, o.cliente, c.cliente as nombre_cliente 
+			            FROM obras o 
+			            JOIN clientes c ON o.cliente = c.idcliente 
+			            WHERE o.expediente = ?";
+			$stmtObra = $conexion->prepare($sqlObra);
+			$stmtObra->bind_param("i", $expediente);
+			$stmtObra->execute();
+			$resultObra = $stmtObra->get_result();
+			$dataObra = $resultObra->fetch_assoc();
+			$stmtObra->close();
+			
+			// Consultar el precio de "Vigas" en la tabla precios
+			$sqlPrecio = "SELECT id FROM precios WHERE ensaye = 'Vigas' AND expediente = ?";
+			$stmtPrecio = $conexion_rocanet->prepare($sqlPrecio);
+			$stmtPrecio->bind_param("i", $expediente);
+			$stmtPrecio->execute();
+			$resultPrecio = $stmtPrecio->get_result();
+			
+			// Si no encuentra, usar 1823 por defecto
+			$id_precio = 1823;
+			
+			if ($resultPrecio->num_rows > 0) {
+				$dataPrecio = $resultPrecio->fetch_assoc();
+				$id_precio = $dataPrecio['id'];
+			}
+			$stmtPrecio->close();
+			
+			// Verificar si ya existe un registro de "Vigas" para el mismo expediente y fecha
+			$sqlCheck = "SELECT id, cantidad FROM ensayes 
+			             WHERE expediente = ? 
+			             AND ensaye = 'Vigas' 
+			             AND fecha = ?";
+			$stmtCheck = $conexion_rocanet->prepare($sqlCheck);
+			$stmtCheck->bind_param("is", $expediente, $_POST['fecha']);
+			$stmtCheck->execute();
+			$resultCheck = $stmtCheck->get_result();
+			
+			if ($resultCheck->num_rows > 0) {
+				// Ya existe un registro, actualizar la cantidad
+				$dataCheck = $resultCheck->fetch_assoc();
+				$nueva_cantidad = intval($dataCheck['cantidad']) + 1;
+				
+				$sqlUpdate = "UPDATE ensayes SET cantidad = ? WHERE id = ?";
+				$stmtUpdate = $conexion_rocanet->prepare($sqlUpdate);
+				$stmtUpdate->bind_param("ii", $nueva_cantidad, $dataCheck['id']);
+				$stmtUpdate->execute();
+				$stmtUpdate->close();
+			} else {
+				// No existe, crear nuevo registro
+				$sqlInsertEnsaye = "INSERT INTO ensayes 
+				                    (cliente, idcliente, obra, expediente, ensaye, cantidad, pu, fecha, observaciones, id_precio, id_factura) 
+				                    VALUES (?, ?, ?, ?, 'Vigas', '1', '', ?, '', ?, NULL)";
+				$stmtInsertEnsaye = $conexion_rocanet->prepare($sqlInsertEnsaye);
+				$stmtInsertEnsaye->bind_param(
+					"ssissi",
+					$dataObra['nombre_cliente'],
+					$dataObra['cliente'],
+					$dataObra['obra'],
+					$expediente,
+					$_POST['fecha'],
+					$id_precio
+				);
+				$stmtInsertEnsaye->execute();
+				$stmtInsertEnsaye->close();
+			}
+			
+			$stmtCheck->close();
+			$conexion_rocanet->close();
+			
+		} catch (Exception $e) {
+			// Registrar error pero no detener el proceso
+			error_log("Error al registrar ensaye: " . $e->getMessage());
+		}
+
+		// =========================
+		// 5️⃣ BORRAR REPORTE EN FIREBASE
 		// =========================
 		firebaseDelete($ruta);
 
