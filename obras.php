@@ -80,6 +80,7 @@ include("conexion.php");
 							<th class="text-center col-obras">Cliente</th>
 							<th class="text-center">Editar</th>
 							<th class="text-center">Nuevo</th>
+							<th class="text-center">Consultar cuenta</th>
 						</tr>
 					</thead>';
 					echo '<tbody>';
@@ -148,6 +149,13 @@ include("conexion.php");
                             </ul>
                         </div>
                     </td>
+					<td class='text-center'>
+						<a href='consultar_cuenta.php?expediente={$fila['expediente']}' 
+						   class='btn btn-outline-theme btn-sm w-100px' 
+						   target='_blank'>
+							<i class='fas fa-file-invoice me-1'></i> Ver cuenta
+						</a>
+					</td>
 						</tr>";
 					}
 
