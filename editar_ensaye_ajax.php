@@ -49,7 +49,7 @@ $conexion_rocanet->close();
 
 $ensayesList = [
     'Compactacion',
-    'Caja Adicional',
+    'Cala Adicional',
     'Concreto (Cilindros)',
     'Revenimiento',
     'Vigas',

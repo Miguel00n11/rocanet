@@ -313,7 +313,149 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['cala'])) {
 		$conexion->commit();
 
 		// =========================
-		// 4️⃣ BORRAR REPORTE EN FIREBASE
+		// 4️⃣ REGISTRAR EN TABLA ENSAYES (ali3d_rocanet)
+		// =========================
+		try {
+			// Crear conexión a base de datos ali3d_rocanet
+			$conexion_rocanet = new mysqli("localhost", "root", "", "ali3d_rocanet");
+			
+			if ($conexion_rocanet->connect_error) {
+				throw new Exception("Error de conexión a ali3d_rocanet: " . $conexion_rocanet->connect_error);
+			}
+			
+			$conexion_rocanet->set_charset("utf8");
+			
+			// Obtener datos de la obra
+			$sqlObra = "SELECT o.obra, o.cliente, c.cliente as nombre_cliente 
+			            FROM obras o 
+			            JOIN clientes c ON o.cliente = c.idcliente 
+			            WHERE o.expediente = ?";
+			$stmtObra = $conexion->prepare($sqlObra);
+			$stmtObra->bind_param("i", $expediente);
+			$stmtObra->execute();
+			$resultObra = $stmtObra->get_result();
+			$dataObra = $resultObra->fetch_assoc();
+			$stmtObra->close();
+			
+			// Contar el número de calas
+			$total_calas = count($_POST['cala']);
+			$fecha = $_POST['fecha'];
+			
+			// LÓGICA: 
+			// - Primera validación del día: "Compactacion" cantidad = 1 (+ Cala Adicional si excede 4)
+			// - Validaciones posteriores del mismo día: TODAS las calas van a "Cala Adicional"
+			
+			// Buscar id_precio (usar 1823 por defecto)
+			$id_precio = 1823;
+			
+			// === VERIFICAR SI YA EXISTE COMPACTACION PARA ESTA FECHA ===
+			$sqlCheck = "SELECT id, cantidad FROM ensayes 
+			             WHERE expediente = ? 
+			             AND ensaye = 'Compactacion' 
+			             AND fecha = ?";
+			$stmtCheck = $conexion_rocanet->prepare($sqlCheck);
+			$stmtCheck->bind_param("is", $expediente, $fecha);
+			$stmtCheck->execute();
+			$resultCheck = $stmtCheck->get_result();
+			
+			$ya_existe_compactacion = ($resultCheck->num_rows > 0);
+			$stmtCheck->close();
+			
+			if (!$ya_existe_compactacion) {
+				// === PRIMERA VALIDACIÓN DEL DÍA ===
+				// Crear registro de "Compactacion" con cantidad = 1
+				$sqlInsertEnsaye = "INSERT INTO ensayes 
+				                    (cliente, idcliente, obra, expediente, ensaye, cantidad, pu, fecha, observaciones, id_precio, id_factura) 
+				                    VALUES (?, ?, ?, ?, 'Compactacion', '1', '', ?, '', ?, NULL)";
+				$stmtInsertEnsaye = $conexion_rocanet->prepare($sqlInsertEnsaye);
+				$stmtInsertEnsaye->bind_param(
+					"ssissi",
+					$dataObra['nombre_cliente'],
+					$dataObra['cliente'],
+					$dataObra['obra'],
+					$expediente,
+					$fecha,
+					$id_precio
+				);
+				$stmtInsertEnsaye->execute();
+				$stmtInsertEnsaye->close();
+				
+				// Si hay más de 4 calas, crear también "Cala Adicional"
+				if ($total_calas > 4) {
+					$cantidad_adicional = $total_calas - 4;
+					
+					$sqlInsertEnsaye2 = "INSERT INTO ensayes 
+					                     (cliente, idcliente, obra, expediente, ensaye, cantidad, pu, fecha, observaciones, id_precio, id_factura) 
+					                     VALUES (?, ?, ?, ?, 'Cala Adicional', ?, '', ?, '', ?, NULL)";
+					$stmtInsertEnsaye2 = $conexion_rocanet->prepare($sqlInsertEnsaye2);
+					$stmtInsertEnsaye2->bind_param(
+						"ssiissi",
+						$dataObra['nombre_cliente'],
+						$dataObra['cliente'],
+						$dataObra['obra'],
+						$expediente,
+						$cantidad_adicional,
+						$fecha,
+						$id_precio
+					);
+					$stmtInsertEnsaye2->execute();
+					$stmtInsertEnsaye2->close();
+				}
+			} else {
+				// === VALIDACIÓN POSTERIOR DEL MISMO DÍA ===
+				// NO se agrega otra Compactacion, TODAS las calas van a "Cala Adicional"
+				
+				// Verificar si ya existe "Cala Adicional"
+				$sqlCheck2 = "SELECT id, cantidad FROM ensayes 
+				              WHERE expediente = ? 
+				              AND ensaye = 'Cala Adicional' 
+				              AND fecha = ?";
+				$stmtCheck2 = $conexion_rocanet->prepare($sqlCheck2);
+				$stmtCheck2->bind_param("is", $expediente, $fecha);
+				$stmtCheck2->execute();
+				$resultCheck2 = $stmtCheck2->get_result();
+				
+				if ($resultCheck2->num_rows > 0) {
+					// Ya existe, actualizar sumando TODAS las calas
+					$dataCheck2 = $resultCheck2->fetch_assoc();
+					$nueva_cantidad_adicional = intval($dataCheck2['cantidad']) + $total_calas;
+					
+					$sqlUpdate2 = "UPDATE ensayes SET cantidad = ? WHERE id = ?";
+					$stmtUpdate2 = $conexion_rocanet->prepare($sqlUpdate2);
+					$stmtUpdate2->bind_param("ii", $nueva_cantidad_adicional, $dataCheck2['id']);
+					$stmtUpdate2->execute();
+					$stmtUpdate2->close();
+				} else {
+					// No existe, crear nuevo registro con TODAS las calas
+					$sqlInsertEnsaye2 = "INSERT INTO ensayes 
+					                     (cliente, idcliente, obra, expediente, ensaye, cantidad, pu, fecha, observaciones, id_precio, id_factura) 
+					                     VALUES (?, ?, ?, ?, 'Cala Adicional', ?, '', ?, '', ?, NULL)";
+					$stmtInsertEnsaye2 = $conexion_rocanet->prepare($sqlInsertEnsaye2);
+					$stmtInsertEnsaye2->bind_param(
+						"ssiissi",
+						$dataObra['nombre_cliente'],
+						$dataObra['cliente'],
+						$dataObra['obra'],
+						$expediente,
+						$total_calas,
+						$fecha,
+						$id_precio
+					);
+					$stmtInsertEnsaye2->execute();
+					$stmtInsertEnsaye2->close();
+				}
+				$stmtCheck2->close();
+			}
+			
+			$conexion_rocanet->close();
+			
+		} catch (Exception $e) {
+			// Si falla el registro en ensayes, no detener el flujo
+			error_log("Error al registrar en ensayes: " . $e->getMessage());
+		}
+
+		// =========================
+		// 5️⃣ BORRAR REPORTE EN FIREBASE
 		// =========================
 		// firebaseDelete($ruta);
 
