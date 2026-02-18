@@ -78,182 +78,223 @@ ob_start();
 	<style>
 		body {
 			font-family: Arial, sans-serif;
-			font-size: 12px;
-			line-height: 1.6;
-		}
-		h1 {
-			text-align: center;
-			font-size: 18px;
-			margin-bottom: 20px;
-		}
-		h2 {
-			font-size: 14px;
-			margin-top: 20px;
-			margin-bottom: 10px;
-			border-bottom: 2px solid #333;
-			padding-bottom: 5px;
+			font-size: 9px;
+			margin: 15px;
 		}
 		table {
 			width: 100%;
 			border-collapse: collapse;
-			margin-bottom: 20px;
+			margin-bottom: 8px;
 		}
-		table th, table td {
-			border: 1px solid #333;
-			padding: 8px;
-			text-align: left;
+		table td, table th {
+			border: 1px solid #000;
+			padding: 4px;
+			font-size: 8px;
+			vertical-align: middle;
 		}
-		table th {
-			background-color: #e0e0e0;
+		.header-gray {
+			background-color: #b0b0b0;
 			font-weight: bold;
+			text-align: center;
 		}
-		.info-table td:first-child {
+		.section-title {
+			background-color: #d0d0d0;
 			font-weight: bold;
-			width: 35%;
+			text-align: center;
+			padding: 4px;
+		}
+		.label-cell {
+			background-color: #d0d0d0;
+			font-weight: bold;
 		}
 		.center {
 			text-align: center;
 		}
-		.imagen-container {
-			margin-bottom: 20px;
-			page-break-inside: avoid;
-		}
-		.imagen-container img {
-			max-width: 100%;
-			height: auto;
-			border: 1px solid #ccc;
+		.small-text {
+			font-size: 7px;
 		}
 	</style>
 </head>
 <body>
-	<h1>REPORTE DE MECÁNICA DE SUELOS</h1>
-
-	<h2>INFORMACIÓN GENERAL</h2>
-	<table class="info-table">
-		<tr>
-			<td>Llave:</td>
-			<td><?= htmlspecialchars($llave) ?></td>
-		</tr>
-		<tr>
-			<td>Cliente:</td>
-			<td><?= htmlspecialchars($cliente) ?></td>
-		</tr>
-		<tr>
-			<td>Obra:</td>
-			<td><?= htmlspecialchars($obra) ?></td>
-		</tr>
-		<tr>
-			<td>Localización:</td>
-			<td><?= htmlspecialchars($localizacion) ?></td>
-		</tr>
-	</table>
-
-	<h2>DATOS DEL SONDEO</h2>
-	<table class="info-table">
-		<tr>
-			<td>Número de Reporte:</td>
-			<td><?= htmlspecialchars($numeroReporte) ?></td>
-		</tr>
-		<tr>
-			<td>Fecha:</td>
-			<td><?= htmlspecialchars($fecha) ?></td>
-		</tr>
-		<tr>
-			<td>Hora:</td>
-			<td><?= htmlspecialchars($hora) ?></td>
-		</tr>
-		<tr>
-			<td>Atención:</td>
-			<td><?= htmlspecialchars($atencion) ?></td>
-		</tr>
-		<tr>
-			<td>Latitud:</td>
-			<td><?= htmlspecialchars($latitud) ?></td>
-		</tr>
-		<tr>
-			<td>Longitud:</td>
-			<td><?= htmlspecialchars($longitud) ?></td>
-		</tr>
-		<tr>
-			<td>Número de Sondeo:</td>
-			<td><?= htmlspecialchars($sondeo_num) ?></td>
-		</tr>
-		<tr>
-			<td>Ubicación:</td>
-			<td><?= htmlspecialchars($ubicacion) ?></td>
-		</tr>
-		<tr>
-			<td>NAF:</td>
-			<td><?= $naf ? 'Sí' : 'No' ?></td>
-		</tr>
-		<tr>
-			<td>Profundidad NAF:</td>
-			<td><?= htmlspecialchars($profundidad_naf) ?></td>
-		</tr>
-		<tr>
-			<td>Profundidad de Muestreo:</td>
-			<td><?= htmlspecialchars($profundidad_muestreo) ?></td>
-		</tr>
-		<tr>
-			<td>Personal:</td>
-			<td><?= htmlspecialchars($personal) ?></td>
-		</tr>
-	</table>
-
-	<?php if (!empty($listaEstratos)): ?>
-	<h2>LISTA DE ESTRATOS</h2>
+	<!-- HEADER -->
 	<table>
-		<thead>
-			<tr>
-				<th class="center">#</th>
-				<th>Clasificación Visual</th>
-				<th>Prof. Inicio</th>
-				<th>Prof. Final</th>
-				<th>Prof. Muestreo</th>
-				<th>Tipo Muestreo</th>
-				<th>Observaciones</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach ($listaEstratos as $index => $estrato): ?>
-			<tr>
-				<td class="center"><?= $index + 1 ?></td>
-				<td><?= htmlspecialchars($estrato['clasificacion_visual'] ?? '') ?></td>
-				<td><?= htmlspecialchars($estrato['profundidad_inicio'] ?? '') ?></td>
-				<td><?= htmlspecialchars($estrato['profundidad_final'] ?? '') ?></td>
-				<td><?= htmlspecialchars($estrato['profundidad_muestreo'] ?? '') ?></td>
-				<td><?= htmlspecialchars($estrato['tipo_muestreo'] ?? '') ?></td>
-				<td><?= htmlspecialchars($estrato['observaciones'] ?? '') ?></td>
-			</tr>
-			<?php endforeach; ?>
-		</tbody>
+		<tr>
+			<td rowspan="3" style="width: 20%; background-color: white; text-align: center; padding: 8px;">
+				<div style="width: 100%; height: 60px; display: flex; align-items: center; justify-content: center; border: 1px solid #ccc;">
+					<strong style="font-size: 16px; color: #4a7fb8;">ROCA</strong>
+				</div>
+				<div class="small-text" style="margin-top: 5px;">Laboratorio<br>Control de Calidad</div>
+			</td>
+			<td colspan="3" class="header-gray">Datos de control</td>
+		</tr>
+		<tr>
+			<td colspan="3">Nombre del formato: <strong>Reporte de muestreo</strong></td>
+		</tr>
+		<tr>
+			<td>Código del formato<br><strong>F1-PR21</strong></td>
+			<td>Revisión<br><strong>00</strong></td>
+			<td>Fecha de sondeo<br><strong><?= htmlspecialchars($fecha) ?></strong></td>
+		</tr>
+	</table>
+
+	<!-- DATOS DE OBRA -->
+	<table>
+		<tr>
+			<td colspan="4" class="section-title">Datos de obra</td>
+		</tr>
+		<tr>
+			<td class="label-cell" style="width: 15%;">Cliente:</td>
+			<td colspan="3"><?= htmlspecialchars($cliente) ?></td>
+		</tr>
+		<tr>
+			<td class="label-cell">Obra:</td>
+			<td colspan="3"><?= htmlspecialchars($obra) ?></td>
+		</tr>
+		<tr>
+			<td class="label-cell">Localización:</td>
+			<td colspan="3"><?= htmlspecialchars($localizacion) ?></td>
+		</tr>
+		<tr>
+			<td class="label-cell">En atención:</td>
+			<td style="width: 35%;"><?= htmlspecialchars($atencion) ?></td>
+			<td class="label-cell" style="width: 15%;">Expediente:</td>
+			<td style="width: 35%;"></td>
+		</tr>
+	</table>
+
+	<!-- DATOS DEL SONDEO -->
+	<table>
+		<tr>
+			<td colspan="4" class="section-title">Datos del sondeo</td>
+		</tr>
+		<tr>
+			<td class="label-cell" style="width: 20%;">Sondeo Núm.:</td>
+			<td class="center" style="width: 30%;"><?= htmlspecialchars($sondeo_num) ?></td>
+			<td class="label-cell" style="width: 25%;">Profundidad del sondeo [cm]:</td>
+			<td class="center" style="width: 25%;"><?= htmlspecialchars($profundidad_muestreo) ?></td>
+		</tr>
+		<tr>
+			<td class="label-cell">Ubicación:</td>
+			<td class="center"><?= htmlspecialchars($ubicacion) ?></td>
+			<td class="label-cell">Hora de muestreo:</td>
+			<td class="center"><?= htmlspecialchars($hora) ?></td>
+		</tr>
+		<tr>
+			<td class="label-cell">NAF:</td>
+			<td class="center"><?= $naf ? 'true' : 'false' ?></td>
+			<td class="label-cell">Profundidad NAF [cm]:</td>
+			<td class="center"><?= htmlspecialchars($profundidad_naf ?: '---') ?></td>
+		</tr>
+		<tr>
+			<td class="label-cell">Latitud:</td>
+			<td class="center"><?= htmlspecialchars($latitud) ?></td>
+			<td class="label-cell">Longitud:</td>
+			<td class="center"><?= htmlspecialchars($longitud) ?></td>
+		</tr>
+	</table>
+
+	<!-- DATOS DEL ÚLTIMO MUESTREO -->
+	<?php if (!empty($listaEstratos)): ?>
+	<table>
+		<tr>
+			<td colspan="8" class="section-title">Datos del último muestreo</td>
+		</tr>
+		<tr class="header-gray">
+			<th rowspan="2" class="center" style="width: 8%;">Numero de<br>estrato</th>
+			<th rowspan="2" class="center" style="width: 12%;">Tipo de<br>muestreo</th>
+			<th colspan="2" class="center">Profundidad [cm]</th>
+			<th rowspan="2" class="center" style="width: 15%;">Profundidad del<br>muestreo [cm]</th>
+			<th rowspan="2" class="center" style="width: 12%;">Espesor del<br>estrato [cm]</th>
+			<th rowspan="2" class="center" style="width: 15%;">Clasificación<br>visual</th>
+			<th rowspan="2" class="center" style="width: 20%;">Observaciones</th>
+		</tr>
+		<tr class="header-gray">
+			<th class="center" style="width: 9%;">Inicio</th>
+			<th class="center" style="width: 9%;">Final</th>
+		</tr>
+		<?php foreach ($listaEstratos as $index => $estrato): 
+			$espesor = '';
+			if (!empty($estrato['profundidad_inicio']) && !empty($estrato['profundidad_final'])) {
+				$espesor = floatval($estrato['profundidad_final']) - floatval($estrato['profundidad_inicio']);
+			}
+		?>
+		<tr>
+			<td class="center"><?= $index + 1 ?></td>
+			<td class="center"><?= htmlspecialchars($estrato['tipo_muestreo'] ?? '') ?></td>
+			<td class="center"><?= htmlspecialchars($estrato['profundidad_inicio'] ?? '') ?></td>
+			<td class="center"><?= htmlspecialchars($estrato['profundidad_final'] ?? '') ?></td>
+			<td class="center"><?= htmlspecialchars($estrato['profundidad_muestreo'] ?? '') ?></td>
+			<td class="center"><?= $espesor ?></td>
+			<td class="center"><?= htmlspecialchars($estrato['clasificacion_visual'] ?? '') ?></td>
+			<td><?= htmlspecialchars($estrato['observaciones'] ?? '') ?></td>
+		</tr>
+		<?php endforeach; ?>
 	</table>
 	<?php endif; ?>
 
+	<!-- IMÁGENES DEL SONDEO -->
 	<?php if (!empty($listaImagenes)): ?>
-	<h2>IMÁGENES</h2>
-	<?php foreach ($listaImagenes as $index => $imagenUrl): ?>
-		<div class="imagen-container">
-			<p><strong>Imagen <?= $index + 1 ?>:</strong></p>
-			<?php
-			// Intentar descargar la imagen y convertirla a base64
-			$imageData = @file_get_contents($imagenUrl);
-			if ($imageData !== false) {
-				$base64 = base64_encode($imageData);
-				// Detectar tipo MIME
-				$finfo = new finfo(FILEINFO_MIME_TYPE);
-				$mimeType = $finfo->buffer($imageData);
-				if (!$mimeType) {
-					$mimeType = 'image/jpeg';
-				}
-				echo '<img src="data:' . $mimeType . ';base64,' . $base64 . '">';
-			} else {
-				echo '<p style="color: #999;">No se pudo cargar la imagen desde: ' . htmlspecialchars($imagenUrl) . '</p>';
-			}
+	<table>
+		<tr>
+			<td colspan="3" class="section-title">Imágenes del sondeo</td>
+		</tr>
+		<tr>
+			<?php 
+			for ($i = 0; $i < 3; $i++): 
+				if ($i < count($listaImagenes)):
+					// Descargar imagen de Firebase
+					$imageData = @file_get_contents($listaImagenes[$i]);
+					if ($imageData !== false):
+						$base64 = base64_encode($imageData);
+						// Detectar tipo de imagen por extensión o asumir JPEG
+						$ext = strtolower(pathinfo($listaImagenes[$i], PATHINFO_EXTENSION));
+						$mimeType = 'image/jpeg';
+						if ($ext == 'png') $mimeType = 'image/png';
+						if ($ext == 'gif') $mimeType = 'image/gif';
+						if ($ext == 'webp') $mimeType = 'image/webp';
 			?>
-		</div>
-	<?php endforeach; ?>
+			<td class="center" style="width: 33.33%; padding: 5px;">
+				<img src="data:<?= $mimeType ?>;base64,<?= $base64 ?>" style="max-width: 100%; max-height: 140px;">
+			</td>
+			<?php 
+					else:
+			?>
+			<td class="center" style="width: 33.33%; height: 150px; padding: 5px;">
+				<div style="width: 100%; height: 140px; border: 1px dashed #999; display: flex; align-items: center; justify-content: center;">
+					<span class="small-text" style="color: #666;">Error al cargar imagen</span>
+				</div>
+			</td>
+			<?php 
+					endif;
+				else:
+			?>
+			<td style="width: 33.33%;"></td>
+			<?php 
+				endif;
+			endfor; 
+			?>
+		</tr>
+	</table>
 	<?php endif; ?>
+
+	<!-- FOOTER -->
+	<table>
+		<tr>
+			<td colspan="2" class="center section-title">
+				Norma de referencia: NMX-C-467-ONNCCE-2019, Métodos de muestreo
+			</td>
+		</tr>
+		<tr>
+			<td class="center" style="width: 50%; height: 40px; vertical-align: bottom;">
+				<?= htmlspecialchars($personal) ?><br>
+				<span class="small-text">Nombre de muestreador</span>
+			</td>
+			<td class="center" style="width: 50%; vertical-align: bottom;">
+				<br>
+				<span class="small-text">Nombre de quien autoriza</span>
+			</td>
+		</tr>
+	</table>
 </body>
 </html>
 <?php
