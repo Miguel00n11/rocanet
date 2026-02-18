@@ -120,10 +120,17 @@ ob_start();
 	<table>
 		<tr>
 			<td rowspan="5" style="width: 30%; background-color: white; text-align: center; padding: 10px; vertical-align: middle;">
-				<div style="width: 100%; height: auto;">
-					<strong style="font-size: 16px; color: #4a7fb8;">ROCA</strong><br>
-					<span class="small-text" style="color: #666;">Laboratorio<br>Control de Calidad</span>
-				</div>
+				<?php
+				$logoPath = __DIR__ . '/assets/img/logo_roca.png';
+				if (file_exists($logoPath)) {
+					$logoData = file_get_contents($logoPath);
+					$logoBase64 = base64_encode($logoData);
+					echo '<img src="data:image/png;base64,' . $logoBase64 . '" style="max-width: 90%; height: auto; max-height: 70px;">';
+				} else {
+					echo '<strong style="font-size: 16px; color: #4a7fb8;">ROCA</strong><br>';
+					echo '<span class="small-text" style="color: #666;">Laboratorio<br>Control de Calidad</span>';
+				}
+				?>
 			</td>
 			<td colspan="3" class="header-gray" style="padding: 2px;">Datos de control</td>
 		</tr>
@@ -312,6 +319,8 @@ $html = ob_get_clean();
 $options = new Options();
 $options->set('isHtml5ParserEnabled', true);
 $options->set('isRemoteEnabled', true);
+$options->set('chroot', __DIR__);
+$options->set('enable_php', true);
 
 $dompdf = new Dompdf($options);
 $dompdf->loadHtml($html);
