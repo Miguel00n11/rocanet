@@ -111,6 +111,11 @@ $profundidad_naf = $reporte['profundidad_naf'] ?? '';
 $sondeo_num = $reporte['sondeo_num'] ?? '';
 $ubicacion = $reporte['ubicacion'] ?? '';
 $listaEstratos = $reporte['listaEstratos'] ?? [];
+
+// Convertir fecha de DD/MM/YYYY a YYYY-MM-DD para input type="date"
+if (!empty($fecha) && preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $fecha, $matches)) {
+	$fecha = $matches[3] . '-' . $matches[2] . '-' . $matches[1]; // YYYY-MM-DD
+}
 ?>
 
 <!-- BEGIN #content -->
@@ -301,6 +306,10 @@ $listaEstratos = $reporte['listaEstratos'] ?? [];
 		<button type="button" class="btn btn-danger btn-sm w-180px ms-2" onclick="exportarPDF()">
 			<i class="fa fa-file-pdf me-1"></i> Exportar a PDF
 		</button>
+		
+		<button type="button" class="btn btn-primary btn-sm w-180px ms-2" onclick="validarReporte()">
+			<i class="fa fa-check me-1"></i> Validar
+		</button>
 
 	</form>
 
@@ -387,6 +396,54 @@ $listaEstratos = $reporte['listaEstratos'] ?? [];
 		const usuario = "<?= $usuario ?>";
 		const llave = "<?= $llave ?>";
 		window.open(`exportar_mecanica_pdf.php?usuario=${usuario}&llave=${llave}`, '_blank');
+	}
+
+	// Función para validar reporte
+	function validarReporte() {
+		if (!confirm('¿Está seguro de validar este reporte? Se eliminará de la lista de pendientes.')) {
+			return;
+		}
+		
+		const usuario = "<?= $usuario ?>";
+		const llave = "<?= $llave ?>";
+		
+		fetch(`validar_reporte_mecanica.php?usuario=${usuario}&llave=${llave}`)
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					alert('Reporte validado correctamente');
+					window.close();
+				} else {
+					alert('Error al validar: ' + (data.error || 'Error desconocido'));
+				}
+			})
+			.catch(error => {
+				alert('Error de conexión: ' + error);
+			});
+	}
+
+	// Función para validar reporte
+	function validarReporte() {
+		if (!confirm('¿Está seguro de validar este reporte? Se eliminará de la lista de pendientes.')) {
+			return;
+		}
+		
+		const usuario = "<?= $usuario ?>";
+		const llave = "<?= $llave ?>";
+		
+		fetch(`validar_reporte_mecanica.php?usuario=${usuario}&llave=${llave}`)
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					alert('Reporte validado correctamente');
+					window.close();
+				} else {
+					alert('Error al validar: ' + (data.error || 'Error desconocido'));
+				}
+			})
+			.catch(error => {
+				alert('Error de conexión: ' + error);
+			});
 	}
 
 	// Autocompletar expediente
