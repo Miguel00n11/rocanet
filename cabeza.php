@@ -241,6 +241,31 @@ if (session_status() === PHP_SESSION_NONE) {
 							</div>
 						</div>
 					</div>
+					<div class="menu-item has-sub ">
+						<a href="#" class="menu-link">
+							<span class="fas fa-lg fa-fw me-2 fa-tablet-alt menu-icon">
+							</span>
+							<span class="menu-text">MECÁNICA DE SUELOS</span>
+							<span class="menu-caret"><b class="caret"></b></span>
+						</a>
+						<div class="menu-submenu">
+							<div class="menu-item ">
+								<a href="lista_reportes_mecanicas_validar.php" class="menu-link">
+									<span class="menu-text">Validar mecánicas</span>
+								</a>
+							</div>
+							<div class="menu-item ">
+								<a href="lista_reportes_mecanicas_validar.php" class="menu-link">
+									<span class="menu-text">Ver actualizados</span>
+								</a>
+							</div>
+							<div class="menu-item ">
+								<a href="lista_reportes_mecanicas_validar.php" class="menu-link">
+									<span class="menu-text">Ver originales</span>
+								</a>
+							</div>
+						</div>
+					</div>
 					<div class="menu-header">SISTEMAS</div>
 					<!-- <div class="menu-item ">
 						<a href="widgets.html" class="menu-link">
