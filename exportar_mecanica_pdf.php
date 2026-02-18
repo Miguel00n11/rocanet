@@ -119,21 +119,29 @@ ob_start();
 	<!-- HEADER -->
 	<table>
 		<tr>
-			<td rowspan="3" style="width: 20%; background-color: white; text-align: center; padding: 8px;">
-				<div style="width: 100%; height: 60px; display: flex; align-items: center; justify-content: center; border: 1px solid #ccc;">
-					<strong style="font-size: 16px; color: #4a7fb8;">ROCA</strong>
+			<td rowspan="5" style="width: 30%; background-color: white; text-align: center; padding: 10px; vertical-align: middle;">
+				<div style="width: 100%; height: auto;">
+					<strong style="font-size: 16px; color: #4a7fb8;">ROCA</strong><br>
+					<span class="small-text" style="color: #666;">Laboratorio<br>Control de Calidad</span>
 				</div>
-				<div class="small-text" style="margin-top: 5px;">Laboratorio<br>Control de Calidad</div>
 			</td>
-			<td colspan="3" class="header-gray">Datos de control</td>
+			<td colspan="3" class="header-gray" style="padding: 2px;">Datos de control</td>
 		</tr>
 		<tr>
-			<td colspan="3">Nombre del formato: <strong>Reporte de muestreo</strong></td>
+			<td colspan="3" style="text-align: center; padding: 2px;">Nombre del formato</td>
 		</tr>
 		<tr>
-			<td>Código del formato<br><strong>F1-PR21</strong></td>
-			<td>Revisión<br><strong>00</strong></td>
-			<td>Fecha de sondeo<br><strong><?= htmlspecialchars($fecha) ?></strong></td>
+			<td colspan="3" style="text-align: center; padding: 2px;"><strong>Reporte de muestreo</strong></td>
+		</tr>
+		<tr>
+			<td class="header-gray" style="text-align: center; width: 23.33%; padding: 2px;">Código del formato</td>
+			<td class="header-gray" style="text-align: center; width: 23.33%; padding: 2px;">Revisión</td>
+			<td class="header-gray" style="text-align: center; width: 23.33%; padding: 2px;">Fecha de sondeo</td>
+		</tr>
+		<tr>
+			<td style="text-align: center; padding: 2px;"><strong>F1-PR21</strong></td>
+			<td style="text-align: center; padding: 2px;"><strong>00</strong></td>
+			<td style="text-align: center; padding: 2px;"><strong><?= htmlspecialchars($fecha) ?></strong></td>
 		</tr>
 	</table>
 
