@@ -135,46 +135,23 @@ $listaEstratos = $reporte['listaEstratos'] ?? [];
 							<input type="text" class="form-control" name="llave" value="<?= $llaveReporte ?>" readonly>
 						</div>
 					</div>
-					<div class="col-xl-6">
+					<div class="col-xl-12">
 						<div class="mb-3">
 							<label class="form-label">Cliente</label>
-							<input type="text" class="form-control" name="cliente" value="<?= $cliente ?>" readonly>
-						</div>
-					</div>
-					<div class="col-xl-6">
-						<div class="mb-3">
-							<label class="form-label">ID Cliente</label>
-							<input type="text" class="form-control" name="id_cliente" value="<?= $id_cliente ?>" readonly>
+							<input type="text" class="form-control" name="cliente" value="<?= $cliente ?>">
 						</div>
 					</div>
 					<div class="col-xl-12">
 						<div class="mb-3">
 							<label class="form-label">Obra</label>
-							<input type="text" class="form-control" name="obra" value="<?= $obra ?>" readonly>
+							<input type="text" class="form-control" name="obra" value="<?= $obra ?>">
 						</div>
 					</div>
-					<div class="col-xl-6">
-						<div class="mb-3">
-							<label class="form-label">Expediente</label>
-							<input type="text" class="form-control" name="expediente" value="<?= $expediente ?>" readonly>
-						</div>
-					</div>
-					<div class="col-xl-6">
+					<div class="col-xl-12">
 						<div class="mb-3">
 							<label class="form-label">Localización</label>
-							<input type="text" class="form-control" name="localizacion" value="<?= $localizacion ?>" readonly>
+							<input type="text" class="form-control" name="localizacion" value="<?= $localizacion ?>">
 						</div>
-					</div>
-					<div class="col-xl-6">
-						<label class="form-label">Seleccionar expediente *</label>
-						<select class="form-select" id="seleccionar_exp" name="seleccionar_exp">
-							<option value="">Seleccionar expediente</option>
-							<?php foreach ($expLista as $p): ?>
-								<option value="<?= $p['expediente'] ?>">
-									<?= $p['expediente'] ?> – <?= $p['obra'] ?>
-								</option>
-							<?php endforeach; ?>
-						</select>
 					</div>
 				</div>
 			</div>

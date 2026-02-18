@@ -208,11 +208,11 @@ ob_start();
 		</tr>
 	</table>
 
-	<!-- DATOS DEL ÚLTIMO MUESTREO -->
+	<!-- Datos del estrato muestreado -->
 	<?php if (!empty($listaEstratos)): ?>
 	<table>
 		<tr>
-			<td colspan="8" class="section-title">Datos del último muestreo</td>
+			<td colspan="8" class="section-title">Datos del estrato muestreado</td>
 		</tr>
 		<tr class="header-gray">
 			<th rowspan="2" class="center" style="width: 8%;">Numero de<br>estrato</th>
