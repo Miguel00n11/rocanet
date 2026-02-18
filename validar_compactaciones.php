@@ -764,8 +764,10 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 					const fila = document.createElement("tr");
 
 					fila.innerHTML = `
-			<td class="text-center">${index + 1}</td>
-            <td><input type="text" class="form-control" name="cala[]" value="${cala.cala+=1 ?? ''}"></td>
+			<td class="text-center">
+				${index + 1}
+				<input type="hidden" name="cala[]" value="${cala.cala+=1 ?? ''}">
+			</td>
             <td><input type="text" class="form-control" name="estacion[]" value="${cala.estacion ?? ''}"></td>
             <td><input type="text" class="form-control text-center" name="prof[]" value="${cala.prof ?? ''}"></td>
             <td><input type="text" class="form-control text-center" name="humedad[]" value="${cala.humedad ?? ''}"></td>

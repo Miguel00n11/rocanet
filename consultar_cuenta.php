@@ -76,16 +76,8 @@ $conexion->close();
     </h1>
 
     <div class="card">
-        <div class="card-header with-btn">
+        <div class="card-header">
             INFORMACIÓN DE LA OBRA
-            <div class="card-header-btn no-print">
-                <button onclick="window.print()" class="btn btn-sm btn-success">
-                    <i class="fas fa-print"></i> Imprimir
-                </button>
-                <button onclick="window.close()" class="btn btn-sm btn-secondary">
-                    <i class="fas fa-times"></i> Cerrar
-                </button>
-            </div>
         </div>
         <div class="card-body pb-2">
             <div class="row">
@@ -113,6 +105,13 @@ $conexion->close();
                         <input type="text" class="form-control" value="<?= htmlspecialchars($obra['localizacion']) ?>" readonly>
                     </div>
                 </div>
+                <div class="col-xl-12">
+                    <div class="mb-3 text-end">
+                        <button onclick="window.location.href='nuevo_ensaye.php?expediente=<?= $expediente ?>'" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Nuevo ensaye
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -120,11 +119,6 @@ $conexion->close();
     <div class="card">
         <div class="card-header with-btn">
             ENSAYES REGISTRADOS
-            <div class="card-header-btn">
-                <!-- <a href="#" data-toggle="card-collapse" class="btn"><iconify-icon icon="material-symbols-light:stat-minus-1"></iconify-icon></a>
-                <a href="#" data-toggle="card-expand" class="btn"><iconify-icon icon="material-symbols-light:fullscreen"></iconify-icon></a>
-                <a href="#" data-toggle="card-remove" class="btn"><iconify-icon icon="material-symbols-light:close-rounded"></iconify-icon></a> -->
-            </div>
         </div>
         <div class="card-body">
             <?php if (count($ensayes) > 0): ?>

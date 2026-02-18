@@ -49,15 +49,21 @@ if ($usuarios) {
 	<div class="card">
 		<div class="card-body">
 
+			<style>
+				.col-obra {
+					min-width: 220px;
+					word-break: break-word;
+				}
+			</style>
+
 			<div class="table-responsive">
-				<table class="table table-bordered table-striped">
+				<table id="datatableValidarCompactaciones" class="table text-nowrap w-100">
 					<thead class="table-dark">
 						<tr>
 							<th>Personal</th>
 							<th>Cliente</th>
 							<th>Obra</th>
 							<th>Fecha</th>
-							<th>Cliente</th>
 							<th>Acción</th>
 						</tr>
 					</thead>
@@ -65,14 +71,13 @@ if ($usuarios) {
 						<?php if ($reportesPendientes): ?>
 							<?php foreach ($reportesPendientes as $r): ?>
 								<tr>
-									<td><?= $r['personal'] ?? '' ?></td>
-									<td><?= $r['cliente'] ?? '' ?></td>
-									<td><?= $r['obra'] ?? '' ?></td>
-									<td><?= $r['fecha'] ?? '' ?></td>
-									<td><?= $r['cliente'] ?? '' ?></td>
+									<td class='text-center'><?= $r['personal'] ?? '' ?></td>
+									<td class='text-center'><?= $r['cliente'] ?? '' ?></td>
+									<td class='text-center col-obra'><?= $r['obra'] ?? '' ?></td>
+									<td class='text-center'><?= $r['fecha'] ?? '' ?></td>
 									<td class="text-center">
 										<a href="#"
-											class="btn btn-success btn-sm"
+											class="btn btn-outline-theme btn-sm w-80px"
 											onclick="
 		window.open('validar_compactaciones.php?usuario=<?= urlencode($r['usuario']) ?>&llave=<?= urlencode($r['llave']) ?>&atencion=<?= urlencode($r['atencion']) ?>&tipo=Compactaciones', '_blank');
 		return false;
@@ -85,7 +90,7 @@ if ($usuarios) {
 							<?php endforeach; ?>
 						<?php else: ?>
 							<tr>
-								<td colspan="6" class="text-center text-muted">
+								<td colspan="5" class="text-center text-muted">
 									No hay reportes pendientes
 								</td>
 							</tr>
@@ -97,6 +102,39 @@ if ($usuarios) {
 		</div>
 	</div>
 </div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		const tableEl = document.querySelector('#datatableValidarCompactaciones');
+		if (tableEl) {
+			new DataTable(tableEl, {
+				autoWidth: false,
+				responsive: true,
+				order: [[3, 'desc']], // Ordenar por fecha descendente
+				columnDefs: [{
+					targets: 4, // Columna Acción
+					orderable: false,
+					searchable: false,
+					responsivePriority: 1,
+					className: 'dt-body-center'
+				}],
+				language: {
+					search: "Buscar:",
+					lengthMenu: "Mostrar _MENU_ registros",
+					info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+					infoEmpty: "Mostrando 0 a 0 de 0 registros",
+					infoFiltered: "(filtrado de _MAX_ registros totales)",
+					zeroRecords: "No se encontraron coincidencias",
+					paginate: {
+						next: "Siguiente",
+						previous: "Anterior"
+					}
+				}
+			});
+		}
+	});
+</script>
+
 <script>
 	function mostrarUsuario(btn) {
 
