@@ -70,16 +70,27 @@ function firebaseDelete($ruta)
 /* PARAMETROS */
 $usuario = $_GET['usuario'] ?? '';
 $llave   = $_GET['llave'] ?? '';
+$tipo    = $_GET['tipo'] ?? 'Mecanicas'; // Mecanicas o Respaldo
 
-$ruta = "Mecanicas/ReportesMecanicas/$usuario/$llave";
+// Determinar la ruta según el tipo
+if ($tipo === 'Respaldo') {
+	$ruta = "Mecanicas/RespaldoMecanicas/$usuario/$llave";
+	$soloConsulta = true;
+} else {
+	$ruta = "Mecanicas/ReportesMecanicas/$usuario/$llave";
+	$soloConsulta = false;
+}
+
+// Las imágenes siempre están en ImagenesMecanicas
+$rutaImagenes = "ImagenesMecanicas/$usuario/$llave";
+
 $reporte = firebaseGet($ruta);
 
 if ($reporte === null) {
 	die("NO SE ENCONTRÓ EL REPORTE<br>Ruta lógica: $ruta");
 }
 
-// Obtener las imágenes desde la ruta separada
-$rutaImagenes = "ImagenesMecanicas/$usuario/$llave";
+// Obtener las imágenes (siempre desde ImagenesMecanicas)
 $imagenesData = firebaseGet($rutaImagenes);
 $listaImagenes = [];
 
@@ -307,9 +318,11 @@ if (!empty($fecha) && preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $fecha, $match
 			<i class="fa fa-file-pdf me-1"></i> Exportar a PDF
 		</button>
 		
+		<?php if (!$soloConsulta): ?>
 		<button type="button" class="btn btn-primary btn-sm w-180px ms-2" onclick="validarReporte()">
 			<i class="fa fa-check me-1"></i> Validar
 		</button>
+		<?php endif; ?>
 
 	</form>
 

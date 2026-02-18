@@ -33,13 +33,9 @@ if (empty($usuario) || empty($llave)) {
 }
 
 try {
-	// Eliminar de Mecanicas/ReportesMecanicas
+	// Eliminar solo el reporte de Mecanicas/ReportesMecanicas
 	$rutaReporte = "Mecanicas/ReportesMecanicas/$usuario/$llave";
 	$resultadoReporte = firebaseDelete($rutaReporte);
-	
-	// Eliminar las imágenes asociadas
-	$rutaImagenes = "ImagenesMecanicas/$usuario/$llave";
-	$resultadoImagenes = firebaseDelete($rutaImagenes);
 	
 	if ($resultadoReporte) {
 		echo json_encode(['success' => true, 'message' => 'Reporte validado correctamente']);

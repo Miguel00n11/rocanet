@@ -260,7 +260,7 @@ if (session_status() === PHP_SESSION_NONE) {
 								</a>
 							</div>
 							<div class="menu-item ">
-								<a href="lista_reportes_mecanicas_validar.php" class="menu-link">
+							<a href="lista_reportes_mecanicas_respaldo.php" class="menu-link">
 									<span class="menu-text">Ver originales</span>
 								</a>
 							</div>
