@@ -1,5 +1,10 @@
 {
     "require": {
-        "kreait/firebase-php": "^5.26"
+        "kreait/firebase-php": "^5.26",
+        "dompdf/dompdf": "^3.1",
+        "phpoffice/phpspreadsheet": "^5.4"
+    },
+    "config": {
+        "platform-check": false
     }
 }

@@ -317,8 +317,12 @@ $listaEstratos = $reporte['listaEstratos'] ?? [];
 			</div>
 		</div>
 
-		<button type="submit" class="btn btn-outline-theme btn-sm w-180px">
-			Guardar cambios
+		<button type="button" class="btn btn-success btn-sm w-180px" onclick="exportarExcel()">
+			<i class="fa fa-file-excel me-1"></i> Exportar a Excel
+		</button>
+		
+		<button type="button" class="btn btn-danger btn-sm w-180px ms-2" onclick="exportarPDF()">
+			<i class="fa fa-file-pdf me-1"></i> Exportar a PDF
 		</button>
 
 	</form>
@@ -393,6 +397,20 @@ $listaEstratos = $reporte['listaEstratos'] ?? [];
 		cargarEstratos();
 		cargarImagenes();
 	});
+
+	// Función para exportar a Excel
+	function exportarExcel() {
+		const usuario = "<?= $usuario ?>";
+		const llave = "<?= $llave ?>";
+		window.open(`exportar_mecanica_excel.php?usuario=${usuario}&llave=${llave}`, '_blank');
+	}
+
+	// Función para exportar a PDF
+	function exportarPDF() {
+		const usuario = "<?= $usuario ?>";
+		const llave = "<?= $llave ?>";
+		window.open(`exportar_mecanica_pdf.php?usuario=${usuario}&llave=${llave}`, '_blank');
+	}
 
 	// Autocompletar expediente
 	document.getElementById("seleccionar_exp").addEventListener("change", function() {
