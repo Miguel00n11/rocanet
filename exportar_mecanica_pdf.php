@@ -119,7 +119,7 @@ ob_start();
 	<!-- HEADER -->
 	<table>
 		<tr>
-			<td rowspan="5" style="width: 30%; background-color: white; text-align: center; padding: 5px; vertical-align: middle;">
+			<td rowspan="5" style="width: 30%; background-color: white; text-align: center; vertical-align: middle;">
 				<?php
 				$logoPath = __DIR__ . '/assets/img/logo_roca.png';
 				if (file_exists($logoPath)) {
