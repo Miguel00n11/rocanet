@@ -401,14 +401,16 @@ if (!empty($fecha) && preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $fecha, $match
 	function exportarExcel() {
 		const usuario = "<?= $usuario ?>";
 		const llave = "<?= $llave ?>";
-		window.open(`exportar_mecanica_excel.php?usuario=${usuario}&llave=${llave}`, '_blank');
+		const tipo = "<?= $tipo ?>";
+		window.open(`exportar_mecanica_excel.php?usuario=${usuario}&llave=${llave}&tipo=${tipo}`, '_blank');
 	}
 
 	// Función para exportar a PDF
 	function exportarPDF() {
 		const usuario = "<?= $usuario ?>";
 		const llave = "<?= $llave ?>";
-		window.open(`exportar_mecanica_pdf.php?usuario=${usuario}&llave=${llave}`, '_blank');
+		const tipo = "<?= $tipo ?>";
+		window.open(`exportar_mecanica_pdf.php?usuario=${usuario}&llave=${llave}&tipo=${tipo}`, '_blank');
 	}
 
 	// Función para validar reporte

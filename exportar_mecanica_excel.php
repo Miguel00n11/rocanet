@@ -27,12 +27,19 @@ function firebaseGet($ruta)
 /* PARAMETROS */
 $usuario = $_GET['usuario'] ?? '';
 $llave   = $_GET['llave'] ?? '';
+$tipo    = $_GET['tipo'] ?? 'Mecanicas';
 
 if (empty($usuario) || empty($llave)) {
     die('Parámetros inválidos');
 }
 
-$ruta = "Mecanicas/ReportesMecanicas/$usuario/$llave";
+// Determinar la ruta según el tipo
+if ($tipo === 'Respaldo') {
+	$ruta = "Mecanicas/RespaldoMecanicas/$usuario/$llave";
+} else {
+	$ruta = "Mecanicas/ReportesMecanicas/$usuario/$llave";
+}
+
 $reporte = firebaseGet($ruta);
 
 if ($reporte === null) {
