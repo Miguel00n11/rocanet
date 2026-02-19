@@ -427,31 +427,7 @@ if (!empty($fecha) && preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $fecha, $match
 			.then(data => {
 				if (data.success) {
 					alert('Reporte validado correctamente');
-					window.close();
-				} else {
-					alert('Error al validar: ' + (data.error || 'Error desconocido'));
-				}
-			})
-			.catch(error => {
-				alert('Error de conexión: ' + error);
-			});
-	}
-
-	// Función para validar reporte
-	function validarReporte() {
-		if (!confirm('¿Está seguro de validar este reporte? Se eliminará de la lista de pendientes.')) {
-			return;
-		}
-		
-		const usuario = "<?= $usuario ?>";
-		const llave = "<?= $llave ?>";
-		
-		fetch(`validar_reporte_mecanica.php?usuario=${usuario}&llave=${llave}`)
-			.then(response => response.json())
-			.then(data => {
-				if (data.success) {
-					alert('Reporte validado correctamente');
-					window.close();
+					window.location.href = 'lista_reportes_mecanicas_validar.php';
 				} else {
 					alert('Error al validar: ' + (data.error || 'Error desconocido'));
 				}
