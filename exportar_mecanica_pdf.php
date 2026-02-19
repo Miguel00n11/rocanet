@@ -34,6 +34,8 @@ if (empty($usuario) || empty($llave)) {
 // Determinar la ruta según el tipo
 if ($tipo === 'Respaldo') {
 	$ruta = "Mecanicas/RespaldoMecanicas/$usuario/$llave";
+} elseif ($tipo === 'Actualizado') {
+	$ruta = "Mecanicas/ReporteActualizadoMecanicas/$usuario/$llave";
 } else {
 	$ruta = "Mecanicas/ReportesMecanicas/$usuario/$llave";
 }
