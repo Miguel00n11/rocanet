@@ -41,6 +41,13 @@ if ($usuarios) {
 		}
 	}
 }
+
+// Ordenar por fecha descendente (más reciente primero)
+usort($reportesPendientes, function($a, $b) {
+	$fechaA = $a['fecha'] ?? '';
+	$fechaB = $b['fecha'] ?? '';
+	return strcmp($fechaB, $fechaA); // Orden descendente
+});
 ?>
 
 <div id="content" class="app-content">
@@ -70,11 +77,21 @@ if ($usuarios) {
 					<tbody>
 						<?php if ($reportesPendientes): ?>
 							<?php foreach ($reportesPendientes as $r): ?>
+								<?php 
+								// Convertir fecha para ordenamiento
+								$fechaOriginal = $r['fecha'] ?? '';
+								$fechaOrden = $fechaOriginal; // Por defecto usa el original
+								
+								// Si la fecha está en formato DD/MM/YYYY, convertir a YYYY-MM-DD para ordenar
+								if (preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $fechaOriginal, $matches)) {
+									$fechaOrden = $matches[3] . '-' . $matches[2] . '-' . $matches[1];
+								}
+								?>
 								<tr>
 									<td class='text-center'><?= $r['personal'] ?? '' ?></td>
 									<td class='text-center'><?= $r['cliente'] ?? '' ?></td>
 									<td class='text-center col-obra'><?= $r['obra'] ?? '' ?></td>
-									<td class='text-center'><?= $r['fecha'] ?? '' ?></td>
+									<td class='text-center' data-order="<?= $fechaOrden ?>"><?= $fechaOriginal ?></td>
 									<td class="text-center">
 										<a href="#"
 											class="btn btn-outline-theme btn-sm w-80px"
@@ -111,13 +128,27 @@ if ($usuarios) {
 				autoWidth: false,
 				responsive: true,
 				order: [[3, 'desc']], // Ordenar por fecha descendente
+				columnControl: [
+					'order',
+					['search', 'spacer', 'orderAsc', 'orderDesc', 'orderClear']
+				],
 				columnDefs: [{
+					targets: [0, 1, 2, 3],
+					columnControl: [
+						'order',
+						['search', 'spacer', 'orderAsc', 'orderDesc', 'orderClear']
+					]
+				},
+				{
 					targets: 4, // Columna Acción
 					orderable: false,
 					searchable: false,
 					responsivePriority: 1,
 					className: 'dt-body-center'
 				}],
+				ordering: {
+					indicators: false
+				},
 				language: {
 					search: "Buscar:",
 					lengthMenu: "Mostrar _MENU_ registros",
