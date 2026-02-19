@@ -196,7 +196,7 @@ $conexion_rocanet->close();
             <button type="submit" class="btn btn-primary btn-lg me-2">
                 <i class="fas fa-save"></i> Guardar cambios
             </button>
-            <button type="button" onclick="window.close()" class="btn btn-secondary btn-lg">
+            <button type="button" onclick="window.location.href='consultar_cuenta.php?expediente=<?= $expediente ?>'" class="btn btn-secondary btn-lg">
                 <i class="fas fa-times"></i> Cancelar
             </button>
         </div>

@@ -110,8 +110,12 @@ usort($reportesPendientes, function($a, $b) {
 									<td class='text-center col-obras'><?= $r['obra'] ?? '' ?></td>
 									<td class='text-center col-obras' data-order="<?= $fechaOrden ?>"><?= $fechaOriginal ?></td>
 									<td class="text-center">
-										<a href="validar_mecanica.php?usuario=<?= urlencode($r['usuario']) ?>&llave=<?= urlencode($r['llave']) ?>&tipo=Mecanicas"
-											class="btn btn-outline-theme btn-sm w-100px">
+										<a href="#"
+											class="btn btn-outline-theme btn-sm w-100px"
+											onclick="
+		window.open('validar_mecanica.php?usuario=<?= urlencode($r['usuario']) ?>&llave=<?= urlencode($r['llave']) ?>&tipo=Mecanicas', '_blank');
+		return false;
+   ">
 											<i class='fas fa-check me-1'></i> Validar
 										</a>
 
