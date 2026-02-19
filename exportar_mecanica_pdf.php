@@ -237,9 +237,13 @@ ob_start();
 			<th class="center" style="width: 9%;">Final</th>
 		</tr>
 		<?php foreach ($listaEstratos as $index => $estrato): 
-			$espesor = '';
-			if (!empty($estrato['profundidad_inicio']) && !empty($estrato['profundidad_final'])) {
-				$espesor = floatval($estrato['profundidad_final']) - floatval($estrato['profundidad_inicio']);
+			$espesor = $estrato['espesor_estrato'] ?? '';
+			$inicioRaw = $estrato['profundidad_inicio'] ?? '';
+			$finalRaw = $estrato['profundidad_final'] ?? '';
+			if ($espesor === '' && $inicioRaw !== '' && $finalRaw !== '') {
+				$inicio = floatval(str_replace(',', '.', $inicioRaw));
+				$final = floatval(str_replace(',', '.', $finalRaw));
+				$espesor = $final - $inicio;
 			}
 		?>
 		<tr>
@@ -248,7 +252,7 @@ ob_start();
 			<td class="center"><?= htmlspecialchars($estrato['profundidad_inicio'] ?? '') ?></td>
 			<td class="center"><?= htmlspecialchars($estrato['profundidad_final'] ?? '') ?></td>
 			<td class="center"><?= htmlspecialchars($estrato['profundidad_muestreo'] ?? '') ?></td>
-			<td class="center"><?= $espesor ?></td>
+			<td class="center"><?= $espesor === '' ? '' : htmlspecialchars($espesor) ?></td>
 			<td class="center"><?= htmlspecialchars($estrato['clasificacion_visual'] ?? '') ?></td>
 			<td><?= htmlspecialchars($estrato['observaciones'] ?? '') ?></td>
 		</tr>

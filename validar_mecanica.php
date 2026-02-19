@@ -124,6 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $tipo === 'Actualizado') {
 	$clasificacion = $_POST['clasificacion_visual'] ?? [];
 	$profundidadInicio = $_POST['profundidad_inicio'] ?? [];
 	$profundidadFinal = $_POST['profundidad_final'] ?? [];
+	$espesorEstrato = $_POST['espesor_estrato'] ?? [];
 	$profundidadMuestreoEstrato = $_POST['profundidad_muestreo_estrato'] ?? [];
 	$tipoMuestreo = $_POST['tipo_muestreo'] ?? [];
 	$observaciones = $_POST['observaciones'] ?? [];
@@ -135,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $tipo === 'Actualizado') {
 			'clasificacion_visual' => $clasificacion[$i] ?? '',
 			'profundidad_inicio' => $profundidadInicio[$i] ?? '',
 			'profundidad_final' => $profundidadFinal[$i] ?? '',
+			'espesor_estrato' => $espesorEstrato[$i] ?? '',
 			'profundidad_muestreo' => $profundidadMuestreoEstrato[$i] ?? '',
 			'tipo_muestreo' => $tipoMuestreo[$i] ?? '',
 			'observaciones' => $observaciones[$i] ?? ''
@@ -364,12 +366,13 @@ if (!empty($fecha) && preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $fecha, $match
 								<th>Clasificación Visual</th>
 								<th>Profundidad Inicio</th>
 								<th>Profundidad Final</th>
+								<th>Espesor del estrato</th>
 								<th>Profundidad Muestreo</th>
 								<th>Tipo Muestreo</th>
 								<th>Observaciones</th>
 							</tr>
 						</thead>
-						<tbody id="tbody-estratos">
+								<tbody id="tbody-estratos">
 							<!-- JS INSERTA AQUÍ LOS ESTRATOS -->
 						</tbody>
 					</table>
@@ -429,7 +432,7 @@ if (!empty($fecha) && preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $fecha, $match
 		if (!listaEstratos.length) {
 			tbody.innerHTML = `
 				<tr>
-					<td colspan="7" class="text-center text-muted">
+					<td colspan="8" class="text-center text-muted">
 						No hay estratos registrados
 					</td>
 				</tr>`;
@@ -438,17 +441,61 @@ if (!empty($fecha) && preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $fecha, $match
 
 		listaEstratos.forEach((estrato, index) => {
 			const fila = document.createElement("tr");
+			const tipoSeleccionado = (estrato.tipo_muestreo ?? '').toLowerCase();
+			const profundidadInicio = index === 0 ? 0 : (listaEstratos[index - 1]?.profundidad_final ?? '');
+			const profundidadFinal = estrato.profundidad_final ?? '';
+			const espesorCalculado = calcularEspesor(profundidadInicio, profundidadFinal);
 			fila.innerHTML = `
 				<td class="text-center">${index + 1}</td>
 				<td><input type="text" class="form-control" name="clasificacion_visual[]" value="${estrato.clasificacion_visual ?? ''}"></td>
-				<td><input type="text" class="form-control" name="profundidad_inicio[]" value="${estrato.profundidad_inicio ?? ''}"></td>
-				<td><input type="text" class="form-control" name="profundidad_final[]" value="${estrato.profundidad_final ?? ''}"></td>
+				<td><input type="text" class="form-control" name="profundidad_inicio[]" value="${profundidadInicio}" readonly></td>
+				<td><input type="text" class="form-control" name="profundidad_final[]" value="${profundidadFinal}" oninput="actualizarEspesorFila(this)"></td>
+				<td><input type="text" class="form-control" name="espesor_estrato[]" value="${espesorCalculado}" readonly></td>
 				<td><input type="text" class="form-control" name="profundidad_muestreo_estrato[]" value="${estrato.profundidad_muestreo ?? ''}"></td>
-				<td><input type="text" class="form-control" name="tipo_muestreo[]" value="${estrato.tipo_muestreo ?? ''}"></td>
+				<td>
+					<select class="form-select" name="tipo_muestreo[]">
+						<option value="Visual" ${tipoSeleccionado === 'visual' ? 'selected' : ''}>Visual</option>
+						<option value="Alterado" ${tipoSeleccionado === 'alterado' ? 'selected' : ''}>Alterado</option>
+						<option value="Inalterado" ${tipoSeleccionado === 'inalterado' ? 'selected' : ''}>Inalterado</option>
+					</select>
+				</td>
 				<td><input type="text" class="form-control" name="observaciones[]" value="${estrato.observaciones ?? ''}"></td>
 			`;
 			tbody.appendChild(fila);
 		});
+	}
+
+	function calcularEspesor(inicio, fin) {
+		const inicioNum = parseFloat((inicio ?? '').toString().replace(',', '.'));
+		const finNum = parseFloat((fin ?? '').toString().replace(',', '.'));
+		if (isNaN(inicioNum) || isNaN(finNum)) {
+			return '';
+		}
+		return (finNum - inicioNum).toFixed(2);
+	}
+
+	function actualizarEspesorFila(inputEl) {
+		const fila = inputEl.closest('tr');
+		if (!fila) return;
+		const inicioEl = fila.querySelector('input[name="profundidad_inicio[]"]');
+		const finEl = fila.querySelector('input[name="profundidad_final[]"]');
+		const espesorEl = fila.querySelector('input[name="espesor_estrato[]"]');
+		if (!inicioEl || !finEl || !espesorEl) return;
+		espesorEl.value = calcularEspesor(inicioEl.value, finEl.value);
+
+		// Actualizar la fila siguiente (profundidad inicio = profundidad final actual)
+		const siguienteFila = fila.nextElementSibling;
+		if (siguienteFila) {
+			const inicioSig = siguienteFila.querySelector('input[name="profundidad_inicio[]"]');
+			const finSig = siguienteFila.querySelector('input[name="profundidad_final[]"]');
+			const espesorSig = siguienteFila.querySelector('input[name="espesor_estrato[]"]');
+			if (inicioSig) {
+				inicioSig.value = finEl.value;
+			}
+			if (inicioSig && finSig && espesorSig) {
+				espesorSig.value = calcularEspesor(inicioSig.value, finSig.value);
+			}
+		}
 	}
 
 	// Cargar imágenes
