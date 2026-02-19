@@ -67,14 +67,96 @@ function firebaseDelete($ruta)
 	curl_close($ch);
 }
 
+function firebasePut($ruta, $datos)
+{
+	global $firebaseURL, $auth;
+	$segmentos = explode('/', $ruta);
+	$segmentos = array_map('rawurlencode', $segmentos);
+	$rutaSegura = implode('/', $segmentos);
+	$url = "$firebaseURL/$rutaSegura.json?auth=$auth";
+
+	$ch = curl_init($url);
+	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($datos, JSON_UNESCAPED_UNICODE));
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+	$response = curl_exec($ch);
+	$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	curl_close($ch);
+
+	return $httpCode == 200;
+}
+
 /* PARAMETROS */
 $usuario = $_GET['usuario'] ?? '';
 $llave   = $_GET['llave'] ?? '';
-$tipo    = $_GET['tipo'] ?? 'Mecanicas'; // Mecanicas o Respaldo
+$tipo    = $_GET['tipo'] ?? 'Mecanicas'; // Mecanicas, Respaldo o Actualizado
+
+// Guardar cambios solo en ReporteActualizadoMecanicas
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $tipo === 'Actualizado') {
+	$rutaActualizado = "Mecanicas/ReporteActualizadoMecanicas/$usuario/$llave";
+	$reporteActual = firebaseGet($rutaActualizado);
+	if (!is_array($reporteActual)) {
+		$reporteActual = [];
+	}
+
+	$fechaPost = $_POST['fecha'] ?? '';
+	if (!empty($fechaPost) && preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $fechaPost, $matches)) {
+		$fechaPost = $matches[3] . '/' . $matches[2] . '/' . $matches[1]; // DD/MM/YYYY
+	}
+
+	$reporteActual['cliente'] = $_POST['cliente'] ?? '';
+	$reporteActual['obra'] = $_POST['obra'] ?? '';
+	$reporteActual['localizacion'] = $_POST['localizacion'] ?? '';
+	$reporteActual['numeroReporte'] = $_POST['numeroReporte'] ?? '';
+	$reporteActual['fecha'] = $fechaPost;
+	$reporteActual['hora'] = $_POST['hora'] ?? '';
+	$reporteActual['atencion'] = $_POST['atencion'] ?? '';
+	$reporteActual['latitud'] = $_POST['latitud'] ?? '';
+	$reporteActual['longitud'] = $_POST['longitud'] ?? '';
+	$reporteActual['sondeo_num'] = $_POST['sondeo_num'] ?? '';
+	$reporteActual['ubicacion'] = $_POST['ubicacion'] ?? '';
+	$reporteActual['naf'] = (isset($_POST['naf']) && $_POST['naf'] === '1');
+	$reporteActual['profundidad_naf'] = $_POST['profundidad_naf'] ?? '';
+	$reporteActual['profundidad_muestreo'] = $_POST['profundidad_muestreo'] ?? '';
+	$reporteActual['personal'] = $_POST['personal'] ?? '';
+
+	$clasificacion = $_POST['clasificacion_visual'] ?? [];
+	$profundidadInicio = $_POST['profundidad_inicio'] ?? [];
+	$profundidadFinal = $_POST['profundidad_final'] ?? [];
+	$profundidadMuestreoEstrato = $_POST['profundidad_muestreo_estrato'] ?? [];
+	$tipoMuestreo = $_POST['tipo_muestreo'] ?? [];
+	$observaciones = $_POST['observaciones'] ?? [];
+
+	$listaEstratosActualizada = [];
+	$max = count($clasificacion);
+	for ($i = 0; $i < $max; $i++) {
+		$listaEstratosActualizada[] = [
+			'clasificacion_visual' => $clasificacion[$i] ?? '',
+			'profundidad_inicio' => $profundidadInicio[$i] ?? '',
+			'profundidad_final' => $profundidadFinal[$i] ?? '',
+			'profundidad_muestreo' => $profundidadMuestreoEstrato[$i] ?? '',
+			'tipo_muestreo' => $tipoMuestreo[$i] ?? '',
+			'observaciones' => $observaciones[$i] ?? ''
+		];
+	}
+	$reporteActual['listaEstratos'] = $listaEstratosActualizada;
+
+	if (firebasePut($rutaActualizado, $reporteActual)) {
+		echo "<script>alert('Cambios guardados correctamente'); window.location.href='lista_reportes_mecanicas_actualizados.php';</script>";
+		exit;
+	}
+
+	echo "<script>alert('Error al guardar cambios');</script>";
+}
 
 // Determinar la ruta según el tipo
+
 if ($tipo === 'Respaldo') {
 	$ruta = "Mecanicas/RespaldoMecanicas/$usuario/$llave";
+	$soloConsulta = true;
+} elseif ($tipo === 'Actualizado') {
+	$ruta = "Mecanicas/ReporteActualizadoMecanicas/$usuario/$llave";
 	$soloConsulta = true;
 } else {
 	$ruta = "Mecanicas/ReportesMecanicas/$usuario/$llave";
@@ -317,6 +399,12 @@ if (!empty($fecha) && preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $fecha, $match
 		<button type="button" class="btn btn-danger btn-sm w-180px ms-2" onclick="exportarPDF()">
 			<i class="fa fa-file-pdf me-1"></i> Exportar a PDF
 		</button>
+
+		<?php if ($tipo === 'Actualizado'): ?>
+		<button type="submit" class="btn btn-primary btn-sm w-180px ms-2">
+			<i class="fa fa-save me-1"></i> Guardar cambios
+		</button>
+		<?php endif; ?>
 		
 		<?php if (!$soloConsulta): ?>
 		<button type="button" class="btn btn-primary btn-sm w-180px ms-2" onclick="validarReporte()">
