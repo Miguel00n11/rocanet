@@ -123,45 +123,50 @@ usort($reportesPendientes, function($a, $b) {
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 		const tableEl = document.querySelector('#datatableValidarCompactaciones');
-		if (tableEl) {
-			new DataTable(tableEl, {
-				autoWidth: false,
-				responsive: true,
-				order: [[3, 'desc']], // Ordenar por fecha descendente
-				columnControl: [
-					'order',
-					['search', 'spacer', 'orderAsc', 'orderDesc', 'orderClear']
-				],
-				columnDefs: [{
-					targets: [0, 1, 2, 3],
+		if (tableEl && tableEl.querySelectorAll('tbody tr').length > 0) {
+			// Solo inicializar DataTables si hay filas con datos
+			const hasData = tableEl.querySelector('tbody tr td:not([colspan])') !== null;
+			
+			if (hasData) {
+				new DataTable(tableEl, {
+					autoWidth: false,
+					responsive: true,
+					order: [[3, 'desc']], // Ordenar por fecha descendente
 					columnControl: [
 						'order',
 						['search', 'spacer', 'orderAsc', 'orderDesc', 'orderClear']
-					]
-				},
-				{
-					targets: 4, // Columna Acción
-					orderable: false,
-					searchable: false,
-					responsivePriority: 1,
-					className: 'dt-body-center'
-				}],
-				ordering: {
-					indicators: false
-				},
-				language: {
-					search: "Buscar:",
-					lengthMenu: "Mostrar _MENU_ registros",
-					info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-					infoEmpty: "Mostrando 0 a 0 de 0 registros",
-					infoFiltered: "(filtrado de _MAX_ registros totales)",
-					zeroRecords: "No se encontraron coincidencias",
-					paginate: {
-						next: "Siguiente",
-						previous: "Anterior"
+					],
+					columnDefs: [{
+						targets: [0, 1, 2, 3],
+						columnControl: [
+							'order',
+							['search', 'spacer', 'orderAsc', 'orderDesc', 'orderClear']
+						]
+					},
+					{
+						targets: 4, // Columna Acción
+						orderable: false,
+						searchable: false,
+						responsivePriority: 1,
+						className: 'dt-body-center'
+					}],
+					ordering: {
+						indicators: false
+					},
+					language: {
+						search: "Buscar:",
+						lengthMenu: "Mostrar _MENU_ registros",
+						info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+						infoEmpty: "Mostrando 0 a 0 de 0 registros",
+						infoFiltered: "(filtrado de _MAX_ registros totales)",
+						zeroRecords: "No se encontraron coincidencias",
+						paginate: {
+							next: "Siguiente",
+							previous: "Anterior"
+						}
 					}
-				}
-			});
+				});
+			}
 		}
 	});
 </script>
