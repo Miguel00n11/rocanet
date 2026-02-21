@@ -88,6 +88,7 @@ usort($reportesPendientes, function($a, $b) {
 							<th class="text-center col-obras">Cliente</th>
 							<th class="text-center col-obras">Obra</th>
 							<th class="text-center col-obras">Fecha de muestreo</th>
+							<th class="text-center">Exportar</th>
 							<th class="text-center">Acción</th>
 						</tr>
 					</thead>
@@ -110,6 +111,25 @@ usort($reportesPendientes, function($a, $b) {
 									<td class='text-center col-obras'><?= $r['obra'] ?? '' ?></td>
 									<td class='text-center col-obras' data-order="<?= $fechaOrden ?>"><?= $fechaOriginal ?></td>
 									<td class="text-center">
+										<div class='dropdown'>
+											<button class='btn btn-outline-theme dropdown-toggle' type='button' data-bs-toggle='dropdown'>
+												<i class='fas fa-file-export me-1'></i> Exportar
+											</button>
+
+											<ul class='dropdown-menu'>
+												<li>
+													<a class='dropdown-item' href="exportar_mecanica_excel.php?usuario=<?= urlencode($r['usuario']) ?>&llave=<?= urlencode($r['llave']) ?>&tipo=Mecanicas" target='_blank'>
+														Excel
+													</a>
+													<a class='dropdown-item' href="exportar_mecanica_pdf.php?usuario=<?= urlencode($r['usuario']) ?>&llave=<?= urlencode($r['llave']) ?>&tipo=Mecanicas" target='_blank'>
+														PDF
+													</a>
+												</li>
+												<li><hr class='dropdown-divider'></li>
+											</ul>
+										</div>
+									</td>
+									<td class="text-center">
 										<a href="validar_mecanica.php?usuario=<?= urlencode($r['usuario']) ?>&llave=<?= urlencode($r['llave']) ?>&tipo=Mecanicas"
 											class="btn btn-outline-theme btn-sm w-100px">
 											<i class='fas fa-check me-1'></i> Validar
@@ -120,7 +140,7 @@ usort($reportesPendientes, function($a, $b) {
 							<?php endforeach; ?>
 						<?php else: ?>
 							<tr>
-								<td colspan="5" class="text-center text-muted">
+								<td colspan="6" class="text-center text-muted">
 									No hay reportes pendientes
 								</td>
 							</tr>
@@ -153,7 +173,7 @@ usort($reportesPendientes, function($a, $b) {
 					]
 				},
 				{
-					targets: 4, // Columna Acción
+					targets: [4, 5], // Columnas Exportar y Acción
 					orderable: false,
 					searchable: false,
 					responsivePriority: 1,
