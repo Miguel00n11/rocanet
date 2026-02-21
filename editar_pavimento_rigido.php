@@ -90,6 +90,30 @@ unset($sondeo);
 	.btn-add-row:hover {
 		background-color: #218838;
 	}
+
+	.croquis-wrapper {
+		max-width: 780px;
+	}
+
+	.croquis-capas {
+		min-height: 380px;
+		background-color: #ffffff;
+		padding: 8px;
+	}
+
+	.croquis-capas svg {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.croquis-empty {
+		min-height: 340px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 13px;
+	}
 </style>
 
 <!-- BEGIN #content -->
@@ -462,6 +486,17 @@ unset($sondeo);
 			</div>
 		</div>
 
+		<div class="card mt-3">
+			<div class="card-header">
+				<h5 class="mb-0">CROQUIS DE CAPAS DEL PAVIMENTO</h5>
+			</div>
+			<div class="card-body">
+				<div class="croquis-wrapper">
+					<div id="croquisCapas" class="croquis-capas border rounded"></div>
+				</div>
+			</div>
+		</div>
+
 		<!-- Datalist con opciones predefinidas -->
 		<datalist id="listaMateriales">
 			<option value="BOLEO">
@@ -779,15 +814,17 @@ unset($sondeo);
 <script>
 	let contadorSondeos = <?= count($sondeos) > 0 ? max(array_column($sondeos, 'numero_sondeo')) : 1 ?>;
 
-	// Inicializar popovers
-	$(document).ready(function() {
-		var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-		var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-			return new bootstrap.Popover(popoverTriggerEl, {
+	function inicializarPopovers() {
+		if (typeof bootstrap === 'undefined' || typeof bootstrap.Popover === 'undefined') {
+			return;
+		}
+		const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+		popoverTriggerList.forEach(function(popoverTriggerEl) {
+			new bootstrap.Popover(popoverTriggerEl, {
 				container: 'body'
 			});
 		});
-	});
+	}
 
 	function agregarSondeo() {
 		contadorSondeos++;
@@ -933,14 +970,156 @@ unset($sondeo);
 		});
 	}
 
+	function extraerNumeroEspesor(valor) {
+		if (!valor) return 0;
+		const match = valor.toString().replace(',', '.').match(/\d+(\.\d+)?/);
+		return match ? parseFloat(match[0]) : 0;
+	}
+
+	function renderCroquisCapas() {
+		const capasConfig = [
+			{ id: 'espesor_concreto', label: 'CONCRETO', patron: 'patConcreto', texto: '#222' },
+			{ id: 'base', label: 'BASE', patron: 'patBase', texto: '#222' },
+			{ id: 'subrasante', label: 'SUBRASANTE', patron: 'patSubrasante', texto: '#222' },
+			{ id: 'pedraplen', label: 'PEDRAPLÉN', patron: 'patPedraplen', texto: '#222' }
+		];
+
+		const capas = capasConfig
+			.map(capa => {
+				const input = document.getElementById(capa.id);
+				const valorRaw = input ? input.value.trim() : '';
+				const espesor = extraerNumeroEspesor(valorRaw);
+				return { ...capa, espesor, valorRaw };
+			})
+			.filter(capa => capa.espesor > 0);
+
+		const contenedor = document.getElementById('croquisCapas');
+		if (!contenedor) return;
+
+		if (!capas.length) {
+			contenedor.innerHTML = '<div class="croquis-empty text-muted">Capture espesores para generar el croquis</div>';
+			return;
+		}
+
+		const totalEspesor = capas.reduce((acc, capa) => acc + capa.espesor, 0);
+		const svgWidth = 900;
+		const svgHeight = 430;
+		const top = 36;
+		const left = 98;
+		const width = 770;
+		const height = 330;
+		const bottom = top + height;
+		const ejeX = 38;
+		const cotaTextoX = 10;
+		const alturaMinima = 34;
+
+		const alturas = capas.map(capa => Math.max(alturaMinima, (capa.espesor / totalEspesor) * height));
+		const sumaAlturas = alturas.reduce((acc, valor) => acc + valor, 0);
+		if (sumaAlturas !== height) {
+			alturas[alturas.length - 1] += (height - sumaAlturas);
+		}
+
+		let yActual = top;
+		let capasSvg = '';
+		let cotasSvg = '';
+
+		capas.forEach((capa, index) => {
+			const h = alturas[index];
+			const y1 = yActual;
+			const y2 = yActual + h;
+			const yCentro = y1 + (h / 2);
+			const espesorTxt = `${Number(capa.espesor.toFixed(2)).toString().replace('.', ',')} cm`;
+
+			capasSvg += `
+				<rect x="${left}" y="${y1}" width="${width}" height="${h}" fill="url(#${capa.patron})" stroke="#4f4f4f" stroke-width="1" />
+				<text x="${left + width - 12}" y="${yCentro + 4}" font-size="13" font-weight="700" fill="${capa.texto}" text-anchor="end">${capa.label}</text>
+			`;
+
+			cotasSvg += `
+				<line x1="${left}" y1="${y1}" x2="${ejeX + 7}" y2="${y1}" stroke="#222" stroke-width="1" />
+				<line x1="${left}" y1="${y2}" x2="${ejeX + 7}" y2="${y2}" stroke="#222" stroke-width="1" />
+				<line x1="${ejeX}" y1="${y1}" x2="${ejeX}" y2="${y2}" stroke="#222" stroke-width="1" />
+				<path d="M ${ejeX - 3} ${y1 + 7} L ${ejeX} ${y1} L ${ejeX + 3} ${y1 + 7}" fill="none" stroke="#222" stroke-width="1" />
+				<path d="M ${ejeX - 3} ${y2 - 7} L ${ejeX} ${y2} L ${ejeX + 3} ${y2 - 7}" fill="none" stroke="#222" stroke-width="1" />
+				<text x="${cotaTextoX}" y="${yCentro + 4}" font-size="12" font-weight="700" fill="#111">${Number(capa.espesor.toFixed(2)).toString().replace('.', ',')}</text>
+			`;
+
+			yActual = y2;
+		});
+
+		const baseNaturalY = bottom;
+		const svg = `
+			<svg viewBox="0 0 ${svgWidth} ${svgHeight}" xmlns="http://www.w3.org/2000/svg" aria-label="Croquis de capas de pavimento">
+				<defs>
+					<pattern id="patConcreto" patternUnits="userSpaceOnUse" width="16" height="16">
+						<rect width="16" height="16" fill="#f3f3f3" />
+						<circle cx="4" cy="5" r="1" fill="#b9b9b9" />
+						<circle cx="11" cy="9" r="1.1" fill="#ababab" />
+						<circle cx="8" cy="13" r="0.9" fill="#c2c2c2" />
+					</pattern>
+
+					<pattern id="patBase" patternUnits="userSpaceOnUse" width="24" height="18">
+						<rect width="24" height="18" fill="#efefef" />
+						<ellipse cx="6" cy="6" rx="4" ry="2.6" fill="none" stroke="#a2a2a2" stroke-width="1" />
+						<ellipse cx="15" cy="10" rx="4.5" ry="3" fill="none" stroke="#9b9b9b" stroke-width="1" />
+						<ellipse cx="22" cy="4" rx="3.5" ry="2.4" fill="none" stroke="#a8a8a8" stroke-width="1" />
+					</pattern>
+
+					<pattern id="patSubrasante" patternUnits="userSpaceOnUse" width="20" height="12">
+						<rect width="20" height="12" fill="#ededed" />
+						<line x1="0" y1="3" x2="20" y2="3" stroke="#b2b2b2" stroke-width="1" />
+						<line x1="0" y1="9" x2="20" y2="9" stroke="#b2b2b2" stroke-width="1" />
+					</pattern>
+
+					<pattern id="patPedraplen" patternUnits="userSpaceOnUse" width="34" height="24">
+						<rect width="34" height="24" fill="#ededed" />
+						<polygon points="2,20 8,6 17,4 21,11 15,21" fill="none" stroke="#9a9a9a" stroke-width="1" />
+						<polygon points="18,19 24,8 31,7 32,16 26,22" fill="none" stroke="#9f9f9f" stroke-width="1" />
+					</pattern>
+
+					<pattern id="patTerreno" patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(-30)">
+						<rect width="20" height="20" fill="#efefef" />
+						<line x1="0" y1="0" x2="0" y2="20" stroke="#b3b3b3" stroke-width="2" />
+					</pattern>
+				</defs>
+
+				<rect x="0" y="0" width="${svgWidth}" height="${svgHeight}" fill="#f7f7f7" />
+				<text x="6" y="20" font-size="34" font-weight="700" fill="#1f1f1f">cm</text>
+				${cotasSvg}
+
+				<rect x="${left}" y="${top}" width="${width}" height="${height}" fill="#ffffff" stroke="#1e1e1e" stroke-width="1.3" />
+				${capasSvg}
+
+				<rect x="${left}" y="${baseNaturalY}" width="${width}" height="${svgHeight - 12 - baseNaturalY}" fill="url(#patTerreno)" stroke="#666" stroke-width="1" />
+				<line x1="${left}" y1="${baseNaturalY}" x2="${left + width}" y2="${baseNaturalY}" stroke="#1e1e1e" stroke-width="1.2" />
+				<line x1="${left + width}" y1="${top}" x2="${left + width}" y2="${svgHeight - 12}" stroke="#1e1e1e" stroke-width="1.2" />
+			</svg>
+		`;
+
+		contenedor.innerHTML = svg;
+	}
+
+	function inicializarCroquisCapas() {
+		['espesor_concreto', 'base', 'subrasante', 'pedraplen'].forEach(id => {
+			const input = document.getElementById(id);
+			if (input) {
+				input.addEventListener('input', renderCroquisCapas);
+				input.addEventListener('change', renderCroquisCapas);
+			}
+		});
+		renderCroquisCapas();
+	}
+
 	// Inicializar botones al cargar
 	document.addEventListener('DOMContentLoaded', function() {
+		inicializarPopovers();
 		actualizarBotonesEliminarSondeos();
 		const sondeos = document.querySelectorAll('.sondeo-item');
 		sondeos.forEach(sondeo => {
 			const numeroSondeo = sondeo.getAttribute('data-sondeo');
 			actualizarBotonesEliminarEstratos(numeroSondeo);
 		});
+		inicializarCroquisCapas();
 	});
 
 	// Validar formulario antes de enviar
@@ -953,8 +1132,6 @@ unset($sondeo);
 		}
 	});
 
-	// Inicializar botones al cargar
-	actualizarBotonesEliminar();
 </script>
 
 <?php 
