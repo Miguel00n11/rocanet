@@ -93,8 +93,13 @@ function firebaseDelete($ruta)
 // $usuario = $_GET['usuario'];
 $usuario = $_GET['usuario']; // NO urldecode
 $llave   = $_GET['llave'] ?? '';
+$tipo    = $_GET['tipo'] ?? 'Vigas';
 
-$ruta = "Vigas/Reportes/$usuario/$llave";
+if ($tipo === 'Respaldo') {
+	$ruta = "Vigas/Respaldo/$usuario/$llave";
+} else {
+	$ruta = "Vigas/Reportes/$usuario/$llave";
+}
 $reporte = firebaseGet($ruta);
 
 if ($reporte === null) {

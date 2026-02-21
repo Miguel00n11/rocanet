@@ -93,8 +93,13 @@ function firebaseDelete($ruta)
 // $usuario = $_GET['usuario'];
 $usuario = $_GET['usuario']; // NO urldecode
 $llave   = $_GET['llave'] ?? '';
+$tipo    = $_GET['tipo'] ?? 'Cilindros';
 
-$ruta = "Cilindros/Reportes/$usuario/$llave";
+if ($tipo === 'Respaldo') {
+	$ruta = "Cilindros/Respaldo/$usuario/$llave";
+} else {
+	$ruta = "Cilindros/Reportes/$usuario/$llave";
+}
 $reporte = firebaseGet($ruta);
 
 if ($reporte === null) {
@@ -108,7 +113,6 @@ $cliente = $reporte['cliente'] ?? 'SIN CLIENTE';
 
 
 /* VARIABLES DEL REPORTE */
-$cliente = "";
 $id_cliente = "";
 $obra = $reporte['obra'] ?? 'SIN OBRA';
 $expediente = $reporte['expediente'] ?? 'SIN OBRA';

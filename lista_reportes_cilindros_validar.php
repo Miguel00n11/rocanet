@@ -22,9 +22,11 @@ function firebaseGet($ruta)
 }
 
 /* =========================
-   OBTENER REPORTES NO VALIDADOS
+	OBTENER REPORTES NO VALIDADOS
 ========================= */
-$rutaFirebase = "Cilindros/Reportes";
+$tipo = $_GET['tipo'] ?? 'Cilindros';
+$rutaFirebase = ($tipo === 'Respaldo') ? "Cilindros/Respaldo" : "Cilindros/Reportes";
+$filtrarValidado = ($tipo !== 'Respaldo');
 $usuarios = firebaseGet($rutaFirebase);
 $reportesPendientes = [];
 
@@ -33,7 +35,7 @@ if ($usuarios) {
 		if (!$reportes) continue;
 
 		foreach ($reportes as $llave => $reporte) {
-			if (!empty($reporte['validado'])) continue;
+			if ($filtrarValidado && !empty($reporte['validado'])) continue;
 
 			$reporte['usuario'] = $usuario;
 			$reporte['llave'] = $llave;
@@ -96,10 +98,10 @@ usort($reportesPendientes, function($a, $b) {
 										<a href="#"
 											class="btn btn-outline-theme btn-sm w-80px"
 											onclick="
-		window.open('validar_cilindro.php?usuario=<?= urlencode($r['usuario']) ?>&llave=<?= urlencode($r['llave']) ?>&tipo=Cilindros', '_blank');
+		window.open('validar_cilindro.php?usuario=<?= urlencode($r['usuario']) ?>&llave=<?= urlencode($r['llave']) ?>&tipo=<?= $tipo === 'Respaldo' ? 'Respaldo' : 'Cilindros' ?>', '_blank');
 		return false;
    ">
-											Validar
+											<?= $tipo === 'Respaldo' ? 'Ver registro' : 'Validar' ?>
 										</a>
 
 									</td>
