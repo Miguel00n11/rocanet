@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             (obra, tipo_pavimento, ubicacion, cliente, expediente, revision, fecha_estudio, espesor_concreto, base, subrasante, pedraplen, municipio, po, pt, zr, so, esals, coeficiente_carga, mr, cd, k_infinito, k_tabla, ancho_vialidad, numero_franjas, dimension_x, dimension_y, diametro_pasajuntas, diametro_barras_amarre) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        $stmt->bind_param("ssssssssssssdddddddddddiddd", 
+        $stmt->bind_param("ssssssssssssdddddddddddidddd", 
             $obra,
             $tipo_pavimento,
             $ubicacion,

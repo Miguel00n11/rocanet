@@ -656,7 +656,7 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 
 
 
-		<div class="card">
+		<div class="card" id="cardMuestreoConcretoFresco">
 			<div class="card-header with-btn">
 				DATOS DE MUESTREO DEL CONCRETO FRESCO
 				<div class="card-header-btn">
@@ -668,6 +668,11 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 			<div class="card-body pb-2">
 
 				<div class="row">
+					<div class="col-xl-12 mb-2">
+						<button type="button" class="btn btn-outline-warning btn-sm" onclick="corregirAcentosMuestreo()">
+							Corregir
+						</button>
+					</div>
 
 					<div class="col-xl-6">
 						<div class="mb-3">
@@ -874,6 +879,71 @@ if (isset($_GET['expediente']) && isset($_GET['reporte'])) {
 			opciones += `<option value="${p.Nombre}">${p.Nombre}</option>`;
 		});
 		return opciones;
+	}
+
+	function quitarAcentos(texto) {
+		if (typeof texto !== 'string') return texto;
+		return texto
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '');
+	}
+
+	function corregirOrtografiaBasica(texto) {
+		if (typeof texto !== 'string') return texto;
+
+		let salida = texto
+			.replace(/\s+/g, ' ')
+			.trim();
+
+		const reemplazos = [
+			[/\bubicasion\b/gi, 'ubicacion'],
+			[/\blocacion\b/gi, 'locacion'],
+			[/\bremicion\b/gi, 'remision'],
+			[/\bconcretara\b/gi, 'concretera'],
+			[/\bconcreterra\b/gi, 'concretera'],
+			[/\btemperatrua\b/gi, 'temperatura'],
+			[/\bvolu?men\b/gi, 'volumen'],
+			[/\belementto\b/gi, 'elemento'],
+			[/\bespecimenes\b/gi, 'especimenes']
+		];
+
+		reemplazos.forEach(([regex, valor]) => {
+			salida = salida.replace(regex, valor);
+		});
+
+		return salida;
+	}
+
+	function corregirAcentosMuestreo() {
+		const card = document.getElementById('cardMuestreoConcretoFresco');
+		if (!card) return;
+
+		const selectorCampos = "input[type='text'], input[type='search'], textarea";
+		const campos = card.querySelectorAll(selectorCampos);
+		let totalCorregidos = 0;
+
+		campos.forEach(campo => {
+			const nombre = (campo.name || '').toLowerCase();
+
+			if (nombre === 'muestreo' || nombre === 'recibio') {
+				return;
+			}
+
+			const valorOriginal = campo.value || '';
+			let valorCorregido = quitarAcentos(valorOriginal);
+			valorCorregido = corregirOrtografiaBasica(valorCorregido);
+
+			if (valorOriginal !== valorCorregido) {
+				campo.value = valorCorregido;
+				totalCorregidos++;
+			}
+		});
+
+		if (totalCorregidos > 0) {
+			alert('Se aplicaron correcciones en ' + totalCorregidos + ' campo(s).');
+		} else {
+			alert('No se detectaron cambios para corregir.');
+		}
 	}
 </script>
 
