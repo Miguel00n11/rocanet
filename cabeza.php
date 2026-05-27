@@ -245,7 +245,7 @@ if (session_status() === PHP_SESSION_NONE) {
 						<a href="#" class="menu-link">
 							<span class="fas fa-lg fa-fw me-2 fa-tablet-alt menu-icon">
 							</span>
-							<span class="menu-text">MECÁNICA DE SUELOS</span>
+							<span class="menu-text">MECANICAS</span>
 							<span class="menu-caret"><b class="caret"></b></span>
 						</a>
 						<div class="menu-submenu">
@@ -323,6 +323,28 @@ if (session_status() === PHP_SESSION_NONE) {
 						</div>
 					</div>
 
+					<div class="menu-header">DISEÑO ESTRUCTURAL</div>
+
+					<div class="menu-item has-sub ">
+						<a href="#" class="menu-link">
+							<span class="fas fa-lg fa-fw me-2 fa-cogs menu-icon">
+							</span>
+							<span class="menu-text">DISEÑO ESTRUCTURAL</span>
+							<span class="menu-caret"><b class="caret"></b></span>
+						</a>
+						<div class="menu-submenu">
+							<div class="menu-item ">
+								<a href="diseno_viga_simplemente_armada.php" class="menu-link">
+									<span class="menu-text">Diseño de vigas simplemente armada</span>
+								</a>
+							</div>
+							<div class="menu-item ">
+								<a href="#" class="menu-link">
+									<span class="menu-text">Diseño de viga doblemente reforzada</span>
+								</a>
+							</div>
+						</div>
+					</div>
 
 				</div>
 				<!-- END menu -->
